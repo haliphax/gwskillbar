@@ -1,8 +1,10 @@
 <script lang="ts">
 import pkg from "@/../package.json";
+import Skillbar from "@/app/components/skillbar.vue";
 import { defineComponent } from "vue";
 
 const Home = defineComponent({
+	components: { Skillbar },
 	data() {
 		return {
 			version: pkg.version,
@@ -27,7 +29,7 @@ export default Home;
 		<small>Guild Wars 1 skill builder</small>
 	</h1>
 	<a name="main"></a>
-	<p>Lorem ipsum dolor samet</p>
+	<Skillbar code="OQZSA4ATvAIg5ZkA2gAAAAIDA"></Skillbar>
 	<footer>
 		<ul class="x">
 			<li><a href="https://github.com/haliphax/gwskillbar">source</a></li>
