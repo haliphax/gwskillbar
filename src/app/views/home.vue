@@ -1,18 +1,16 @@
-<script lang="ts">
+<script lang="ts" setup>
 import pkg from "@/../package.json";
 import Skillbar from "@/app/components/skillbar.vue";
-import { defineComponent } from "vue";
+import router from "@/app/router";
 
-const Home = defineComponent({
-	components: { Skillbar },
-	data() {
-		return {
-			version: pkg.version,
-		};
-	},
-});
+const code = () => {
+	return (
+		(router.currentRoute.value.params.template as string | undefined) ??
+		"OQZSA4ATvAIg5ZkA2gAAAAIDA"
+	);
+};
 
-export default Home;
+addEventListener("hashchange", () => location.reload());
 </script>
 
 <template>
@@ -20,16 +18,16 @@ export default Home;
 		Skillbar
 		<code>
 			<a
-				:href="`https://github.com/haliphax/gwskillbar/releases/tag/v${version}`"
+				:href="`https://github.com/haliphax/gwskillbar/releases/tag/v${pkg.version}`"
 				title="Release notes"
 			>
-				{{ version }}
+				{{ pkg.version }}
 			</a>
 		</code>
 		<small>Guild Wars 1 skill builder</small>
 	</h1>
 	<a name="main"></a>
-	<Skillbar code="OQZSA4ATvAIg5ZkA2gAAAAIDA"></Skillbar>
+	<Skillbar :code="code()"></Skillbar>
 	<footer>
 		<ul class="x">
 			<li><a href="https://github.com/haliphax/gwskillbar">source</a></li>
