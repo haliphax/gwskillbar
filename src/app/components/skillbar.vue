@@ -2,6 +2,9 @@
 import attributes from "@/app/data/attributes.json";
 import professions from "@/app/data/professions.json";
 import skills from "@/app/data/skills.json";
+import { onMounted } from "vue";
+import ProfessionIcon from "./profession-icon.vue";
+import SkillIcon from "./skill-icon.vue";
 
 const CHAR_MAP =
 	"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -70,18 +73,35 @@ const parse = (code: string) => {
 	} catch (ex) {
 		throw "Invalid skill";
 	}
-
-	console.log({
-		primary,
-		secondary,
-		attribs,
-		skillBar,
-	});
 };
+
+onMounted(parse(props.code));
 </script>
 
 <template>
-	<button @click="parse(code)">Log to console</button>
+	<h2>
+		<ProfessionIcon :name="primary"></ProfessionIcon>
+		{{ primary }} /
+		<ProfessionIcon :name="secondary"></ProfessionIcon>
+		{{ secondary }}
+	</h2>
+	<fieldset>
+		<legend>Attributes</legend>
+		<ul>
+			<li v-for="(score, attribute) of attribs" :key="attribute">
+				{{ attribute }}: {{ score }}
+			</li>
+		</ul>
+	</fieldset>
+	<fieldset>
+		<legend>Skills</legend>
+		<ol>
+			<li v-for="skill in skillBar" :key="skill">
+				<SkillIcon :name="skill" :size="24"></SkillIcon>
+				{{ skill }}
+			</li>
+		</ol>
+	</fieldset>
 </template>
 
 <style lang="less">
