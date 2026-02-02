@@ -1,0 +1,25 @@
+name: Attest
+
+on:
+  release:
+    types: [prereleased, released]
+
+  workflow_dispatch:
+
+jobs:
+  attest:
+    permissions:
+      id-token: write
+      contents: read
+      attestations: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: haliphax/gwskillbar/.github@main
+
+      - name: Prune
+        run: find ./src -type f -name '*test*.ts' -delete
+
+      - name: Attest
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: "${{ github.workspace }}/src"

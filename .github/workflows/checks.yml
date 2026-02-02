@@ -1,0 +1,61 @@
+name: Checks
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize]
+
+  push:
+    branches: [main]
+
+  workflow_dispatch:
+
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.branch }}
+
+jobs:
+  eslint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: haliphax/gwskillbar/.github@main
+
+      - name: ESLint
+        run: npx eslint .
+
+  prettier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: haliphax/gwskillbar/.github@main
+
+      - name: Prettier
+        run: npx prettier -lu .
+
+  unit-tests:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: haliphax/gwskillbar/.github@main
+
+      - uses: testspace-com/setup-testspace@v1
+        with:
+          domain: ${{ github.repository_owner }}
+
+      - name: Run unit tests
+        run: npm run coverage
+
+      - name: Add step summary
+        if: always()
+        uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          comment-on: none
+
+      - name: Upload coverage report or add comment
+        uses: coverallsapp/github-action@v2
+        if: always()
+        with:
+          file: coverage/clover.xml
+
+      - name: Push result to Testspace server
+        run: testspace ./coverage/clover.xml ./coverage/junit.xml
+        if: always()

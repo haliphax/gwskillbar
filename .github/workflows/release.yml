@@ -1,0 +1,24 @@
+name: Release new version
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: haliphax/gwskillbar/.github@main
+        with:
+          token: ${{ secrets.SEMANTIC_RELEASE_TOKEN }}
+
+      - name: Build client
+        run: |
+          npm run build
+          cd dist
+          zip -r ../client.zip .
+
+      - name: semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_TOKEN }}
+          HUSKY: "0"
+        run: npx semantic-release -r git@github.com:haliphax/gwskillbar.git
