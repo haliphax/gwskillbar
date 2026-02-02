@@ -1,0 +1,23 @@
+{
+	"branches": ["main"],
+	"failComment": false,
+	"plugins": [
+		["@semantic-release/changelog", { "changelogFile": "CHANGELOG.md" }],
+		"@semantic-release/npm",
+		[
+			"@semantic-release/git",
+			{
+				"assets": ["CHANGELOG.md", "package-lock.json", "package.json"],
+				"message": "🔖 release ${nextRelease.version}"
+			}
+		],
+		[
+			"@semantic-release/github",
+			{
+				"assets": [{ "path": "client.zip", "label": "Client" }]
+			}
+		],
+		"semantic-release-gitmoji"
+	],
+	"successComment": false
+}
