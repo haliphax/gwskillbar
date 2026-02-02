@@ -2,7 +2,6 @@
 import attributes from "@/app/data/attributes.json";
 import professions from "@/app/data/professions.json";
 import skills from "@/app/data/skills.json";
-import { onMounted } from "vue";
 import ProfessionIcon from "./profession-icon.vue";
 import SkillIcon from "./skill-icon.vue";
 
@@ -75,7 +74,7 @@ const parse = (code: string) => {
 	}
 };
 
-onMounted(parse(props.code));
+parse(props.code);
 </script>
 
 <template>
