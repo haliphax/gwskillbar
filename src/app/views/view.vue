@@ -18,7 +18,7 @@ const allegianceSkills: LookupArray = {};
 const pveSkills: LookupArray = {};
 const pvpSkills: LookupArray = {};
 
-const pvp = ref(false);
+const pvp = ref(location.hash.endsWith("/pvp"));
 const hasInvalidPvpSkills = ref(false);
 const primary = ref("");
 const secondary = ref("");
@@ -59,8 +59,6 @@ const load = () => {
 	if (!code) {
 		return;
 	}
-
-	pvp.value = location.hash.endsWith("/pvp");
 
 	const decoded = Array.from(code).map((v) => CHAR_MAP.indexOf(v));
 	const bits = decoded.flatMap((v) =>
@@ -128,20 +126,16 @@ const load = () => {
 	}
 };
 
-const updateHash = () => {
+const updatePvp = () => {
 	pvp.value = !pvp.value;
 
 	if (pvp.value && !location.hash.endsWith("/pvp")) {
 		location.href += "/pvp";
-		load();
-		return;
+	} else if (!pvp.value && location.hash.endsWith("/pvp")) {
+		location.href = location.href.replace(/\/pvp$/, "");
 	}
 
-	if (!pvp.value && location.hash.endsWith("/pvp")) {
-		location.href = location.href.replace(/\/pvp$/, "");
-		load();
-		return;
-	}
+	load();
 };
 
 const isAllegianceSkill = (skill: string) =>
@@ -161,7 +155,7 @@ onBeforeMount(() => load());
 	</h2>
 	<p>
 		<label for="pvp-toggle">
-			<Toggle id="pvp-toggle" :checked="pvp" @click="updateHash"></Toggle>
+			<Toggle id="pvp-toggle" :checked="pvp" @click="updatePvp"></Toggle>
 			<small>
 				<span aria-hidden="true" v-show="pvp">⚔️ PvP</span>
 				<span aria-hidden="true" v-show="!pvp">️🧸 PvE</span>
