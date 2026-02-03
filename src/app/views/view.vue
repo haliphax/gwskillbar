@@ -193,7 +193,7 @@ onBeforeMount(() => load());
 					v-show="skill != 'No Skill'"
 				>
 					<SkillIcon
-						:class="invalidSkillClass(skill) + ' ib vam'"
+						:class="invalidSkillClass(skill)"
 						:name="skill"
 						:allegianceSkill="isAllegianceSkill(skill)"
 					></SkillIcon>
@@ -209,7 +209,7 @@ onBeforeMount(() => load());
 					:allegianceSkill="isAllegianceSkill(skill)"
 				></SkillIcon>
 				<WikiLink
-					:class="'ib ' + invalidSkillClass(skill)"
+					:class="invalidSkillClass(skill)"
 					:path="skill"
 					v-show="skill != 'No Skill'"
 				>
@@ -235,7 +235,7 @@ onBeforeMount(() => load());
 }
 
 fieldset {
-	--icon-size: 42px;
+	--icon-size: 40px;
 	--gap: 2px;
 }
 
@@ -283,6 +283,12 @@ a.invalid {
 #pve-warn {
 	color: var(--color-fg-subtle);
 	text-align: center;
+}
+
+@media @breakpoint_s {
+	fieldset {
+		--icon-size: 52px;
+	}
 }
 
 @media @breakpoint_m {
