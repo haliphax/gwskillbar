@@ -235,7 +235,7 @@ onBeforeMount(() => load());
 }
 
 fieldset {
-	--icon-size: 48px;
+	--icon-size: 42px;
 	--gap: 2px;
 }
 
@@ -287,17 +287,11 @@ a.invalid {
 
 @media @breakpoint_m {
 	fieldset {
-		--icon-size: 56px;
+		--icon-size: 64px;
 	}
 	.attributes,
 	.skills {
 		column-count: 2;
-	}
-}
-
-@media @breakpoint_l {
-	fieldset {
-		--icon-size: 64px;
 	}
 }
 </style>
