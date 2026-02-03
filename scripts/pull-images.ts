@@ -22,7 +22,7 @@ const getFile = async (
 	console.log(`Downloading ${folder}/${filename}`);
 
 	await fetch(
-		`https://wiki.guildwars.com/wiki/File:${filename.replace(" ", "_")}${suffix}.${extension}`,
+		`https://wiki.guildwars.com/wiki/File:${filename.replace(/ /g, "_")}${suffix}.${extension}`,
 		{ headers },
 	)
 		.then((r) => r.text())
