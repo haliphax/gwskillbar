@@ -74,6 +74,10 @@ small {
 	font-size: 0.5em;
 }
 
+fieldset {
+	padding: var(--space-xl);
+}
+
 @media @breakpoint_m {
 	.g > span {
 		grid-area: 1 / span 2;
