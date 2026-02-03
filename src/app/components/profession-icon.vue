@@ -12,7 +12,7 @@ const props = defineProps<{
 		:alt="`[${name} profession icon]`"
 		:class="props.class ?? 'vam'"
 		:height="size ?? 48"
-		:src="`/images/professions/${name}.png`"
+		:src="`images/professions/${name}.png`"
 		:width="size ?? 48"
 	/>
 </template>

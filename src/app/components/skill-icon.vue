@@ -10,7 +10,7 @@ const props = defineProps<{
 	<img
 		:alt="`[${name} skill icon]`"
 		:class="props.class ?? 'vam'"
-		:src="`/images/skills/${name}.jpg`"
+		:src="`images/skills/${name}.jpg`"
 		:height="size ?? 16"
 		:width="size ?? 16"
 	/>

@@ -4,6 +4,7 @@ import { resolve } from "path";
 import { defineConfig } from "vite";
 import { createHtmlPlugin } from "vite-plugin-html";
 import { viteSingleFile } from "vite-plugin-singlefile";
+import { viteStaticCopy } from "vite-plugin-static-copy";
 
 export default defineConfig({
 	build: {
@@ -16,6 +17,14 @@ export default defineConfig({
 	plugins: [
 		createHtmlPlugin({ minify: true }),
 		viteSingleFile({ removeViteModuleLoader: true }),
+		viteStaticCopy({
+			targets: [
+				{
+					src: "images",
+					dest: "./",
+				},
+			],
+		}),
 		vue(),
 	],
 	resolve: {
