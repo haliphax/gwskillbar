@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import pkg from "@/../package.json";
-import Skillbar from "@/app/components/skillbar.vue";
+import SkillBar from "@/app/components/skill-bar.vue";
 import router from "@/app/router";
 
 const code = () => {
@@ -15,7 +15,7 @@ addEventListener("hashchange", () => location.reload());
 
 <template>
 	<h1>
-		Skillbar
+		SkillBar
 		<code>
 			<a
 				:href="`https://github.com/haliphax/gwskillbar/releases/tag/v${pkg.version}`"
@@ -27,7 +27,7 @@ addEventListener("hashchange", () => location.reload());
 		<small>Guild Wars 1 skill builder</small>
 	</h1>
 	<a name="main"></a>
-	<Skillbar :code="code()"></Skillbar>
+	<SkillBar :code="code()"></SkillBar>
 	<footer>
 		<ul class="x">
 			<li><a href="https://github.com/haliphax/gwskillbar">source</a></li>
