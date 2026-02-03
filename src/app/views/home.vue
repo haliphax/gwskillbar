@@ -4,10 +4,16 @@ import SkillBar from "@/app/components/skill-bar.vue";
 import router from "@/app/router";
 
 const code = () => {
-	return (
-		(router.currentRoute.value.params.template as string | undefined) ??
-		"OQZSA4ATvAIg5ZkA2gAAAAIDA"
-	);
+	if (!router.currentRoute.value.params.template) {
+		// fallback template
+		return "OQZSA4ATvAIg5ZkA2gAAAAIDA";
+	}
+
+	if (Array.isArray(router.currentRoute.value.params.template)) {
+		return router.currentRoute.value.params.template.join("/");
+	}
+
+	return router.currentRoute.value.params.template;
 };
 
 addEventListener("hashchange", () => location.reload());

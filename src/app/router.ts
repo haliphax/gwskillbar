@@ -12,9 +12,9 @@ const router = createRouter({
 			name: "home",
 		},
 		{
-			path: `${ROOT_URI}:template`,
+			path: `${ROOT_URI}:template+`,
 			component: Home as unknown as Component,
-			name: "deep",
+			name: "template",
 		},
 	],
 });
