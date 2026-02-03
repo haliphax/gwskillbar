@@ -4,29 +4,28 @@ import SkillIcon from "@/app/components/skill-icon.vue";
 import attributes from "@/app/data/attributes.json";
 import professions from "@/app/data/professions.json";
 import skills from "@/app/data/skills.json";
-import router from "@/app/router";
-import { onBeforeMount } from "vue";
-
-const code = () => {
-	if (Array.isArray(router.currentRoute.value.params.template)) {
-		return router.currentRoute.value.params.template.join("/");
-	}
-
-	return router.currentRoute.value.params.template;
-};
+import { onBeforeMount, ref, Ref } from "vue";
 
 const CHAR_MAP =
 	"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-let primary: string;
-let secondary: string;
-const attribs: { [p: string]: number } = {};
-let skillBar: string[] = [];
+const primary: Ref<string> = ref("");
+const secondary: Ref<string> = ref("");
+const attribs: Ref<{ [p: string]: number }> = ref({});
+const skillBar: Ref<string[]> = ref([]);
 
 const extract = (bits: string[], count: number): number =>
 	parseInt(bits.splice(0, count).reverse().join(""), 2);
 
-const parse = (code: string) => {
+const load = () => {
+	attribs.value = {};
+	skillBar.value = [];
+	const code = location.hash.slice(2);
+
+	if (!code) {
+		return;
+	}
+
 	const decoded = Array.from(code).map((v) => CHAR_MAP.indexOf(v));
 	const bits = decoded.flatMap((v) =>
 		Array.from((v >>> 0).toString(2).padStart(6, "0")).reverse(),
@@ -46,8 +45,8 @@ const parse = (code: string) => {
 	const professionBits = extract(bits, 2) * 2 + 4;
 
 	try {
-		primary = professions[extract(bits, professionBits)];
-		secondary = professions[extract(bits, professionBits)];
+		primary.value = professions[extract(bits, professionBits)];
+		secondary.value = professions[extract(bits, professionBits)];
 	} catch (ex) {
 		throw "Invalid profession";
 	}
@@ -62,7 +61,7 @@ const parse = (code: string) => {
 			];
 			const score = extract(bits, 4);
 
-			attribs[attribute] = score;
+			attribs.value[attribute] = score;
 		}
 	} catch (ex) {
 		throw "Invalid attribute";
@@ -73,7 +72,7 @@ const parse = (code: string) => {
 	try {
 		for (let i = 0; i < 8; i++) {
 			const skillID = extract(bits, skillBits).toString();
-			skillBar.push(
+			skillBar.value.push(
 				decodeURIComponent((skills as { [p: string]: string })[skillID]),
 			);
 		}
@@ -82,34 +81,36 @@ const parse = (code: string) => {
 	}
 };
 
-addEventListener("hashchange", () => location.reload());
-onBeforeMount(() => parse(code()));
+addEventListener("hashchange", () => load());
+onBeforeMount(() => load());
 </script>
 
 <template>
 	<h2>
 		<ProfessionIcon :name="primary"></ProfessionIcon>
 		<ProfessionIcon :name="secondary"></ProfessionIcon>
-		{{ primary == "None" ? "Any" : primary }} /
+		{{ primary == "None" ? "Any" : primary }}
+		<span class="slash">/</span>
 		{{ secondary == "None" ? "Any" : secondary }}
 	</h2>
 	<fieldset>
 		<legend>Attributes</legend>
 		<ul class="attributes">
 			<li v-for="(score, attribute) of attribs" :key="attribute">
-				{{ attribute }}: {{ score }}
+				<span class="attr">{{ attribute }}:&nbsp;</span>
+				<span class="score">{{ score }}</span>
 			</li>
 		</ul>
 	</fieldset>
 	<fieldset>
 		<legend>Skills</legend>
 		<ul class="skillbar x g">
-			<li v-for="skill in skillBar" :key="skill">
+			<li v-for="(skill, idx) in skillBar" :key="idx">
 				<SkillIcon :name="skill" :size="64"></SkillIcon>
 			</li>
 		</ul>
 		<ol class="skills">
-			<li v-for="skill in skillBar" :key="skill">
+			<li v-for="(skill, idx) in skillBar" :key="idx">
 				<SkillIcon :name="skill" :size="24"></SkillIcon>
 				{{ skill == "No Skill" ? "(Optional)" : skill }}
 			</li>
@@ -125,6 +126,10 @@ fieldset {
 	--gap: 2px;
 }
 
+.score {
+	color: var(--color-fg-subtle);
+}
+
 .skillbar {
 	column-gap: var(--gap);
 	grid-template-columns: repeat(8, minmax(var(--icon-size), 1fr));
@@ -136,6 +141,10 @@ fieldset {
 		height: var(--icon-size);
 		width: var(--icon-size);
 	}
+}
+
+.slash {
+	color: var(--color-fg-subtle);
 }
 
 @media @breakpoint_m {
