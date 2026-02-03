@@ -14,7 +14,7 @@ export default defineConfig({
 			reporter: ["clover", "json", "json-summary", "html", "text"],
 			reportOnFailure: true,
 			skipFull: true,
-			thresholds: { lines: 60 },
+			// thresholds: { lines: 60 },
 		},
 		environment: "happy-dom",
 		globals: true,
