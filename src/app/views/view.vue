@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import ProfessionIcon from "@/app/components/profession-icon.vue";
 import SkillIcon from "@/app/components/skill-icon.vue";
+import WikiLink from "@/app/components/wiki-link.vue";
 import attributes from "@/app/data/attributes.json";
 import professions from "@/app/data/professions.json";
 import skills from "@/app/data/skills.json";
@@ -97,7 +98,11 @@ onBeforeMount(() => load());
 		<legend>Attributes</legend>
 		<ul class="attributes">
 			<li v-for="(score, attribute) of attribs" :key="attribute">
-				<span class="attr">{{ attribute }}:&nbsp;</span>
+				<span class="attr">
+					<WikiLink :path="attribute" :title="attribute">
+						{{ attribute }}
+					</WikiLink>
+				</span>
 				<span class="score">{{ score }}</span>
 			</li>
 		</ul>
@@ -106,13 +111,19 @@ onBeforeMount(() => load());
 		<legend>Skills</legend>
 		<ul class="skillbar x g">
 			<li v-for="(skill, idx) in skillBar" :key="idx">
-				<SkillIcon :name="skill" :size="64"></SkillIcon>
+				<WikiLink :path="skill" :title="skill" v-if="skill != 'No Skill'">
+					<SkillIcon :name="skill" :size="64"></SkillIcon>
+				</WikiLink>
+				<SkillIcon :name="skill" :size="64" v-else></SkillIcon>
 			</li>
 		</ul>
 		<ol class="skills">
 			<li v-for="(skill, idx) in skillBar" :key="idx">
 				<SkillIcon :name="skill" :size="24"></SkillIcon>
-				{{ skill == "No Skill" ? "(Optional)" : skill }}
+				<WikiLink :path="skill" v-if="skill != 'No Skill'">
+					{{ skill == "No Skill" ? "(Optional)" : skill }}
+				</WikiLink>
+				<span v-else>{{ skill == "No Skill" ? "(Optional)" : skill }}</span>
 			</li>
 		</ol>
 	</fieldset>
@@ -124,6 +135,14 @@ onBeforeMount(() => load());
 fieldset {
 	--icon-size: 48px;
 	--gap: 2px;
+}
+
+.slash {
+	color: var(--color-fg-subtle);
+}
+
+.attr {
+	margin-right: var(--space-m);
 }
 
 .score {
@@ -143,8 +162,8 @@ fieldset {
 	}
 }
 
-.slash {
-	color: var(--color-fg-subtle);
+.skills img {
+	margin-right: var(--space-m);
 }
 
 @media @breakpoint_m {
