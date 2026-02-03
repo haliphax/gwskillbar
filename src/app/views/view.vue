@@ -4,18 +4,39 @@ import SkillIcon from "@/app/components/skill-icon.vue";
 import WikiLink from "@/app/components/wiki-link.vue";
 import attributes from "@/app/data/attributes.json";
 import professions from "@/app/data/professions.json";
+import pveOnly from "@/app/data/pve-only.json";
 import skills from "@/app/data/skills.json";
 import { onBeforeMount, ref, Ref } from "vue";
 import Toggle from "../components/toggle.vue";
 
 const CHAR_MAP =
 	"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+const pveSkills: { [p: string]: boolean } = {};
+const pvpSkills: { [p: string]: boolean } = {};
 
-const pvp: Ref<boolean> = ref(false);
-const primary: Ref<string> = ref("");
-const secondary: Ref<string> = ref("");
+const pvp = ref(false);
+const hasInvalidPvpSkills = ref(false);
+const primary = ref("");
+const secondary = ref("");
 const attribs: Ref<{ [p: string]: number }> = ref({});
 const skillBar: Ref<string[]> = ref([]);
+
+for (const skill of pveOnly) {
+	pveSkills[skill] = true;
+}
+
+for (const skill of Object.values(skills)) {
+	if (!skill.endsWith(" (PvP)")) {
+		continue;
+	}
+
+	pvpSkills[skill.replace(/ \(PvP\)$/, "")] = true;
+}
+
+const invalidSkillClass = (skill: string) =>
+	pvp.value && pveSkills.hasOwnProperty(skill.replace(/"/g, "%22"))
+		? "invalid"
+		: "";
 
 const extract = (bits: string[], count: number): number =>
 	parseInt(bits.splice(0, count).reverse().join(""), 2);
@@ -23,6 +44,8 @@ const extract = (bits: string[], count: number): number =>
 const load = () => {
 	attribs.value = {};
 	skillBar.value = [];
+	hasInvalidPvpSkills.value = false;
+
 	const code = location.hash.slice(2).replace(/\/pvp$/, "");
 
 	if (!code) {
@@ -30,17 +53,6 @@ const load = () => {
 	}
 
 	pvp.value = location.hash.endsWith("/pvp");
-	const pvpSkills: { [p: string]: boolean } = {};
-
-	if (pvp.value) {
-		for (const skill of Object.values(skills)) {
-			if (!skill.endsWith(" (PvP)")) {
-				continue;
-			}
-
-			pvpSkills[skill.replace(/ \(PvP\)$/, "")] = true;
-		}
-	}
 
 	const decoded = Array.from(code).map((v) => CHAR_MAP.indexOf(v));
 	const bits = decoded.flatMap((v) =>
@@ -93,6 +105,12 @@ const load = () => {
 
 			if (pvp.value && pvpSkills.hasOwnProperty(skillName)) {
 				skillName += " (PvP)";
+			} else if (
+				pvp.value &&
+				!hasInvalidPvpSkills.value &&
+				pveSkills.hasOwnProperty(skillName)
+			) {
+				hasInvalidPvpSkills.value = true;
 			}
 
 			skillBar.value.push(decodeURIComponent(skillName));
@@ -158,7 +176,11 @@ onBeforeMount(() => load());
 		<ul class="skillbar x g">
 			<li v-for="(skill, idx) in skillBar" :key="idx">
 				<WikiLink :path="skill" :title="skill" v-show="skill != 'No Skill'">
-					<SkillIcon :name="skill" :size="64"></SkillIcon>
+					<SkillIcon
+						:class="invalidSkillClass(skill) + ' vam'"
+						:name="skill"
+						:size="64"
+					></SkillIcon>
 				</WikiLink>
 				<SkillIcon
 					:name="skill"
@@ -169,13 +191,27 @@ onBeforeMount(() => load());
 		</ul>
 		<ol class="skills">
 			<li v-for="(skill, idx) in skillBar" :key="idx">
-				<SkillIcon :name="skill" :size="24"></SkillIcon>
-				<WikiLink :path="skill" v-show="skill != 'No Skill'">
+				<SkillIcon
+					:class="invalidSkillClass(skill) + ' vam'"
+					:name="skill"
+					:size="24"
+				></SkillIcon>
+				<WikiLink
+					:class="invalidSkillClass(skill)"
+					:path="skill"
+					v-show="skill != 'No Skill'"
+				>
 					{{ skill }}
 				</WikiLink>
 				<span v-show="skill == 'No Skill'">(Optional)</span>
 			</li>
 		</ol>
+		<p v-show="hasInvalidPvpSkills" id="pve-warn">
+			<small>
+				<span aria-hidden="true">⚠️</span>
+				This build contains PvE-only skills
+			</small>
+		</p>
 	</fieldset>
 </template>
 
@@ -218,6 +254,19 @@ label[for="pvp-toggle"] small {
 
 .skills img {
 	margin-right: var(--space-m);
+}
+
+img.invalid {
+	opacity: 0.1;
+}
+
+a.invalid {
+	text-decoration: line-through;
+}
+
+#pve-warn {
+	color: var(--color-fg-subtle);
+	text-align: center;
 }
 
 @media @breakpoint_m {
