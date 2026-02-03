@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import pkg from "@/../package.json";
 import router from "@/app/router";
 import { ref } from "vue";
 
@@ -11,6 +10,8 @@ const submit = () => {
 	const template = (trimmed.length > 0 ? trimmed : DEFAULT_BUILD).split("/");
 	router.push({ name: "view", params: { template } });
 };
+
+const version = import.meta.env.VITE_APP_VERSION;
 </script>
 
 <template>
@@ -18,10 +19,10 @@ const submit = () => {
 		SkillBar
 		<code>
 			<a
-				:href="`https://github.com/haliphax/gwskillbar/releases/tag/v${pkg.version}`"
+				:href="`https://github.com/haliphax/gwskillbar/releases/tag/v${version}`"
 				title="Release notes"
 			>
-				{{ pkg.version }}
+				{{ version }}
 			</a>
 		</code>
 		<small>Guild Wars Reforged skill template builder</small>
