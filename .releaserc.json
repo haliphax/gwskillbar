@@ -11,12 +11,7 @@
 				"message": "🔖 release ${nextRelease.version}"
 			}
 		],
-		[
-			"@semantic-release/github",
-			{
-				"assets": [{ "path": "client.zip", "label": "Client" }]
-			}
-		],
+		"@semantic-release/github",
 		"semantic-release-gitmoji"
 	],
 	"successComment": false

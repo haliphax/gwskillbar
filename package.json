@@ -64,6 +64,7 @@
 	"scripts": {
 		"build": "vite build src",
 		"coverage": "npm test -- --coverage",
+		"images": "tsx scripts/pull-images.ts",
 		"prepare": "husky || true",
 		"test": "vitest run src"
 	},
