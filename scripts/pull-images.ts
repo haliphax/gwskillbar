@@ -37,7 +37,7 @@ for (let skill of Object.values(skills).slice(1)) {
 
 			await fetch(`https://wiki.guildwars.com${match[1]}`, { headers })
 				.then((r) => r.bytes())
-				.then((b) => writeFileSync(`src/images/${skill}.jpg`, b));
+				.then((b) => writeFileSync(`src/images/skills/${skill}.jpg`, b));
 		});
 
 	// don't be a jerk with other people's bandwidth
