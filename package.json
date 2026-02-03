@@ -63,6 +63,7 @@
 	"private": true,
 	"scripts": {
 		"build": "vite build src",
+		"dev": "vite dev src",
 		"coverage": "npm test -- --coverage",
 		"images": "tsx scripts/pull-images.ts",
 		"prepare": "husky || true",

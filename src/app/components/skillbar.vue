@@ -80,9 +80,9 @@ parse(props.code);
 <template>
 	<h2>
 		<ProfessionIcon :name="primary"></ProfessionIcon>
-		{{ primary }} /
+		{{ primary == "None" ? "Any" : primary }} /
 		<ProfessionIcon :name="secondary"></ProfessionIcon>
-		{{ secondary }}
+		{{ secondary == "None" ? "Any" : secondary }}
 	</h2>
 	<fieldset>
 		<legend>Attributes</legend>
@@ -94,15 +94,53 @@ parse(props.code);
 	</fieldset>
 	<fieldset>
 		<legend>Skills</legend>
+		<ul class="x g">
+			<li v-for="skill in skillBar" :key="skill">
+				<SkillIcon :name="skill" :size="64"></SkillIcon>
+			</li>
+		</ul>
 		<ol>
 			<li v-for="skill in skillBar" :key="skill">
 				<SkillIcon :name="skill" :size="24"></SkillIcon>
-				{{ skill }}
+				{{ skill == "No Skill" ? "(Optional)" : skill }}
 			</li>
 		</ol>
 	</fieldset>
 </template>
 
-<style lang="less">
-/* ... */
+<style lang="less" scoped>
+@import "@/styles/breakpoints.less";
+
+fieldset {
+	--icon-size: 48px;
+	--gap: 2px;
+}
+
+ul.g {
+	column-gap: var(--gap);
+	grid-template-columns: repeat(8, minmax(var(--icon-size), 1fr));
+	margin: 0 auto;
+	max-width: 100%;
+	width: calc((var(--icon-size) * 8) + (var(--gap) * 7));
+
+	li img {
+		height: var(--icon-size);
+		width: var(--icon-size);
+	}
+}
+
+@media @breakpoint_m {
+	fieldset {
+		--icon-size: 56px;
+	}
+	ol {
+		column-count: 2;
+	}
+}
+
+@media @breakpoint_l {
+	fieldset {
+		--icon-size: 64px;
+	}
+}
 </style>

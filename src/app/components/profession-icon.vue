@@ -1,26 +1,19 @@
 <script lang="ts" setup>
 const props = defineProps<{
 	name: string;
+	class?: string;
+	size?: number;
 }>();
-
-const icons: { [p: string]: string } = {
-	Assassin: "🥷",
-	Dervish: "🌙",
-	Elementalist: "🔥",
-	Mesmer: "✨",
-	Monk: "⛑️",
-	Necromancer: "💀",
-	Paragon: "👼",
-	Ranger: "🏹",
-	Ritualist: "⚱️",
-	Warrior: "🛡️",
-};
-
-const loadIcon = (name: string) => icons[name];
 </script>
 
 <template>
-	{{ loadIcon(name) }}
+	<img
+		v-if="name != 'None'"
+		:class="props.class ?? 'vam'"
+		:height="size ?? 48"
+		:src="`/images/professions/${name}.png`"
+		:width="size ?? 48"
+	/>
 </template>
 
 <style lang="less" scoped>
