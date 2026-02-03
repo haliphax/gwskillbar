@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import DarkMode from "./components/darkmode.vue";
+import DarkMode from "./components/dark-mode.vue";
 import Dialogs from "./components/dialogs.vue";
 import { ROOT_URI } from "./constants";
 

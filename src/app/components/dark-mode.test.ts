@@ -1,7 +1,7 @@
 import store from "@/app/store";
 import { mount, VueWrapper } from "@vue/test-utils";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import DarkMode from "./darkmode.vue";
+import DarkMode from "./dark-mode.vue";
 import Toggle from "./toggle.vue";
 
 describe("DarkMode component", () => {
