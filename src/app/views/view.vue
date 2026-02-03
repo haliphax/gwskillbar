@@ -2,6 +2,7 @@
 import ProfessionIcon from "@/app/components/profession-icon.vue";
 import SkillIcon from "@/app/components/skill-icon.vue";
 import WikiLink from "@/app/components/wiki-link.vue";
+import allegiance from "@/app/data/allegiance.json";
 import attributes from "@/app/data/attributes.json";
 import professions from "@/app/data/professions.json";
 import pveOnly from "@/app/data/pve-only.json";
@@ -9,10 +10,13 @@ import skills from "@/app/data/skills.json";
 import { onBeforeMount, ref, Ref } from "vue";
 import Toggle from "../components/toggle.vue";
 
+type LookupArray = { [p: string]: boolean };
+
 const CHAR_MAP =
 	"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-const pveSkills: { [p: string]: boolean } = {};
-const pvpSkills: { [p: string]: boolean } = {};
+const allegianceSkills: LookupArray = {};
+const pveSkills: LookupArray = {};
+const pvpSkills: LookupArray = {};
 
 const pvp = ref(false);
 const hasInvalidPvpSkills = ref(false);
@@ -20,6 +24,10 @@ const primary = ref("");
 const secondary = ref("");
 const attribs: Ref<{ [p: string]: number }> = ref({});
 const skillBar: Ref<string[]> = ref([]);
+
+for (const skill of allegiance) {
+	allegianceSkills[skill] = true;
+}
 
 for (const skill of pveOnly) {
 	pveSkills[skill] = true;
@@ -136,6 +144,9 @@ const updateHash = () => {
 	}
 };
 
+const isAllegianceSkill = (skill: string) =>
+	allegianceSkills[skill.replace(/"/g, "%22")] ?? false;
+
 addEventListener("hashchange", () => load());
 onBeforeMount(() => load());
 </script>
@@ -180,6 +191,7 @@ onBeforeMount(() => load());
 						:class="invalidSkillClass(skill) + ' vam'"
 						:name="skill"
 						:size="64"
+						:allegianceSkill="isAllegianceSkill(skill)"
 					></SkillIcon>
 				</WikiLink>
 				<SkillIcon
@@ -192,9 +204,10 @@ onBeforeMount(() => load());
 		<ol class="skills">
 			<li v-for="(skill, idx) in skillBar" :key="idx">
 				<SkillIcon
-					:class="invalidSkillClass(skill) + ' vam'"
+					:class="invalidSkillClass(skill)"
 					:name="skill"
 					:size="24"
+					:allegianceSkill="isAllegianceSkill(skill)"
 				></SkillIcon>
 				<WikiLink
 					:class="invalidSkillClass(skill)"
@@ -252,12 +265,10 @@ label[for="pvp-toggle"] small {
 	}
 }
 
-.skills img {
+.skills .icon {
 	margin-right: var(--space-m);
-}
-
-img.invalid {
-	opacity: 0.1;
+	position: relative;
+	top: 5px;
 }
 
 a.invalid {
