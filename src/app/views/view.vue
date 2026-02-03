@@ -164,7 +164,7 @@ onBeforeMount(() => load());
 			<Toggle id="pvp-toggle" :checked="pvp" @click="updateHash"></Toggle>
 			<small>
 				<span aria-hidden="true" v-show="pvp">⚔️ PvP</span>
-				<span aria-hidden="true" v-show="!pvp">️🌎 PvE</span>
+				<span aria-hidden="true" v-show="!pvp">️🧸 PvE</span>
 				mode
 			</small>
 		</label>
