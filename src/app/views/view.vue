@@ -1,16 +1,22 @@
 <script lang="ts" setup>
+import ProfessionIcon from "@/app/components/profession-icon.vue";
+import SkillIcon from "@/app/components/skill-icon.vue";
 import attributes from "@/app/data/attributes.json";
 import professions from "@/app/data/professions.json";
 import skills from "@/app/data/skills.json";
-import ProfessionIcon from "./profession-icon.vue";
-import SkillIcon from "./skill-icon.vue";
+import router from "@/app/router";
+import { onBeforeMount } from "vue";
+
+const code = () => {
+	if (Array.isArray(router.currentRoute.value.params.template)) {
+		return router.currentRoute.value.params.template.join("/");
+	}
+
+	return router.currentRoute.value.params.template;
+};
 
 const CHAR_MAP =
 	"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-
-const props = defineProps<{
-	code: string;
-}>();
 
 let primary: string;
 let secondary: string;
@@ -76,7 +82,8 @@ const parse = (code: string) => {
 	}
 };
 
-parse(props.code);
+addEventListener("hashchange", () => location.reload());
+onBeforeMount(() => parse(code()));
 </script>
 
 <template>
@@ -88,7 +95,7 @@ parse(props.code);
 	</h2>
 	<fieldset>
 		<legend>Attributes</legend>
-		<ul>
+		<ul class="attributes">
 			<li v-for="(score, attribute) of attribs" :key="attribute">
 				{{ attribute }}: {{ score }}
 			</li>
@@ -96,12 +103,12 @@ parse(props.code);
 	</fieldset>
 	<fieldset>
 		<legend>Skills</legend>
-		<ul class="x g">
+		<ul class="skillbar x g">
 			<li v-for="skill in skillBar" :key="skill">
 				<SkillIcon :name="skill" :size="64"></SkillIcon>
 			</li>
 		</ul>
-		<ol>
+		<ol class="skills">
 			<li v-for="skill in skillBar" :key="skill">
 				<SkillIcon :name="skill" :size="24"></SkillIcon>
 				{{ skill == "No Skill" ? "(Optional)" : skill }}
@@ -118,7 +125,7 @@ fieldset {
 	--gap: 2px;
 }
 
-ul.g {
+.skillbar {
 	column-gap: var(--gap);
 	grid-template-columns: repeat(8, minmax(var(--icon-size), 1fr));
 	margin: 0 auto;
@@ -135,7 +142,8 @@ ul.g {
 	fieldset {
 		--icon-size: 56px;
 	}
-	ol {
+	.attributes,
+	.skills {
 		column-count: 2;
 	}
 }

@@ -1,22 +1,16 @@
 <script lang="ts" setup>
 import pkg from "@/../package.json";
-import SkillBar from "@/app/components/skill-bar.vue";
 import router from "@/app/router";
+import { ref } from "vue";
 
-const code = () => {
-	if (!router.currentRoute.value.params.template) {
-		// fallback template
-		return "OQZSA4ATvAIg5ZkA2gAAAAIDA";
-	}
+const DEFAULT_BUILD = "OAVTEYDfG6GYCwmsOIm0GEAoqC";
+const code = ref("");
 
-	if (Array.isArray(router.currentRoute.value.params.template)) {
-		return router.currentRoute.value.params.template.join("/");
-	}
-
-	return router.currentRoute.value.params.template;
+const submit = () => {
+	const trimmed = code.value.trim();
+	const template = (trimmed.length > 0 ? trimmed : DEFAULT_BUILD).split("/");
+	router.push({ name: "view", params: { template } });
 };
-
-addEventListener("hashchange", () => location.reload());
 </script>
 
 <template>
@@ -33,15 +27,31 @@ addEventListener("hashchange", () => location.reload());
 		<small>Guild Wars 1 skill builder</small>
 	</h1>
 	<a name="main"></a>
-	<SkillBar :code="code()"></SkillBar>
-	<footer>
-		<ul class="x">
-			<li><a href="https://github.com/haliphax/gwskillbar">source</a></li>
-		</ul>
-	</footer>
+	<form @submit.prevent="submit">
+		<fieldset class="g">
+			<legend>Template code parser</legend>
+			<span>
+				<label for="code">Code:</label>
+				<input
+					id="code"
+					v-model="code"
+					:placeholder="DEFAULT_BUILD"
+					type="text"
+				/>
+			</span>
+			<span>
+				<button type="submit">
+					<span aria-hidden="true">👀</span>
+					View build
+				</button>
+			</span>
+		</fieldset>
+	</form>
 </template>
 
 <style lang="less" scoped>
+@import "@/styles/breakpoints.less";
+
 code {
 	font-size: 0.75em;
 	position: relative;
@@ -64,19 +74,9 @@ small {
 	font-size: 0.5em;
 }
 
-footer {
-	display: block;
-	border-top: 0.3em dotted var(--color-bg);
-	margin-top: calc(var(--space-l) * 2);
-	padding-top: var(--space-l);
-	text-align: center;
-
-	li {
-		display: inline-block;
-	}
-
-	li:not(:last-child) {
-		margin-right: var(--space-xl);
+@media @breakpoint_m {
+	.g > span {
+		grid-area: 1 / span 2;
 	}
 }
 </style>

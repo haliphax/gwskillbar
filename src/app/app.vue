@@ -40,6 +40,11 @@ export default App;
 		<main aria-live="assertive">
 			<router-view></router-view>
 		</main>
+		<footer>
+			<ul class="x">
+				<li><a href="https://github.com/haliphax/gwskillbar">source</a></li>
+			</ul>
+		</footer>
 	</div>
 </template>
 
@@ -73,6 +78,22 @@ header {
 
 header a {
 	font-weight: 900;
+}
+
+footer {
+	display: block;
+	border-top: 0.3em dotted var(--color-bg);
+	margin-top: calc(var(--space-l) * 2);
+	padding-top: var(--space-l);
+	text-align: center;
+
+	li {
+		display: inline-block;
+	}
+
+	li:not(:last-child) {
+		margin-right: var(--space-xl);
+	}
 }
 
 @media @breakpoint_m {
