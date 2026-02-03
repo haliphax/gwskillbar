@@ -24,7 +24,7 @@ const submit = () => {
 				{{ pkg.version }}
 			</a>
 		</code>
-		<small>Guild Wars 1 skill builder</small>
+		<small>Guild Wars Reforged skill template builder</small>
 	</h1>
 	<a name="main"></a>
 	<form @submit.prevent="submit">
