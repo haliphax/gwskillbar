@@ -186,19 +186,19 @@ onBeforeMount(() => load());
 		<legend>Skills</legend>
 		<ul class="skillbar x g">
 			<li v-for="(skill, idx) in skillBar" :key="idx">
-				<WikiLink :path="skill" :title="skill" v-show="skill != 'No Skill'">
+				<WikiLink
+					class="ib"
+					:path="skill"
+					:title="skill"
+					v-show="skill != 'No Skill'"
+				>
 					<SkillIcon
-						:class="invalidSkillClass(skill) + ' vam'"
+						:class="invalidSkillClass(skill) + ' ib vam'"
 						:name="skill"
-						:size="64"
 						:allegianceSkill="isAllegianceSkill(skill)"
 					></SkillIcon>
 				</WikiLink>
-				<SkillIcon
-					:name="skill"
-					:size="64"
-					v-show="skill == 'No Skill'"
-				></SkillIcon>
+				<SkillIcon :name="skill" v-show="skill == 'No Skill'"></SkillIcon>
 			</li>
 		</ul>
 		<ol class="skills">
@@ -206,11 +206,10 @@ onBeforeMount(() => load());
 				<SkillIcon
 					:class="invalidSkillClass(skill)"
 					:name="skill"
-					:size="24"
 					:allegianceSkill="isAllegianceSkill(skill)"
 				></SkillIcon>
 				<WikiLink
-					:class="invalidSkillClass(skill)"
+					:class="'ib ' + invalidSkillClass(skill)"
 					:path="skill"
 					v-show="skill != 'No Skill'"
 				>
@@ -268,7 +267,8 @@ label[for="pvp-toggle"] small {
 .skills .icon {
 	margin-right: var(--space-m);
 	position: relative;
-	top: 5px;
+	width: 1em;
+	top: 0.45em;
 }
 
 a.invalid {

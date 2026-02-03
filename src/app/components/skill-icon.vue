@@ -2,22 +2,18 @@
 const props = defineProps<{
 	class?: string;
 	name: string;
-	size?: number;
 	allegianceSkill?: boolean;
 }>();
 </script>
 
 <template>
-	<span
-		:class="'icon ib ' + (allegianceSkill ? 'ally' : '')"
-		:style="`height: ${size ?? 16}px; width: ${size ?? 16}px;`"
-	>
+	<span :class="'icon ib ' + (allegianceSkill ? 'ally' : '')">
 		<img
 			:alt="`[${name} skill icon]`"
 			:class="props.class"
 			:src="`images/skills/${name.replace(/ \(PvP\)$/, '')}.jpg`"
-			:height="allegianceSkill ? (size ?? 16) * 2 : (size ?? 16)"
-			:width="size ?? 16"
+			:height="allegianceSkill ? '200%' : '100%'"
+			width="100%"
 		/>
 	</span>
 </template>
