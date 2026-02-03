@@ -1,10 +1,13 @@
 <script lang="ts" setup>
-import { onBeforeMount, ref } from "vue";
+import { onBeforeMount, ref, watch } from "vue";
 
 const props = defineProps<{ path: string; title?: string }>();
 const cleanPath = ref();
 
-onBeforeMount(() => (cleanPath.value = props.path.replace(/ /g, "_")));
+const clean = () => (cleanPath.value = props.path.replace(/ /g, "_"));
+
+watch(() => props.path, clean);
+onBeforeMount(clean);
 </script>
 
 <template>

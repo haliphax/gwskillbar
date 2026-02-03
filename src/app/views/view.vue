@@ -157,19 +157,23 @@ onBeforeMount(() => load());
 		<legend>Skills</legend>
 		<ul class="skillbar x g">
 			<li v-for="(skill, idx) in skillBar" :key="idx">
-				<WikiLink :path="skill" :title="skill" v-if="skill != 'No Skill'">
+				<WikiLink :path="skill" :title="skill" v-show="skill != 'No Skill'">
 					<SkillIcon :name="skill" :size="64"></SkillIcon>
 				</WikiLink>
-				<SkillIcon :name="skill" :size="64" v-else></SkillIcon>
+				<SkillIcon
+					:name="skill"
+					:size="64"
+					v-show="skill == 'No Skill'"
+				></SkillIcon>
 			</li>
 		</ul>
 		<ol class="skills">
 			<li v-for="(skill, idx) in skillBar" :key="idx">
 				<SkillIcon :name="skill" :size="24"></SkillIcon>
-				<WikiLink :path="skill" v-if="skill != 'No Skill'">
-					{{ skill == "No Skill" ? "(Optional)" : skill }}
+				<WikiLink :path="skill" v-show="skill != 'No Skill'">
+					{{ skill }}
 				</WikiLink>
-				<span v-else>{{ skill == "No Skill" ? "(Optional)" : skill }}</span>
+				<span v-show="skill == 'No Skill'">(Optional)</span>
 			</li>
 		</ol>
 	</fieldset>
