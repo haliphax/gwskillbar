@@ -31,7 +31,7 @@ export default App;
 	<div class="📦">
 		<header class="g">
 			<div>
-				<router-link :to="{ name: 'home' }" class="ib">GW Skill Builder</router-link>
+				<router-link :to="{ name: 'home' }" class="ib">Skillbar</router-link>
 			</div>
 			<div class="r">
 				<DarkMode class="ib"></DarkMode>
