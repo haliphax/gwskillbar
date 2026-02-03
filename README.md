@@ -2,6 +2,8 @@
 
 An online skill template code parsing/building tool for [Guild Wars Reforged][]
 
+<img width="777" height="630" alt="Screenshot" src="https://github.com/user-attachments/assets/39118806-0965-4a10-bcec-570b27c5af4a" />
+
 ## Development
 
 Cleanly install dependencies and run the development server:
