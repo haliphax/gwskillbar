@@ -6,10 +6,12 @@ import attributes from "@/app/data/attributes.json";
 import professions from "@/app/data/professions.json";
 import skills from "@/app/data/skills.json";
 import { onBeforeMount, ref, Ref } from "vue";
+import Toggle from "../components/toggle.vue";
 
 const CHAR_MAP =
 	"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
+const pvp: Ref<boolean> = ref(false);
 const primary: Ref<string> = ref("");
 const secondary: Ref<string> = ref("");
 const attribs: Ref<{ [p: string]: number }> = ref({});
@@ -21,10 +23,23 @@ const extract = (bits: string[], count: number): number =>
 const load = () => {
 	attribs.value = {};
 	skillBar.value = [];
-	const code = location.hash.slice(2);
+	const code = location.hash.slice(2).replace(/\/pvp$/, "");
 
 	if (!code) {
 		return;
+	}
+
+	pvp.value = location.hash.endsWith("/pvp");
+	const pvpSkills: { [p: string]: boolean } = {};
+
+	if (pvp.value) {
+		for (const skill of Object.values(skills)) {
+			if (!skill.endsWith(" (PvP)")) {
+				continue;
+			}
+
+			pvpSkills[skill.replace(/ \(PvP\)$/, "")] = true;
+		}
 	}
 
 	const decoded = Array.from(code).map((v) => CHAR_MAP.indexOf(v));
@@ -72,13 +87,34 @@ const load = () => {
 
 	try {
 		for (let i = 0; i < 8; i++) {
+			const skillsList = skills as { [p: string]: string };
 			const skillID = extract(bits, skillBits).toString();
-			skillBar.value.push(
-				decodeURIComponent((skills as { [p: string]: string })[skillID]),
-			);
+			let skillName = skillsList[skillID];
+
+			if (pvp.value && pvpSkills.hasOwnProperty(skillName)) {
+				skillName += " (PvP)";
+			}
+
+			skillBar.value.push(decodeURIComponent(skillName));
 		}
 	} catch (ex) {
 		throw "Invalid skill";
+	}
+};
+
+const updateHash = () => {
+	pvp.value = !pvp.value;
+
+	if (pvp.value && !location.hash.endsWith("/pvp")) {
+		location.href += "/pvp";
+		load();
+		return;
+	}
+
+	if (!pvp.value && location.hash.endsWith("/pvp")) {
+		location.href = location.href.replace(/\/pvp$/, "");
+		load();
+		return;
 	}
 };
 
@@ -94,6 +130,16 @@ onBeforeMount(() => load());
 		<span class="slash">/</span>
 		{{ secondary == "None" ? "Any" : secondary }}
 	</h2>
+	<p>
+		<label for="pvp-toggle">
+			<Toggle id="pvp-toggle" :checked="pvp" @click="updateHash"></Toggle>
+			<small>
+				<span aria-hidden="true" v-show="pvp">⚔️ PvP</span>
+				<span aria-hidden="true" v-show="!pvp">️🌎 PvE</span>
+				mode
+			</small>
+		</label>
+	</p>
 	<fieldset>
 		<legend>Attributes</legend>
 		<ul class="attributes">
@@ -147,6 +193,10 @@ fieldset {
 
 .score {
 	color: var(--color-fg-subtle);
+}
+
+label[for="pvp-toggle"] small {
+	margin-left: var(--space-m);
 }
 
 .skillbar {

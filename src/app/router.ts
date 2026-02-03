@@ -12,6 +12,11 @@ const router = createRouter({
 			name: "home",
 		},
 		{
+			path: `${ROOT_URI}:template+/:mode(pvp)`,
+			component: View,
+			name: "view",
+		},
+		{
 			path: `${ROOT_URI}:template+`,
 			component: View,
 			name: "view",
