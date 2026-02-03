@@ -2,7 +2,6 @@
 const props = defineProps<{
 	name: string;
 	class?: string;
-	size?: number;
 }>();
 </script>
 
@@ -10,9 +9,7 @@ const props = defineProps<{
 	<img
 		v-show="name != 'None'"
 		:alt="`[${name} profession icon]`"
-		:class="props.class ?? 'vam'"
-		:height="size ?? 48"
+		:class="(props.class ?? 'vam') + ' prof-icon'"
 		:src="`images/professions/${name}.png`"
-		:width="size ?? 48"
 	/>
 </template>

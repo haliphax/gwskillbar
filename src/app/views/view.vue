@@ -230,6 +230,10 @@ onBeforeMount(() => load());
 <style lang="less" scoped>
 @import "@/styles/breakpoints.less";
 
+.prof-icon {
+	width: 1.5em;
+}
+
 fieldset {
 	--icon-size: 48px;
 	--gap: 2px;
@@ -269,6 +273,7 @@ label[for="pvp-toggle"] small {
 	position: relative;
 	width: 1em;
 	top: 0.45em;
+	margin-top: -0.215em;
 }
 
 a.invalid {
