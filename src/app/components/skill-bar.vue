@@ -80,8 +80,8 @@ parse(props.code);
 <template>
 	<h2>
 		<ProfessionIcon :name="primary"></ProfessionIcon>
-		{{ primary == "None" ? "Any" : primary }} /
 		<ProfessionIcon :name="secondary"></ProfessionIcon>
+		{{ primary == "None" ? "Any" : primary }} /
 		{{ secondary == "None" ? "Any" : secondary }}
 	</h2>
 	<fieldset>
