@@ -51,7 +51,9 @@ const parse = (code: string) => {
 
 	try {
 		for (let i = 0; i < attributesCount; i++) {
-			const attribute = attributes[extract(bits, attributeBits)];
+			const attribute = (attributes as { [p: string]: string })[
+				extract(bits, attributeBits).toString()
+			];
 			const score = extract(bits, 4);
 
 			attribs[attribute] = score;
