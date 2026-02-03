@@ -15,7 +15,3 @@ const props = defineProps<{
 		:width="size ?? 16"
 	/>
 </template>
-
-<style lang="less" scoped>
-/* ... */
-</style>
