@@ -7,6 +7,7 @@ import attributes from "@/app/data/attributes.json";
 import professions from "@/app/data/professions.json";
 import pveOnly from "@/app/data/pve-only.json";
 import skills from "@/app/data/skills.json";
+import store from "@/app/store";
 import { onBeforeMount, ref, Ref } from "vue";
 import Toggle from "../components/toggle.vue";
 
@@ -49,12 +50,23 @@ const invalidSkillClass = (skill: string) =>
 const extract = (bits: string[], count: number): number =>
 	parseInt(bits.splice(0, count).reverse().join(""), 2);
 
-const load = () => {
+const clear = () => {
 	attribs.value = {};
 	skillBar.value = [];
 	hasInvalidPvpSkills.value = false;
+	primary.value = "";
+	secondary.value = "";
 	pvp.value = location.hash.endsWith("/pvp");
+};
 
+const error = async (text: string) => {
+	clear();
+	await store.dispatch("alert", { text });
+	throw text;
+};
+
+const load = async () => {
+	clear();
 	const code = location.hash.slice(2).replace(/\/pvp$/, "");
 
 	if (!code) {
@@ -68,13 +80,13 @@ const load = () => {
 	const templateType = extract(bits, 4);
 
 	if (templateType !== 14) {
-		throw "Invalid template type";
+		await error("Invalid template type");
 	}
 
 	const templateVersion = extract(bits, 4);
 
 	if (templateVersion !== 0) {
-		throw "Invalid template type";
+		await error("Invalid template version");
 	}
 
 	const professionBits = extract(bits, 2) * 2 + 4;
@@ -82,8 +94,16 @@ const load = () => {
 	try {
 		primary.value = professions[extract(bits, professionBits)];
 		secondary.value = professions[extract(bits, professionBits)];
+
+		if (
+			primary.value == secondary.value ||
+			!primary.value ||
+			!secondary.value
+		) {
+			throw "Invalid profession";
+		}
 	} catch (ex) {
-		throw "Invalid profession";
+		await error("Invalid profession");
 	}
 
 	const attributesCount = extract(bits, 4);
@@ -94,12 +114,21 @@ const load = () => {
 			const attribute = (attributes as { [p: string]: string })[
 				extract(bits, attributeBits).toString()
 			];
+
+			if (!attribute) {
+				throw "Invalid attribute";
+			}
+
 			const score = extract(bits, 4);
+
+			if (score < 0 || score > 12) {
+				throw "Invalid attribute";
+			}
 
 			attribs.value[attribute] = score;
 		}
 	} catch (ex) {
-		throw "Invalid attribute";
+		await error("Invalid attribute");
 	}
 
 	const skillBits = extract(bits, 4) + 8;
@@ -109,6 +138,10 @@ const load = () => {
 			const skillsList = skills as { [p: string]: string };
 			const skillID = extract(bits, skillBits).toString();
 			let skillName = skillsList[skillID];
+
+			if (skillName === undefined) {
+				throw "Invalid skill";
+			}
 
 			if (pvp.value && pvpSkills.hasOwnProperty(skillName)) {
 				skillName += " (PvP)";
@@ -123,11 +156,11 @@ const load = () => {
 			skillBar.value.push(decodeURIComponent(skillName));
 		}
 	} catch (ex) {
-		throw "Invalid skill";
+		await error("Invalid skill");
 	}
 };
 
-const updatePvp = () => {
+const updatePvp = async () => {
 	pvp.value = !pvp.value;
 
 	if (pvp.value && !location.hash.endsWith("/pvp")) {
@@ -136,18 +169,18 @@ const updatePvp = () => {
 		location.href = location.href.replace(/\/pvp$/, "");
 	}
 
-	load();
+	await load();
 };
 
 const isAllegianceSkill = (skill: string) =>
 	allegianceSkills[skill.replace(/"/g, "%22")] ?? false;
 
-addEventListener("hashchange", () => load());
-onBeforeMount(() => load());
+addEventListener("hashchange", async () => await load());
+onBeforeMount(async () => await load());
 </script>
 
 <template>
-	<h2>
+	<h2 v-show="primary && secondary">
 		<ProfessionIcon :name="primary"></ProfessionIcon>
 		<ProfessionIcon :name="secondary"></ProfessionIcon>
 		{{ primary == "None" ? "Any" : primary }}
