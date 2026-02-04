@@ -7,7 +7,6 @@ const props = defineProps<{
 
 <template>
 	<img
-		v-show="name != 'None'"
 		:alt="`[${name} profession icon]`"
 		:class="(props.class ?? 'vam') + ' prof-icon'"
 		:src="`images/professions/${name}.png`"
