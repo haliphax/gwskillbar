@@ -2,13 +2,13 @@
 import ProfessionIcon from "@/app/components/profession-icon.vue";
 import SkillIcon from "@/app/components/skill-icon.vue";
 import WikiLink from "@/app/components/wiki-link.vue";
-import allegiance from "@/app/data/allegiance.json";
-import attributeData from "@/app/data/attribute-data.json";
-import attributes from "@/app/data/attributes.json";
-import professions from "@/app/data/professions.json";
-import pveOnly from "@/app/data/pve-only.json";
-import skills from "@/app/data/skills.json";
 import store from "@/app/store";
+import allegiance from "@/data/allegiance.json";
+import attributeData from "@/data/attribute-data.json";
+import attributes from "@/data/attributes.json";
+import professions from "@/data/professions.json";
+import pveOnly from "@/data/pve-only.json";
+import skills from "@/data/skills.json";
 import { onBeforeMount, ref, Ref } from "vue";
 import Toggle from "../components/toggle.vue";
 

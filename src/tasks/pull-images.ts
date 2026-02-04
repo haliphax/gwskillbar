@@ -1,5 +1,5 @@
-import professions from "@/app/data/professions.json";
-import skills from "@/app/data/skills.json";
+import professions from "@/data/professions.json";
+import skills from "@/data/skills.json";
 import { existsSync, writeFileSync } from "fs";
 import { setTimeout } from "timers/promises";
 
