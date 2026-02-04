@@ -8,6 +8,7 @@ import attributeData from "@/data/attribute-data.json";
 import attributes from "@/data/attributes.json";
 import professions from "@/data/professions.json";
 import pveOnly from "@/data/pve-only.json";
+import skillsData from "@/data/skills-data.json";
 import skills from "@/data/skills.json";
 import { onBeforeMount, ref, Ref } from "vue";
 import Toggle from "../components/toggle.vue";
@@ -196,6 +197,66 @@ const updatePvp = async () => {
 const isAllegianceSkill = (skill: string) =>
 	allegianceSkills[skill.replace(/"/g, "%22")] ?? false;
 
+const statDisplay = (stat: string, amount: number | null) => {
+	let amountDisplay: string = amount?.toString() ?? "";
+
+	if (amountDisplay == "") {
+		amountDisplay = "morale boost";
+	} else {
+		if (amountDisplay.endsWith(".25")) {
+			amountDisplay = "&frac14;";
+		} else if (amountDisplay.endsWith(".5")) {
+			amountDisplay = "&frac12;";
+		} else if (amountDisplay.endsWith(".75")) {
+			amountDisplay = "&frac34;";
+		}
+
+		if (stat == "health") {
+			amountDisplay += "%";
+		}
+	}
+
+	return /* html */ `
+		<li class="ib" style="margin-right: var(--space-l);">
+			${amountDisplay}
+			<img
+				alt="${stat}"
+				class="ib vab"
+				src="/images/ui/${stat}.png"
+				style="height: 1em; width: 1em;"
+				title="${stat}"
+			/>
+		</li>`;
+};
+
+const skillDescription = async (skill: string, event: Event) => {
+	event.preventDefault();
+	const data = (skillsData as SkillsData)[skill];
+	await store.dispatch("alert", {
+		html: true,
+		text: /* html */ `
+			<ul class="x">
+				<span class="sr">Skill stats:</span>
+				${data.adrenaline ? statDisplay("adrenaline", data.adrenaline) : ""}
+				${data.energy ? statDisplay("energy", data.energy) : ""}
+				${data.health ? statDisplay("health", data.health) : ""}
+				${data.activate ? statDisplay("activate", data.activate) : ""}
+				${data.overcast ? statDisplay("overcast", data.overcast) : ""}
+				${data.recharge ? statDisplay("recharge", data.recharge) : ""}
+			</ul>
+			<p>${data.desc}</p>
+			<small>
+				<a
+					href="https://wiki.guildwars.com/wiki/${skill.replace(/ /g, "_")}"
+					target="_blank"
+				>
+					Guild Wars Wiki
+				</a>
+			</small>`,
+		title: skill,
+	});
+};
+
 addEventListener("hashchange", async () => await load());
 onBeforeMount(async () => await load());
 </script>
@@ -243,8 +304,10 @@ onBeforeMount(async () => await load());
 		<legend>Skills</legend>
 		<ul class="skillbar x g">
 			<li v-for="(skill, idx) in skillBar" :key="idx">
-				<WikiLink
+				<a
+					href="#"
 					class="ib"
+					@click="skillDescription(skill, $event)"
 					:path="skill"
 					:title="skill"
 					v-show="skill != 'No Skill'"
@@ -254,7 +317,7 @@ onBeforeMount(async () => await load());
 						:name="skill"
 						:allegianceSkill="isAllegianceSkill(skill)"
 					></SkillIcon>
-				</WikiLink>
+				</a>
 				<SkillIcon :name="skill" v-show="skill == 'No Skill'"></SkillIcon>
 			</li>
 		</ul>
@@ -265,13 +328,15 @@ onBeforeMount(async () => await load());
 					:name="skill"
 					:allegianceSkill="isAllegianceSkill(skill)"
 				></SkillIcon>
-				<WikiLink
+				<a
+					href="#"
+					@click="skillDescription(skill, $event)"
 					:class="invalidSkillClass(skill)"
 					:path="skill"
 					v-show="skill != 'No Skill'"
 				>
 					{{ skill }}
-				</WikiLink>
+				</a>
 				<span v-show="skill == 'No Skill'">(Optional)</span>
 			</li>
 		</ol>

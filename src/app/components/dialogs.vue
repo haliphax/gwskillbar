@@ -1,16 +1,20 @@
 <script lang="ts">
-import { StoreState } from "@/client/app/store/types";
+import { StoreState } from "@/app/store/types";
 import { defineComponent } from "vue";
 import { Module } from "vuex";
 
 export type DialogPayload = {
-	id: string | undefined;
+	id?: string;
 	text: string;
+	title?: string;
+	html?: boolean;
 };
 
 export type DialogsState = {
 	responseId: string;
 	dialogText: string;
+	dialogTitle: string;
+	isHtml: boolean;
 };
 
 export type DialogsStoreState = {
@@ -29,12 +33,16 @@ const Dialogs = defineComponent({
 					confirmed: () => {},
 				},
 				mutations: {
+					dialogTitle: (state, payload) => (state.dialogTitle = payload),
 					dialogText: (state, payload) => (state.dialogText = payload),
+					isHtml: (state, payload) => (state.isHtml = payload),
 					responseId: (state, payload) => (state.responseId = payload),
 				},
 				state() {
 					return {
+						dialogTitle: "",
 						dialogText: "",
+						isHtml: false,
 						responseId: "",
 					};
 				},
@@ -71,11 +79,15 @@ const Dialogs = defineComponent({
 		alert(payload: DialogPayload) {
 			this.$store.commit("responseId", payload.id ?? "");
 			this.$store.commit("dialogText", payload.text);
+			this.$store.commit("dialogTitle", payload.title ?? "Alert");
+			this.$store.commit("isHtml", payload.html ?? false);
 			this.alertDialog.showModal();
 		},
 		confirm(payload: DialogPayload) {
 			this.$store.commit("responseId", payload.id!);
 			this.$store.commit("dialogText", payload.text);
+			this.$store.commit("dialogTitle", payload.title ?? "Confirm");
+			this.$store.commit("isHtml", payload.html ?? false);
 			this.confirmDialog.showModal();
 		},
 		async confirmClick() {
@@ -93,8 +105,12 @@ export default Dialogs;
 		<dialog ref="alert">
 			<form method="dialog">
 				<fieldset>
-					<legend>Alert</legend>
-					<p>{{ dialogsState.dialogText }}</p>
+					<legend>{{ dialogsState.dialogTitle }}</legend>
+					<div
+						v-if="dialogsState.isHtml"
+						v-html="dialogsState.dialogText"
+					></div>
+					<p v-else>{{ dialogsState.dialogText }}</p>
 					<div>
 						<button class="fr" type="submit">
 							<span aria-hidden="true">✅</span>
@@ -107,8 +123,12 @@ export default Dialogs;
 		<dialog ref="confirm">
 			<form method="dialog">
 				<fieldset>
-					<legend>Confirm</legend>
-					<p>{{ dialogsState.dialogText }}</p>
+					<legend>{{ dialogsState.dialogTitle }}</legend>
+					<div
+						v-if="dialogsState.isHtml"
+						v-html="dialogsState.dialogText"
+					></div>
+					<p v-else>{{ dialogsState.dialogText }}</p>
 					<div>
 						<button type="submit" value="Cancel">
 							<span aria-hidden="true">🚫</span>
@@ -134,6 +154,10 @@ dialog {
 	max-width: 40rem;
 	padding: var(--space-l);
 	width: 100%;
+}
+
+legend {
+	color: var(--color-fg-subtle);
 }
 
 dialog::backdrop {
