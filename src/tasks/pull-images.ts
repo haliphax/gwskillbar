@@ -2,12 +2,7 @@ import professions from "@/data/professions.json";
 import skills from "@/data/skills.json";
 import { existsSync, writeFileSync } from "fs";
 import { setTimeout } from "timers/promises";
-
-const headers = {
-	"Accept-Language": "en-US",
-	"User-Agent":
-		"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36",
-};
+import headers from "./headers";
 
 const getFile = async (
 	folder: string,
@@ -26,7 +21,13 @@ const getFile = async (
 		`https://wiki.guildwars.com/wiki/File:${filename.replace(/ /g, "_")}${suffix}.${extension}`,
 		{ headers },
 	)
-		.then((r) => r.text())
+		.then((r) => {
+			if (r.status !== 200) {
+				throw "HTTP error";
+			}
+
+			return r.text();
+		})
 		.then(async (t) => {
 			const match = t.match(/<img alt="File:[^"]+.(?:jpg|png)" src="([^"]+)"/);
 
@@ -35,7 +36,13 @@ const getFile = async (
 			}
 
 			await fetch(`https://wiki.guildwars.com${match[1]}`, { headers })
-				.then((r) => r.bytes())
+				.then((r) => {
+					if (r.status !== 200) {
+						throw "HTTP error";
+					}
+
+					return r.bytes();
+				})
 				.then((b) => writeFileSync(`${folder}/${filename}.${extension}`, b));
 		});
 
