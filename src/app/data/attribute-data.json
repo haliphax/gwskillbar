@@ -1,6 +1,6 @@
 {
 	"Axe Mastery": {
-		"desc": "+{dmg}% weapon damage and increased critical strike chance with axes",
+		"desc": "+{dmg}% damage and increased critical chance with axes",
 		"vars": {
 			"dmg": [
 				0, 9, 19, 30, 41, 54, 68, 83, 100, 118, 138, 159, 183, 193, 203, 214,
@@ -9,7 +9,7 @@
 		}
 	},
 	"Beast Mastery": {
-		"desc": "+{dmg}% pet damage, +{crit}% (est.) pet critical strike chance, skills disabled {dis} sec after pet death",
+		"desc": "+{dmg}% pet damage, +{crit}% (est.) pet critical chance, skills disabled {dis} sec after pet death",
 		"vars": {
 			"crit": [
 				0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20
@@ -19,6 +19,28 @@
 				225
 			],
 			"dis": [10, 10, 9, 9, 8, 8, 7, 7, 6, 6, 5, 5, 4, 4, 3, 3, 3, 2, 2, 1, 1]
+		}
+	},
+	"Critical Strikes": {
+		"desc": "+{crit}% chance to critical hit, {en} energy per critical hit",
+		"vars": {
+			"crit": [
+				0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20
+			],
+			"en": [0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4]
+		}
+	},
+	"Dagger Mastery": {
+		"desc": "+{dmg}% damage and increased critical chance with daggers, {dbl}% chance to double strike",
+		"vars": {
+			"dmg": [
+				0, 9, 19, 30, 41, 54, 68, 83, 100, 118, 138, 159, 183, 193, 203, 214,
+				225
+			],
+			"dbl": [
+				0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36,
+				38, 40, 42
+			]
 		}
 	},
 	"Death Magic": {
@@ -70,7 +92,7 @@
 		}
 	},
 	"Hammer Mastery": {
-		"desc": "+{dmg}% weapon damage and increased critical strike chance with hammers",
+		"desc": "+{dmg}% damage and increased critical chance with hammers",
 		"vars": {
 			"dmg": [
 				0, 9, 19, 30, 41, 54, 68, 83, 100, 118, 138, 159, 183, 193, 203, 214,
@@ -85,7 +107,7 @@
 		}
 	},
 	"Marksmanship": {
-		"desc": "+{dmg}% weapon damage and increased critical strike chance with bows",
+		"desc": "+{dmg}% damage and increased critical chance with bows",
 		"vars": {
 			"dmg": [
 				0, 9, 19, 30, 41, 54, 68, 83, 100, 118, 138, 159, 183, 193, 203, 214,
@@ -106,7 +128,7 @@
 		}
 	},
 	"Scythe Mastery": {
-		"desc": "+{dmg}% weapon damage and increased critical strike chance with scythes",
+		"desc": "+{dmg}% damage and increased critical chance with scythes",
 		"vars": {
 			"dmg": [
 				0, 9, 19, 30, 41, 54, 68, 83, 100, 118, 138, 159, 183, 193, 203, 214,
@@ -137,7 +159,7 @@
 		}
 	},
 	"Spear Mastery": {
-		"desc": "+{dmg}% weapon damage and increased critical strike chance with spears",
+		"desc": "+{dmg}% damage and increased critical chance with spears",
 		"vars": {
 			"dmg": [
 				0, 9, 19, 30, 41, 54, 68, 83, 100, 118, 138, 159, 183, 193, 203, 214,
@@ -154,7 +176,7 @@
 		}
 	},
 	"Swordsmanship": {
-		"desc": "+{dmg}% weapon damage and increased critical strike chance with swords",
+		"desc": "+{dmg}% damage and increased critical chance with swords",
 		"vars": {
 			"dmg": [
 				0, 9, 19, 30, 41, 54, 68, 83, 100, 118, 138, 159, 183, 193, 203, 214,
