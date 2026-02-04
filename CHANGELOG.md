@@ -1,3 +1,8 @@
+# [v0.3.1](https://github.com/haliphax/gwskillbar/compare/v0.3.0...v0.3.1) (2026-02-04)
+
+## 🐛 Bug Fixes
+- [`8974166`](https://github.com/haliphax/gwskillbar/commit/8974166)  add missing critical strikes, dagger mastery data
+
 # [v0.3.0](https://github.com/haliphax/gwskillbar/compare/v0.2.0...v0.3.0) (2026-02-04)
 
 ## ✨ New Features
