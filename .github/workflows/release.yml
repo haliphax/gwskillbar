@@ -11,11 +11,11 @@ jobs:
         with:
           token: ${{ secrets.SEMANTIC_RELEASE_TOKEN }}
 
-      - name: Build client
+      - name: Build
         run: |
           npm run build
           cd dist
-          zip -r ../client.zip .
+          zip -r ../www.zip .
 
       - name: semantic-release
         env:

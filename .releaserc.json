@@ -11,7 +11,12 @@
 				"message": "🔖 release ${nextRelease.version}"
 			}
 		],
-		"@semantic-release/github",
+		[
+			"@semantic-release/github",
+			{
+				"assets": [{ "path": "www.zip", "label": "Pre-built site" }]
+			}
+		],
 		"semantic-release-gitmoji"
 	],
 	"successComment": false
