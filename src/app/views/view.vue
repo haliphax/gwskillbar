@@ -3,6 +3,7 @@ import ProfessionIcon from "@/app/components/profession-icon.vue";
 import SkillIcon from "@/app/components/skill-icon.vue";
 import WikiLink from "@/app/components/wiki-link.vue";
 import allegiance from "@/app/data/allegiance.json";
+import attributeData from "@/app/data/attribute-data.json";
 import attributes from "@/app/data/attributes.json";
 import professions from "@/app/data/professions.json";
 import pveOnly from "@/app/data/pve-only.json";
@@ -10,6 +11,15 @@ import skills from "@/app/data/skills.json";
 import store from "@/app/store";
 import { onBeforeMount, ref, Ref } from "vue";
 import Toggle from "../components/toggle.vue";
+
+type AttributeData = {
+	[p: string]: {
+		desc: string;
+		vars: {
+			[p: string]: number[];
+		};
+	};
+};
 
 type LookupArray = { [p: string]: boolean };
 
@@ -24,6 +34,7 @@ const hasInvalidPvpSkills = ref(false);
 const primary = ref("");
 const secondary = ref("");
 const attribs: Ref<{ [p: string]: number }> = ref({});
+const attribDesc: Ref<{ [p: string]: string }> = ref({});
 const skillBar: Ref<string[]> = ref([]);
 
 for (const skill of allegiance) {
@@ -52,6 +63,7 @@ const extract = (bits: string[], count: number): number =>
 
 const clear = () => {
 	attribs.value = {};
+	attribDesc.value = {};
 	skillBar.value = [];
 	hasInvalidPvpSkills.value = false;
 	primary.value = "";
@@ -126,6 +138,15 @@ const load = async () => {
 			}
 
 			attribs.value[attribute] = score;
+
+			const attribData = (attributeData as AttributeData)[attribute];
+
+			if (attribData) {
+				const repl = (_: string, group: string) =>
+					`<strong>${attribData.vars[group][score].toString()}</strong>`;
+				const desc = attribData.desc.replace(/\{([^}]+)\}/g, repl);
+				attribDesc.value[attribute] = desc;
+			}
 		}
 	} catch (ex) {
 		await error("Invalid attribute");
@@ -209,6 +230,14 @@ onBeforeMount(async () => await load());
 				<span class="score">{{ score }}</span>
 			</li>
 		</ul>
+		<div v-show="Object.keys(attribDesc)">
+			<hr />
+			<ul class="attribute-effects">
+				<li v-for="(desc, attrib) in attribDesc" :key="attrib">
+					<small v-html="desc"></small>
+				</li>
+			</ul>
+		</div>
 	</fieldset>
 	<fieldset>
 		<legend>Skills</legend>

@@ -1,0 +1,165 @@
+{
+	"Axe Mastery": {
+		"desc": "+{dmg}% weapon damage and increased critical strike chance with axes",
+		"vars": {
+			"dmg": [
+				0, 9, 19, 30, 41, 54, 68, 83, 100, 118, 138, 159, 183, 193, 203, 214,
+				225
+			]
+		}
+	},
+	"Beast Mastery": {
+		"desc": "+{dmg}% pet damage, +{crit}% (est.) pet critical strike chance, skills disabled {dis} sec after pet death",
+		"vars": {
+			"crit": [
+				0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20
+			],
+			"dmg": [
+				0, 9, 19, 30, 41, 54, 68, 83, 100, 118, 138, 159, 183, 193, 203, 214,
+				225
+			],
+			"dis": [10, 10, 9, 9, 8, 8, 7, 7, 6, 6, 5, 5, 4, 4, 3, 3, 3, 2, 2, 1, 1]
+		}
+	},
+	"Death Magic": {
+		"desc": "can control {max} undead minions",
+		"vars": {
+			"max": [
+				2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12
+			]
+		}
+	},
+	"Divine Favor": {
+		"desc": "allies healed for {heal} when you cast Monk spells on them",
+		"vars": {
+			"heal": [
+				0, 3, 6, 10, 13, 16, 19, 22, 26, 29, 32, 35, 38, 42, 45, 48, 51, 54, 58,
+				61, 64, 67
+			]
+		}
+	},
+	"Energy Storage": {
+		"desc": "+{en} maximum energy",
+		"vars": {
+			"en": [
+				0, 3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 39, 42, 45, 48, 51, 54,
+				57, 60, 63
+			]
+		}
+	},
+	"Expertise": {
+		"desc": "-{cost}% energy cost for Ranger skills, attack skills, rituals, and touch skills",
+		"vars": {
+			"cost": [
+				0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72,
+				80
+			]
+		}
+	},
+	"Fast Casting": {
+		"desc": "-{time}% casting time of spells/signets, -{re}% recharge time of Mesmer spells (PvE)",
+		"vars": {
+			"time": [
+				0, 5, 9, 13, 17, 21, 25, 28, 31, 34, 37, 40, 43, 45, 48, 50, 52, 54, 56,
+				58, 59
+			],
+			"re": [
+				0, 3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 39, 42, 45, 48, 51, 54,
+				57, 60
+			]
+		}
+	},
+	"Hammer Mastery": {
+		"desc": "+{dmg}% weapon damage and increased critical strike chance with hammers",
+		"vars": {
+			"dmg": [
+				0, 9, 19, 30, 41, 54, 68, 83, 100, 118, 138, 159, 183, 193, 203, 214,
+				225
+			]
+		}
+	},
+	"Leadership": {
+		"desc": "1 energy for each ally affected by shouts/chants, max {max}",
+		"vars": {
+			"max": [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10]
+		}
+	},
+	"Marksmanship": {
+		"desc": "+{dmg}% weapon damage and increased critical strike chance with bows",
+		"vars": {
+			"dmg": [
+				0, 9, 19, 30, 41, 54, 68, 83, 100, 118, 138, 159, 183, 193, 203, 214,
+				225
+			]
+		}
+	},
+	"Mysticism": {
+		"desc": "-{cost}% cost of Dervish enchantments, +{def} armor while enchanted (PvE)",
+		"vars": {
+			"cost": [
+				0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72,
+				80
+			],
+			"def": [
+				0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20
+			]
+		}
+	},
+	"Scythe Mastery": {
+		"desc": "+{dmg}% weapon damage and increased critical strike chance with scythes",
+		"vars": {
+			"dmg": [
+				0, 9, 19, 30, 41, 54, 68, 83, 100, 118, 138, 159, 183, 193, 203, 214,
+				225
+			]
+		}
+	},
+	"Soul Reaping": {
+		"desc": "{en} energy when a non-spirit creature near you dies, max {max15} every 15 sec",
+		"vars": {
+			"en": [
+				0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+				20, 21
+			],
+			"max15": [
+				0, 3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 39, 42, 45, 48, 51, 54,
+				57, 60, 63
+			]
+		}
+	},
+	"Spawning Power": {
+		"desc": "+{inc}% summoned creature health, +{inc}% weapon spell duration",
+		"vars": {
+			"inc": [
+				0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72,
+				76, 80, 84
+			]
+		}
+	},
+	"Spear Mastery": {
+		"desc": "+{dmg}% weapon damage and increased critical strike chance with spears",
+		"vars": {
+			"dmg": [
+				0, 9, 19, 30, 41, 54, 68, 83, 100, 118, 138, 159, 183, 193, 203, 214,
+				225
+			]
+		}
+	},
+	"Strength": {
+		"desc": "{ap}% armor penetration to attack skills with lower penetration",
+		"vars": {
+			"ap": [
+				0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20
+			]
+		}
+	},
+	"Swordsmanship": {
+		"desc": "+{dmg}% weapon damage and increased critical strike chance with swords",
+		"vars": {
+			"dmg": [
+				0, 9, 19, 30, 41, 54, 68, 83, 100, 118, 138, 159, 183, 193, 203, 214,
+				225
+			]
+		}
+	}
+}
