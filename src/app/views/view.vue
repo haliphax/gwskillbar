@@ -256,9 +256,14 @@ label[for="pvp-toggle"] small {
 	max-width: 100%;
 	width: calc((var(--icon-size) * 8) + (var(--gap) * 7));
 
-	li img {
-		height: var(--icon-size);
-		width: var(--icon-size);
+	li {
+		&,
+		a,
+		span,
+		img {
+			height: var(--icon-size);
+			width: var(--icon-size);
+		}
 	}
 }
 
