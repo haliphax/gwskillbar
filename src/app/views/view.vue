@@ -230,7 +230,7 @@ onBeforeMount(async () => await load());
 				<span class="score">{{ score }}</span>
 			</li>
 		</ul>
-		<div v-show="Object.keys(attribDesc)">
+		<div v-show="Object.keys(attribDesc).length">
 			<hr />
 			<ul class="attribute-effects">
 				<li v-for="(desc, attrib) in attribDesc" :key="attrib">
