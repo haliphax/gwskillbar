@@ -1,3 +1,11 @@
+# [v0.4.0](https://github.com/haliphax/gwskillbar/compare/v0.3.1...v0.4.0) (2026-02-04)
+
+## ✨ New Features
+- [`2641b38`](https://github.com/haliphax/gwskillbar/commit/2641b38)  show skill statistics in pop-up view 
+
+## 🐛 Bug Fixes
+- [`52d4b46`](https://github.com/haliphax/gwskillbar/commit/52d4b46)  hide horizontal ruler if no attribute effects
+
 # [v0.3.1](https://github.com/haliphax/gwskillbar/compare/v0.3.0...v0.3.1) (2026-02-04)
 
 ## 🐛 Bug Fixes
