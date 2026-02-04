@@ -18,7 +18,7 @@ const allegianceSkills: LookupArray = {};
 const pveSkills: LookupArray = {};
 const pvpSkills: LookupArray = {};
 
-const pvp = ref(location.hash.endsWith("/pvp"));
+const pvp = ref(false);
 const hasInvalidPvpSkills = ref(false);
 const primary = ref("");
 const secondary = ref("");
@@ -53,6 +53,7 @@ const load = () => {
 	attribs.value = {};
 	skillBar.value = [];
 	hasInvalidPvpSkills.value = false;
+	pvp.value = location.hash.endsWith("/pvp");
 
 	const code = location.hash.slice(2).replace(/\/pvp$/, "");
 
