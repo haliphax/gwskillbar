@@ -1,3 +1,9 @@
+# [v0.3.0](https://github.com/haliphax/gwskillbar/compare/v0.2.0...v0.3.0) (2026-02-04)
+
+## ✨ New Features
+- [`fb05231`](https://github.com/haliphax/gwskillbar/commit/fb05231)  open wiki links in new tab/window 
+- [`558bb66`](https://github.com/haliphax/gwskillbar/commit/558bb66)  show attribute effects
+
 # [v0.2.0](https://github.com/haliphax/gwskillbar/compare/v0.1.0...v0.2.0) (2026-02-04)
 
 ## ✨ New Features
