@@ -2,9 +2,9 @@
 
 An online skill template code parsing/building tool for [Guild Wars Reforged][]
 
-<img width="777" height="630" alt="Screenshot" src="https://github.com/user-attachments/assets/39118806-0965-4a10-bcec-570b27c5af4a" />
+<img width="960" height="855" alt="Screenshot" src="https://github.com/user-attachments/assets/4997ba83-d43e-4f98-81ec-028b0e786b4a" />
 
-<img width="777" height="630" alt="Screenshot (dark mode)" src="https://github.com/user-attachments/assets/65495799-363d-400b-96c8-f26b63d5d5b0" />
+<img width="960" height="855" alt="Screenshot (dark mode)" src="https://github.com/user-attachments/assets/a2c293d6-169f-4dc2-bef1-8ce2f12fac64" />
 
 ## Development
 
