@@ -11,7 +11,11 @@ onBeforeMount(clean);
 </script>
 
 <template>
-	<a :href="`https://wiki.guildwars.com/wiki/${cleanPath}`" :title="title">
+	<a
+		:href="`https://wiki.guildwars.com/wiki/${cleanPath}`"
+		:title="title"
+		target="_blank"
+	>
 		<slot></slot>
 	</a>
 </template>
