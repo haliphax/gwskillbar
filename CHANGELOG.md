@@ -1,3 +1,8 @@
+# [v0.9.2](https://github.com/haliphax/gwskillbar/compare/v0.9.1...v0.9.2) (2026-02-05)
+
+## 🐛 Bug Fixes
+- [`d2db4a1`](https://github.com/haliphax/gwskillbar/commit/d2db4a1)  avoid loading view multiple times on navigation
+
 # [v0.9.1](https://github.com/haliphax/gwskillbar/compare/v0.9.0...v0.9.1) (2026-02-05)
 
 ## 🐛 Bug Fixes
