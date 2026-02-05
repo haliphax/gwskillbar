@@ -63,8 +63,20 @@ const Dialogs = defineComponent({
 	created() {
 		this.$store.registerModule("dialogs", this.stateModule);
 	},
-	mounted() {
+	async mounted() {
 		for (const d of [this.alertDialog, this.confirmDialog]) {
+			d.addEventListener("click", async (event: MouseEvent) => {
+				const rect = d.getBoundingClientRect();
+
+				if (
+					event.clientX < rect.left ||
+					event.clientY < rect.top ||
+					event.clientX > rect.right ||
+					event.clientY > rect.bottom
+				) {
+					d.close();
+				}
+			});
 			d.addEventListener(
 				"close",
 				async () =>
