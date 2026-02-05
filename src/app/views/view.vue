@@ -258,7 +258,7 @@ const skillDescription = async (skill: string, event: Event) => {
 				</a>
 			</small>`,
 		title: /* html */ `
-			<img src="/images/skills/${skill}.jpg" class="vam" style="height: 1em; width: 1em;" />
+			<img src="/images/skills/${encodeURIComponent(skill)}.jpg" class="vam" style="height: 1em; width: 1em;" />
 			${skill}`,
 	});
 };
