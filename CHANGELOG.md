@@ -1,3 +1,8 @@
+# [v0.8.1](https://github.com/haliphax/gwskillbar/compare/v0.8.0...v0.8.1) (2026-02-05)
+
+## 🐛 Bug Fixes
+- [`2428a86`](https://github.com/haliphax/gwskillbar/commit/2428a86)  fix alignment of skill stats in details view
+
 # [v0.8.0](https://github.com/haliphax/gwskillbar/compare/v0.7.0...v0.8.0) (2026-02-05)
 
 ## ✨ New Features
