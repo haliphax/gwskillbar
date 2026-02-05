@@ -1,3 +1,8 @@
+# [v0.5.0](https://github.com/haliphax/gwskillbar/compare/v0.4.0...v0.5.0) (2026-02-05)
+
+## ✨ New Features
+- [`ac92268`](https://github.com/haliphax/gwskillbar/commit/ac92268)  highlight variable ranges in skill descriptions
+
 # [v0.4.0](https://github.com/haliphax/gwskillbar/compare/v0.3.1...v0.4.0) (2026-02-04)
 
 ## ✨ New Features
