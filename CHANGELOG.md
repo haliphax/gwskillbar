@@ -1,3 +1,8 @@
+# [v0.6.1](https://github.com/haliphax/gwskillbar/compare/v0.6.0...v0.6.1) (2026-02-05)
+
+## 🐛 Bug Fixes
+- [`fc3cb3f`](https://github.com/haliphax/gwskillbar/commit/fc3cb3f)  fix encoding of skill image file names in description dialog title
+
 # [v0.6.0](https://github.com/haliphax/gwskillbar/compare/v0.5.0...v0.6.0) (2026-02-05)
 
 ## ✨ New Features
