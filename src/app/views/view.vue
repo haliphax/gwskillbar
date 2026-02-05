@@ -232,6 +232,10 @@ const statDisplay = (stat: string, amount: number | null) => {
 const skillDescription = async (skill: string, event: Event) => {
 	event.preventDefault();
 	const data = (skillsData as SkillsData)[skill];
+	const desc = data.desc.replace(
+		/((?:\d+\.\.\.)+\d+)/g,
+		'<em style="color: var(--color-em)">$1</em>',
+	);
 	await store.dispatch("alert", {
 		html: true,
 		text: /* html */ `
@@ -244,7 +248,7 @@ const skillDescription = async (skill: string, event: Event) => {
 				${data.overcast ? statDisplay("overcast", data.overcast) : ""}
 				${data.recharge ? statDisplay("recharge", data.recharge) : ""}
 			</ul>
-			<p>${data.desc}</p>
+			<p>${desc}</p>
 			<small>
 				<a
 					href="https://wiki.guildwars.com/wiki/${skill.replace(/ /g, "_")}"
