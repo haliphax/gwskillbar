@@ -5,7 +5,7 @@ import Toggle from "@/app/components/toggle.vue";
 import WikiLink from "@/app/components/wiki-link.vue";
 import store from "@/app/store";
 import { allegianceSkills, pveSkills, pvpSkills } from "@/app/util/skills";
-import attributeData from "@/data/attribute-data.json";
+import attributesData from "@/data/attributes-data.json";
 import skillsData from "@/data/skills-data.json";
 import { onBeforeMount, ref, Ref } from "vue";
 import { decode } from "../util/template";
@@ -72,7 +72,7 @@ const load = async () => {
 	}
 
 	for (const [attribute, score] of Object.entries(build.value.attributes)) {
-		const attribData = (attributeData as AttributeData)[attribute];
+		const attribData = (attributesData as AttributeData)[attribute];
 
 		if (attribData) {
 			const repl = (_: string, group: string) =>

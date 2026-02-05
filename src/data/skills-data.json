@@ -8,13 +8,11 @@
 	},
 	"Resurrection Signet": {
 		"desc": "Signet. Resurrects target party member (100% Health, 25% Energy). This signet only recharges when you gain a morale boost.",
-
 		"activate": 3,
 		"recharge": null
 	},
 	"Signet of Capture": {
 		"desc": "Signet. Choose one skill from a nearby dead Boss of your profession. Signet of Capture is permanently replaced by that skill. If that skill was elite, gain 250 XP for every level you have earned.",
-
 		"activate": 2,
 		"recharge": 2
 	},
@@ -8617,7 +8615,6 @@
 	"Lightbringer's Gaze": {
 		"attribute": "Lightbringer rank",
 		"desc": "Skill. Target demonic servant of Abaddon takes 100 holy damage and is interrupted. Hits one additional foe in the area for each rank of Lightbringer you have attained. This skill is disabled (15 seconds).",
-
 		"energy": 5,
 		"activate": 1,
 		"recharge": 15
@@ -8625,14 +8622,12 @@
 	"Lightbringer Signet": {
 		"attribute": "Lightbringer rank",
 		"desc": "Signet. You gain 4...5 strikes of adrenaline and 22...24 Energy if you are within the area of a demonic servant of Abaddon.",
-
 		"activate": 0.25,
 		"recharge": 25
 	},
 	"Sunspear Rebirth Signet": {
 		"attribute": "Sunspear rank",
 		"desc": "Signet. Resurrect target dead ally [sic] at your location (full Health and 10% Energy for each Sunspear Rank attained). This signet only recharges when you gain a morale boost.",
-
 		"activate": 3,
 		"recharge": null
 	},
@@ -9214,7 +9209,6 @@
 	"Sneak Attack": {
 		"attribute": "Ebon Vanguard rank",
 		"desc": "Melee Attack. Inflicts Blindness (5...8 seconds). Counts as a lead attack.",
-
 		"energy": 5,
 		"recharge": 5
 	},
@@ -9524,7 +9518,6 @@
 	"Alkar's Alchemical Acid": {
 		"attribute": "Deldrimor rank",
 		"desc": "Spell. Projectile: deals 40...50 damage to target and adjacent foes. Deals 45...70 more damage and inflicts Cracked Armor condition (14...20 seconds) to Destroyers.",
-
 		"energy": 10,
 		"activate": 1,
 		"recharge": 10
@@ -9532,7 +9525,6 @@
 	"Light of Deldrimor": {
 		"attribute": "Deldrimor rank",
 		"desc": "Spell. Deals 55...80 holy damage to foes in the area. Pings hidden objects within the area on the compass.",
-
 		"energy": 5,
 		"activate": 0.75,
 		"recharge": 20
@@ -9540,49 +9532,42 @@
 	"Ear Bite": {
 		"attribute": "Deldrimor rank",
 		"desc": "Touch Skill. Deals 50...70 piercing damage and inflicts Bleeding condition (15...25 seconds).",
-
 		"adrenaline": 4,
 		"activate": 0.75
 	},
 	"Low Blow": {
 		"attribute": "Deldrimor rank",
 		"desc": "Touch Skill. Deals 45...70 damage. Inflicts 30...50 damage and Cracked Armor (14...20 seconds) if target foe is knocked down.",
-
 		"adrenaline": 6,
 		"activate": 0.75
 	},
 	"Brawling Headbutt": {
 		"attribute": "Deldrimor rank",
 		"desc": "Touch Skill. Deals 45...70 damage; causes knock-down.",
-
 		"adrenaline": 7,
 		"activate": 0.75
 	},
 	"\"Don't Trip!\"": {
 		"attribute": "Deldrimor rank",
 		"desc": "Shout. (3...5 seconds.) Prevents knock-down; affects party members within earshot.",
-
 		"energy": 5,
 		"recharge": 20
 	},
 	"\"By Ural's Hammer!\"": {
 		"attribute": "Deldrimor rank",
 		"desc": "Shout. (30 seconds.) Resurrect all dead party members in earshot with full Health and Energy. Affected party members deal 25...33% more damage. Affected party members die when it ends, but do not receive a death penalty.",
-
 		"energy": 5,
 		"recharge": 60
 	},
 	"Drunken Master": {
 		"attribute": "Deldrimor rank",
 		"desc": "Stance. (72...90 seconds.) You move and attack 10...15% faster if you are not drunk. You move and attack 25...33% faster if you are drunk.",
-
 		"energy": 5,
 		"recharge": 60
 	},
 	"Great Dwarf Weapon": {
 		"attribute": "Deldrimor rank",
 		"desc": "Weapon Spell. (20 seconds.) +15...20 weapon damage and 28...40% chance to cause knock-down with attacks.  Cannot self-target.",
-
 		"energy": 10,
 		"activate": 1,
 		"recharge": 5
@@ -9590,7 +9575,6 @@
 	"Great Dwarf Armor": {
 		"attribute": "Deldrimor rank",
 		"desc": "Enchantment Spell.  (22...40 seconds.)  +24 armor and +60 maximum Health.  Additional +24 armor against Destroyers.",
-
 		"energy": 5,
 		"activate": 1,
 		"recharge": 10
@@ -9598,7 +9582,6 @@
 	"Breath of the Great Dwarf": {
 		"attribute": "Deldrimor rank",
 		"desc": "Spell. Removes burning and heals for 50...60 Health. Affects party members.",
-
 		"energy": 10,
 		"activate": 0.25,
 		"recharge": 15
@@ -9606,7 +9589,6 @@
 	"Snow Storm": {
 		"attribute": "Deldrimor rank",
 		"desc": "Spell. Deals 30...40 cold damage each second (5 seconds). Hits foes adjacent to target foe's initial location.",
-
 		"energy": 10,
 		"activate": 1,
 		"recharge": 10
@@ -9614,7 +9596,6 @@
 	"Black Powder Mine": {
 		"attribute": "Deldrimor rank",
 		"desc": "Trap. (90 seconds.) Affects nearby foes. Deals 20...30 damage. Inflicts Blindness and Bleeding conditions (7...10 seconds). Easily interrupted.",
-
 		"energy": 10,
 		"activate": 2,
 		"recharge": 20
@@ -9622,7 +9603,6 @@
 	"Summon Mursaat": {
 		"attribute": "Asura rank",
 		"desc": "Spell. Summon a level 14...20 Mursaat (40...60 lifespan) that has Enervating Charge. Only 1 Asura Summon can be active a time.",
-
 		"energy": 10,
 		"activate": 3,
 		"recharge": 60
@@ -9630,7 +9610,6 @@
 	"Summon Ruby Djinn": {
 		"attribute": "Asura rank",
 		"desc": "Spell. Summon a level 14...20 Ruby Djinn (40...60 lifespan) that has Immolate. Only 1 Asura Summon can be active a time.",
-
 		"energy": 10,
 		"activate": 3,
 		"recharge": 60
@@ -9638,7 +9617,6 @@
 	"Summon Ice Imp": {
 		"attribute": "Asura rank",
 		"desc": "Spell. Summon a level 14...20 Ice Imp (40...60 lifespan) that has Ice Spikes. Only 1 Asura Summon can be active a time.",
-
 		"energy": 10,
 		"activate": 3,
 		"recharge": 60
@@ -9646,7 +9624,6 @@
 	"Summon Naga Shaman": {
 		"attribute": "Asura rank",
 		"desc": "Spell. Summon a level 14...20 Naga Shaman (40...60 lifespan) that has Stoning. Only 1 Asura Summon can be active a time.",
-
 		"energy": 10,
 		"activate": 3,
 		"recharge": 60
@@ -9654,7 +9631,6 @@
 	"Deft Strike": {
 		"attribute": "Ebon Vanguard rank",
 		"desc": "Ranged Attack. Deals 18...30 damage. Inflicts Bleeding condition (18...30 seconds) if target foe has Cracked Armor.",
-
 		"energy": 5,
 		"activate": 0.5,
 		"recharge": 8
@@ -9662,21 +9638,18 @@
 	"Signet of Infection": {
 		"attribute": "Ebon Vanguard rank",
 		"desc": "Signet. Inflicts Diseased condition 13...20 seconds if target foe is Bleeding.",
-
 		"activate": 1,
 		"recharge": 10
 	},
 	"Tryptophan Signet": {
 		"attribute": "Ebon Vanguard rank",
 		"desc": "Signet. (14...20 seconds.) Target and adjacent foes move and attack 23...40% slower.",
-
 		"activate": 1,
 		"recharge": 15
 	},
 	"Ebon Battle Standard of Courage": {
 		"attribute": "Ebon Vanguard rank",
 		"desc": "Ward Spell. (14...20 seconds.) Allies in this ward have +24 armor and +24 more armor against Charr. Spirits are unaffected.",
-
 		"energy": 10,
 		"activate": 1,
 		"recharge": 20
@@ -9684,7 +9657,6 @@
 	"Ebon Battle Standard of Wisdom": {
 		"attribute": "Ebon Vanguard rank",
 		"desc": "Ward Spell. (14...20 seconds.) Spells that allies in this ward cast have a 44...60% chance to recharge 50% faster. Spirits are unaffected.",
-
 		"energy": 10,
 		"activate": 1,
 		"recharge": 20
@@ -9692,7 +9664,6 @@
 	"Ebon Battle Standard of Honor": {
 		"attribute": "Ebon Vanguard rank",
 		"desc": "Ward Spell. (14...20 seconds.) Allies in this ward deal +8...15 damage and +7...10 more damage against Charr. Spirits are unaffected.",
-
 		"energy": 10,
 		"activate": 1,
 		"recharge": 20
@@ -9700,7 +9671,6 @@
 	"Ebon Vanguard Sniper Support": {
 		"attribute": "Ebon Vanguard rank",
 		"desc": "Spell. Deals 54...90 piercing damage and inflicts Bleeding condition (5...25 seconds). 10% chance of +540...900 piercing damage. 25% chance of +540...900 piercing damage if target foe is a Charr.",
-
 		"energy": 10,
 		"activate": 1,
 		"recharge": 15
@@ -9708,7 +9678,6 @@
 	"Ebon Vanguard Assassin Support": {
 		"attribute": "Ebon Vanguard rank",
 		"desc": "Spell. Summon a level 14...20 assassin that has Iron Palm, Fox Fangs, and Nine Tail Strike; it Shadow Steps to this foe. If this foe is a Charr, the assassin lives for 24...30 seconds. If target foe is not a Charr, the Assassin lives for 12...15 seconds.",
-
 		"energy": 10,
 		"activate": 1,
 		"recharge": 30
@@ -9738,34 +9707,29 @@
 	"\"Finish Him!\"": {
 		"attribute": "Norn rank",
 		"desc": "Shout. Deals 44...80 damage and inflicts Cracked Armor and Deep Wound conditions (12...20 seconds). No effect unless target foe has less than 50% Health.",
-
 		"energy": 10,
 		"recharge": 15
 	},
 	"\"Dodge This!\"": {
 		"attribute": "Norn rank",
 		"desc": "Shout. (16...20 seconds.) Your next attack is unblockable and deals +14...20 damage.",
-
 		"adrenaline": 4
 	},
 	"\"I Am the Strongest!\"": {
 		"attribute": "Norn rank",
 		"desc": "Shout. Your next 5...8 attacks deal +14...20 damage.",
-
 		"energy": 5,
 		"recharge": 20
 	},
 	"\"I Am Unstoppable!\"": {
 		"attribute": "Norn rank",
 		"desc": "Shout. (16...20 seconds.) You have +24 armor and cannot be knocked-down or Crippled.",
-
 		"energy": 5,
 		"recharge": 30
 	},
 	"A Touch of Guile": {
 		"attribute": "Norn rank",
 		"desc": "Touch Hex Spell. Deals 44...80 damage. Target foe cannot attack (5...7...8 seconds) if it was knocked-down.",
-
 		"energy": 5,
 		"activate": 0.75,
 		"recharge": 15
@@ -9773,56 +9737,48 @@
 	"\"You Move Like a Dwarf!\"": {
 		"attribute": "Norn rank",
 		"desc": "Shout. Deals 44...80 damage, causes knock-down, and inflicts Crippled condition (8...15 seconds).",
-
 		"energy": 10,
 		"recharge": 10
 	},
 	"\"You Are All Weaklings!\"": {
 		"attribute": "Norn rank",
 		"desc": "Shout. Inflicts Weakness condition (8...12 seconds). Also affects adjacent foes.",
-
 		"energy": 5,
 		"recharge": 12
 	},
 	"Feel No Pain": {
 		"attribute": "Norn rank",
 		"desc": "Skill. (30 seconds.) You have +2...3 Health regeneration. You have +200...300 maximum Health if you are drunk when activating this skill.",
-
 		"energy": 5,
 		"recharge": 20
 	},
 	"Club of a Thousand Bears": {
 		"attribute": "Norn rank",
 		"desc": "Melee Attack. Deals +6...9 damage for each adjacent foe (maximum 60 damage). Causes knock-down if target foe is non-human.",
-
 		"energy": 5,
 		"recharge": 12
 	},
 	"Ursan Blessing": {
 		"attribute": "Norn rank",
 		"desc": "Elite Form. You lose all effects and take on the aspect of the bear (60 seconds). All your attributes are set to 0 and bear attacks replace your skills, and you have 100 armor and 750...790...800 Health.",
-
 		"energy": 10,
 		"recharge": 60
 	},
 	"Volfen Blessing": {
 		"attribute": "Norn rank",
 		"desc": "Elite Form. You lose all effects and take on the aspect of the wolf (60 seconds). All your attributes are set to 0 and wolf attacks replace your skills, and you have 80 armor, 660...700  Health and 2...4 Health regeneration.",
-
 		"energy": 10,
 		"recharge": 60
 	},
 	"Raven Blessing": {
 		"attribute": "Norn rank",
 		"desc": "Elite Form. You lose all effects and take on the aspect of the Raven (60 seconds). All your attributes are set to 0 and raven attacks replace your skills, and you have 80 armor, 660...700 Health, and a 20...30% block chance.",
-
 		"energy": 10,
 		"recharge": 60
 	},
 	"Mindbender": {
 		"attribute": "Asura rank",
 		"desc": "Enchantment Spell. (10...16 seconds.) You move 20...33% faster and cast Spells 20% faster.",
-
 		"energy": 5,
 		"activate": 1,
 		"recharge": 24
@@ -9830,7 +9786,6 @@
 	"Smooth Criminal": {
 		"attribute": "Asura rank",
 		"desc": "Spell. (10...20 seconds.) Disables one Spell. This skill becomes that Spell. You gain 5...10 Energy.",
-
 		"energy": 5,
 		"activate": 1,
 		"recharge": 20
@@ -9838,7 +9793,6 @@
 	"Technobabble": {
 		"attribute": "Asura rank",
 		"desc": "Spell. Deals 30...40 damage to target and adjacent foes. Inflicts Dazed condition (3...5 seconds) on these foes if target was not a boss.",
-
 		"energy": 10,
 		"activate": 1,
 		"recharge": 10
@@ -9846,7 +9800,6 @@
 	"Radiation Field": {
 		"attribute": "Asura rank",
 		"desc": "Ward Spell. (5 seconds.) Causes &#45;4...6 Health degeneration to foes in the area. End effect: inflicts Disease condition (12...20 seconds) to foes in the area.",
-
 		"energy": 15,
 		"activate": 2,
 		"recharge": 12
@@ -9854,21 +9807,18 @@
 	"Asuran Scan": {
 		"attribute": "Asura rank",
 		"desc": "Hex Spell. (9...12 seconds.) You cannot miss target foe. If you kill this foe, you lose 5% Death Penalty.",
-
 		"energy": 5,
 		"recharge": 5
 	},
 	"Air of Superiority": {
 		"attribute": "Asura rank",
 		"desc": "Skill. (20...30 seconds). Gain a random Asura benefit every time you earn experience from killing an enemy.",
-
 		"energy": 5,
 		"recharge": 20
 	},
 	"Mental Block": {
 		"attribute": "Asura rank",
 		"desc": "Enchantment Spell. (5...11 seconds.) You have a 50% chance to block. Renewal: every time an enemy hits you.",
-
 		"energy": 10,
 		"activate": 1,
 		"recharge": 15
@@ -9876,7 +9826,6 @@
 	"Pain Inverter": {
 		"attribute": "Asura rank",
 		"desc": "Hex Spell. (6...10 seconds.) Deals 100...140% of the damage (maximum 80) back to target foe every time it does damage.",
-
 		"energy": 10,
 		"activate": 1,
 		"recharge": 20
@@ -9884,7 +9833,6 @@
 	"Ebon Escape": {
 		"attribute": "Ebon Vanguard rank",
 		"desc": "Spell. Heals you and target ally for 70...110. Initial effect: Shadow Step to this ally. Cannot self-target.",
-
 		"energy": 5,
 		"activate": 0.25,
 		"recharge": 10
@@ -9892,7 +9840,6 @@
 	"Weakness Trap": {
 		"attribute": "Ebon Vanguard rank",
 		"desc": "Trap. (90 seconds.) Affects nearby foes. Deals 24...50 lightning damage. Inflicts Weakness condition (10...20 seconds). Knocks-down Charr. Easily interrupted.",
-
 		"energy": 10,
 		"activate": 2,
 		"recharge": 30
@@ -9900,7 +9847,6 @@
 	"Winds": {
 		"attribute": "Ebon Vanguard rank",
 		"desc": "Ebon Vanguard Ritual. Creates a level 4...10 spirit (54...90 second lifespan.) Affects foes within range. 15% chance to miss with ranged attacks.",
-
 		"energy": 5,
 		"activate": 5,
 		"recharge": 30
@@ -9908,7 +9854,6 @@
 	"Dwarven Stability": {
 		"attribute": "Deldrimor rank",
 		"desc": "Enchantment Spell. (24...30 seconds.) Your stances last 55...100% longer. You cannot be knocked-down if you activated this skill while drunk . [sic]",
-
 		"energy": 5,
 		"activate": 0.25,
 		"recharge": 30
