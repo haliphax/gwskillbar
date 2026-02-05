@@ -122,7 +122,7 @@ const statDisplay = (stat: string, amount: number | null) => {
 	}
 
 	return /* html */ `
-		<li class="ib" style="margin-right: var(--space-l);">
+		<li class="ib" style="margin-left: var(--space-l);">
 			${amountDisplay}
 			<img
 				alt="${stat}"
