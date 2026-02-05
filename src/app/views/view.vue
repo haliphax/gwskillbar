@@ -244,8 +244,8 @@ const skillDescription = async (skill: string, event: Event) => {
 				${data.adrenaline ? statDisplay("adrenaline", data.adrenaline) : ""}
 				${data.energy ? statDisplay("energy", data.energy) : ""}
 				${data.health ? statDisplay("health", data.health) : ""}
-				${data.activate ? statDisplay("activate", data.activate) : ""}
 				${data.overcast ? statDisplay("overcast", data.overcast) : ""}
+				${data.activate ? statDisplay("activate", data.activate) : ""}
 				${data.recharge ? statDisplay("recharge", data.recharge) : ""}
 			</ul>
 			<p>${desc}</p>
