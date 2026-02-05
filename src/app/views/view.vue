@@ -135,7 +135,7 @@ const skillDescription = async (skill: string, event: Event) => {
 	const data = (skillsData as SkillsData)[skill];
 	const desc = data.desc.replace(
 		/((?:\d+\.\.\.)+\d+)/g,
-		'<em style="color: var(--color-em)">$1</em>',
+		'<span style="color: var(--color-em)">$1</span>',
 	);
 	await store.dispatch("alert", {
 		html: true,
@@ -149,7 +149,9 @@ const skillDescription = async (skill: string, event: Event) => {
 						style="height: 1.4em; width: 1.4em;"
 						title="${data.profession ?? "Any profession"}"
 					/>
-					${data.attribute ?? "No Attribute"}
+					<span style="color: var(--color-fg-subtle)">
+						${data.attribute ?? "No Attribute"}
+					</span>
 				</div>
 				<div class="fr ib" style="text-align: right; width: 50%;">
 					<span class="sr">Skill stats:</span>
