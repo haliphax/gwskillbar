@@ -18,11 +18,7 @@ const build: Ref<BuildTemplate> = ref({
 	attributes: {},
 	skills: [],
 });
-const primary = ref("");
-const secondary = ref("");
-const attribs: Ref<{ [p: string]: number }> = ref({});
 const attribDesc: Ref<{ [p: string]: string }> = ref({});
-const skillBar: Ref<string[]> = ref([]);
 
 const invalidSkillClass = (skill: string) =>
 	pvp.value && pveSkills.hasOwnProperty(skill.replace(/"/g, "%22"))
