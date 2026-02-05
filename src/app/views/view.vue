@@ -4,11 +4,15 @@ import SkillIcon from "@/app/components/skill-icon.vue";
 import Toggle from "@/app/components/toggle.vue";
 import WikiLink from "@/app/components/wiki-link.vue";
 import store from "@/app/store";
-import { allegianceSkills, pveSkills, pvpSkills } from "@/app/util/skills";
+import {
+	invalidSkillClass,
+	isAllegianceSkill,
+	skillDescription,
+} from "@/app/util/skills";
+import { decode } from "@/app/util/template";
 import attributesData from "@/data/attributes-data.json";
-import skillsData from "@/data/skills-data.json";
 import { onBeforeMount, ref, Ref } from "vue";
-import { decode } from "../util/template";
+import { pveSkills } from "../util/skills";
 
 const pvp = ref(false);
 const hasInvalidPvpSkills = ref(false);
@@ -18,12 +22,7 @@ const build: Ref<BuildTemplate> = ref({
 	attributes: {},
 	skills: [],
 });
-const attribDesc: Ref<{ [p: string]: string }> = ref({});
-
-const invalidSkillClass = (skill: string) =>
-	pvp.value && pveSkills.hasOwnProperty(skill.replace(/"/g, "%22"))
-		? "invalid"
-		: "";
+const attribDesc: Ref<StringMap> = ref({});
 
 const clear = () => {
 	build.value = {
@@ -52,21 +51,7 @@ const load = async () => {
 	}
 
 	try {
-		build.value = decode(code);
-
-		for (let i = 0; i < build.value.skills.length; i++) {
-			const skill = build.value.skills[i];
-
-			if (
-				pvp.value &&
-				!hasInvalidPvpSkills.value &&
-				pveSkills.hasOwnProperty(skill)
-			) {
-				hasInvalidPvpSkills.value = true;
-			} else if (pvp.value && pvpSkills.hasOwnProperty(skill)) {
-				build.value.skills[i] += " (PvP)";
-			}
-		}
+		build.value = decode(code, pvp.value);
 	} catch (ex) {
 		await error((ex as any).toString());
 	}
@@ -81,6 +66,13 @@ const load = async () => {
 			attribDesc.value[attribute] = desc;
 		}
 	}
+
+	for (const skill of build.value.skills) {
+		if (pveSkills[skill] !== undefined) {
+			hasInvalidPvpSkills.value = true;
+			break;
+		}
+	}
 };
 
 const updatePvp = async () => {
@@ -93,95 +85,6 @@ const updatePvp = async () => {
 	}
 
 	await load();
-};
-
-const isAllegianceSkill = (skill: string) =>
-	allegianceSkills[skill.replace(/"/g, "%22")] ?? false;
-
-const statDisplay = (stat: string, amount: number | null) => {
-	let amountDisplay: string = amount?.toString() ?? "";
-
-	if (amountDisplay == "") {
-		amountDisplay = "morale boost";
-	} else {
-		if (amountDisplay.endsWith(".25")) {
-			amountDisplay = "&frac14;";
-		} else if (amountDisplay.endsWith(".5")) {
-			amountDisplay = "&frac12;";
-		} else if (amountDisplay.endsWith(".75")) {
-			amountDisplay = "&frac34;";
-		}
-
-		if (stat == "health") {
-			amountDisplay += "%";
-		}
-	}
-
-	return /* html */ `
-		<li class="ib" style="margin-left: var(--space-l);">
-			${amountDisplay}
-			<img
-				alt="${stat}"
-				class="ib vab"
-				src="/images/ui/${stat}.png"
-				style="height: 1em; width: 1em;"
-				title="${stat}"
-			/>
-		</li>`;
-};
-
-const skillDescription = async (skill: string, event: Event) => {
-	event.preventDefault();
-	const data = (skillsData as SkillsData)[skill];
-	const desc = data.desc.replace(
-		/((?:\d+\.\.\.)+\d+)/g,
-		'<span style="color: var(--color-em)">$1</span>',
-	);
-	await store.dispatch("alert", {
-		html: true,
-		text: /* html */ `
-			<div style="margin-top: var(--space-m)">
-				<div class="fl ib" style="width: 50%;">
-					<img
-						alt=""
-						class="vam"
-						src="/images/professions/${data.profession ?? "None"}.png"
-						style="height: 1.4em; width: 1.4em;"
-						title="${data.profession ?? "Any profession"}"
-					/>
-					<span style="color: var(--color-fg-subtle)">
-						${data.attribute ?? "No Attribute"}
-					</span>
-				</div>
-				<div class="fr ib" style="text-align: right; width: 50%;">
-					<span class="sr">Skill stats:</span>
-					<ul class="x">
-						${data.adrenaline ? statDisplay("adrenaline", data.adrenaline) : ""}
-						${data.energy ? statDisplay("energy", data.energy) : ""}
-						${data.health ? statDisplay("health", data.health) : ""}
-						${data.overcast ? statDisplay("overcast", data.overcast) : ""}
-						${data.activate ? statDisplay("activate", data.activate) : ""}
-						${data.recharge ? statDisplay("recharge", data.recharge) : ""}
-					</ul>
-				</div>
-			</div>
-			<p>${desc}</p>
-			<small>
-				<a
-					href="https://wiki.guildwars.com/wiki/${skill.replace(/ /g, "_")}"
-					target="_blank"
-				>
-					Guild Wars Wiki
-				</a>
-			</small>`,
-		title: /* html */ `
-			<img
-				src="/images/skills/${encodeURIComponent(skill.replace(" (PvP)", ""))}.jpg"
-				class="vam"
-				style="height: 1em; width: 1em;"
-			/>
-			${skill}`,
-	});
 };
 
 addEventListener("hashchange", async () => await load());
@@ -234,13 +137,13 @@ onBeforeMount(async () => await load());
 				<a
 					href="#"
 					class="ib"
-					@click="skillDescription(skill, $event)"
+					@click.prevent="skillDescription(skill)"
 					:path="skill"
 					:title="skill"
 					v-show="skill != 'No Skill'"
 				>
 					<SkillIcon
-						:class="invalidSkillClass(skill)"
+						:class="invalidSkillClass(skill, pvp)"
 						:name="skill"
 						:allegianceSkill="isAllegianceSkill(skill)"
 					></SkillIcon>
@@ -251,14 +154,14 @@ onBeforeMount(async () => await load());
 		<ol class="skills">
 			<li v-for="(skill, idx) in build.skills" :key="idx">
 				<SkillIcon
-					:class="invalidSkillClass(skill)"
+					:class="invalidSkillClass(skill, pvp)"
 					:name="skill"
 					:allegianceSkill="isAllegianceSkill(skill)"
 				></SkillIcon>
 				<a
 					href="#"
-					@click="skillDescription(skill, $event)"
-					:class="invalidSkillClass(skill)"
+					@click.prevent="skillDescription(skill)"
+					:class="invalidSkillClass(skill, pvp)"
 					:path="skill"
 					v-show="skill != 'No Skill'"
 				>
@@ -267,7 +170,7 @@ onBeforeMount(async () => await load());
 				<span v-show="skill == 'No Skill'">(Optional)</span>
 			</li>
 		</ol>
-		<p v-show="hasInvalidPvpSkills" id="pve-warn">
+		<p v-show="pvp && hasInvalidPvpSkills" id="pve-warn">
 			<small>
 				<span aria-hidden="true">⚠️</span>
 				This build contains PvE-only skills

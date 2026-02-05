@@ -7,6 +7,13 @@ type AttributeData = {
 	};
 };
 
+type BuildTemplate = {
+	primary: string;
+	secondary: string;
+	attributes: { [p: string]: number };
+	skills: string[];
+};
+
 type LookupArray = { [p: string]: boolean };
 
 type SkillData = {
@@ -25,9 +32,4 @@ type SkillsData = {
 	[p: string]: SkillData;
 };
 
-type BuildTemplate = {
-	primary: string;
-	secondary: string;
-	attributes: { [p: string]: number };
-	skills: string[];
-};
+type StringMap = { [p: string]: string };

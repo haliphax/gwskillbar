@@ -12,7 +12,7 @@ const skillsData: SkillsData = existsSync(filename)
 for (let skill of Object.values(skills).slice(1)) {
 	skill = decodeURIComponent(skill);
 
-	if (Object.prototype.hasOwnProperty.call(skillsData, skill)) {
+	if (skillsData[skill] !== undefined) {
 		console.log(`Already have ${skill}`);
 		continue;
 	}

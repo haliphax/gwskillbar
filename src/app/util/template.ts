@@ -1,14 +1,18 @@
+import { pvpSkills } from "@/app/util/skills";
 import attributes from "@/data/attributes.json";
 import professions from "@/data/professions.json";
 import skills from "@/data/skills.json";
 
 const CHAR_MAP =
 	"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+const skillsList = skills as StringMap;
 
+/** Extract bits from template code */
 const extract = (bits: string[], count: number): number =>
 	parseInt(bits.splice(0, count).reverse().join(""), 2);
 
-export const decode = (code: string): BuildTemplate => {
+/** Parse template code into BuildTemplate object */
+export const decode = (code: string, pvp: boolean): BuildTemplate => {
 	const build: BuildTemplate = {
 		primary: "",
 		secondary: "",
@@ -53,7 +57,7 @@ export const decode = (code: string): BuildTemplate => {
 
 	try {
 		for (let i = 0; i < attributesCount; i++) {
-			const attribute = (attributes as { [p: string]: string })[
+			const attribute = (attributes as StringMap)[
 				extract(bits, attributeBits).toString()
 			];
 
@@ -77,12 +81,15 @@ export const decode = (code: string): BuildTemplate => {
 
 	try {
 		for (let i = 0; i < 8; i++) {
-			const skillsList = skills as { [p: string]: string };
 			const skillID = extract(bits, skillBits).toString();
-			const skillName = skillsList[skillID];
+			let skillName = skillsList[skillID];
 
 			if (skillName === undefined) {
 				throw "Invalid skill";
+			}
+
+			if (pvp && pvpSkills[skillName] !== undefined) {
+				skillName += " (PvP)";
 			}
 
 			build.skills.push(decodeURIComponent(skillName));
