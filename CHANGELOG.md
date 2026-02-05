@@ -1,3 +1,8 @@
+# [v0.9.0](https://github.com/haliphax/gwskillbar/compare/v0.8.1...v0.9.0) (2026-02-05)
+
+## ✨ New Features
+- [`46e02ab`](https://github.com/haliphax/gwskillbar/commit/46e02ab)  build statistics view
+
 # [v0.8.1](https://github.com/haliphax/gwskillbar/compare/v0.8.0...v0.8.1) (2026-02-05)
 
 ## 🐛 Bug Fixes
