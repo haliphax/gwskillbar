@@ -239,8 +239,8 @@ const skillDescription = async (skill: string, event: Event) => {
 	await store.dispatch("alert", {
 		html: true,
 		text: /* html */ `
-			<ul class="x">
-				<span class="sr">Skill stats:</span>
+			<span class="sr">Skill stats:</span>
+			<ul class="x" style="margin-top: var(--space-m)">
 				${data.adrenaline ? statDisplay("adrenaline", data.adrenaline) : ""}
 				${data.energy ? statDisplay("energy", data.energy) : ""}
 				${data.health ? statDisplay("health", data.health) : ""}
@@ -257,7 +257,9 @@ const skillDescription = async (skill: string, event: Event) => {
 					Guild Wars Wiki
 				</a>
 			</small>`,
-		title: skill,
+		title: /* html */ `
+			<img src="/images/skills/${skill}.jpg" class="vam" style="height: 1em; width: 1em;" />
+			${skill}`,
 	});
 };
 

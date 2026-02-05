@@ -105,7 +105,11 @@ export default Dialogs;
 		<dialog ref="alert">
 			<form method="dialog">
 				<fieldset>
-					<legend>{{ dialogsState.dialogTitle }}</legend>
+					<legend>
+						<span v-if="dialogsState.isHtml" v-html="dialogsState.dialogTitle">
+						</span>
+						<span v-else>{{ dialogsState.dialogTitle }}</span>
+					</legend>
 					<div
 						v-if="dialogsState.isHtml"
 						v-html="dialogsState.dialogText"
@@ -123,7 +127,11 @@ export default Dialogs;
 		<dialog ref="confirm">
 			<form method="dialog">
 				<fieldset>
-					<legend>{{ dialogsState.dialogTitle }}</legend>
+					<legend>
+						<span v-if="dialogsState.isHtml" v-html="dialogsState.dialogTitle">
+						</span>
+						<span v-else>{{ dialogsState.dialogTitle }}</span>
+					</legend>
 					<div
 						v-if="dialogsState.isHtml"
 						v-html="dialogsState.dialogText"
