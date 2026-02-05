@@ -1,3 +1,8 @@
+# [v0.9.1](https://github.com/haliphax/gwskillbar/compare/v0.9.0...v0.9.1) (2026-02-05)
+
+## 🐛 Bug Fixes
+- [`1b3c830`](https://github.com/haliphax/gwskillbar/commit/1b3c830)  better ordering of pie chart colors to avoid similar neighbors
+
 # [v0.9.0](https://github.com/haliphax/gwskillbar/compare/v0.8.1...v0.9.0) (2026-02-05)
 
 ## ✨ New Features
