@@ -1,3 +1,8 @@
+# [v0.8.0](https://github.com/haliphax/gwskillbar/compare/v0.7.0...v0.8.0) (2026-02-05)
+
+## ✨ New Features
+- [`64d5ec3`](https://github.com/haliphax/gwskillbar/commit/64d5ec3)  close dialog boxes when clicking outside
+
 # [v0.7.0](https://github.com/haliphax/gwskillbar/compare/v0.6.2...v0.7.0) (2026-02-05)
 
 ## ✨ New Features
