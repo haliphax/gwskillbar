@@ -13,7 +13,7 @@ import {
 } from "@/app/util/skills";
 import { decode } from "@/app/util/template";
 import attributesData from "@/data/attributes-data.json";
-import { onBeforeMount, ref, Ref } from "vue";
+import { onBeforeMount, onUnmounted, ref, Ref } from "vue";
 
 const code = ref("");
 const pvp = ref(false);
@@ -45,16 +45,18 @@ const error = async (text: string) => {
 };
 
 const load = async () => {
-	if (location.hash.match(/\/(?:stats)\b/)) {
+	if (router.currentRoute.value.name != "view") {
+		return;
+	}
+
+	const codeFromHash = location.hash.replace(/(?:\/(?:pvp))+/g, "").slice(2);
+
+	if (codeFromHash == code.value) {
 		return;
 	}
 
 	clear();
-	code.value = location.hash.replace(/(?:\/(?:pvp|stats))+/g, "").slice(2);
-
-	if (!code) {
-		return;
-	}
+	code.value = codeFromHash;
 
 	try {
 		build.value = decode(code.value, pvp.value);
@@ -95,6 +97,7 @@ const updatePvp = async () => {
 
 addEventListener("hashchange", load);
 onBeforeMount(load);
+onUnmounted(() => removeEventListener("hashchange", load));
 </script>
 
 <template>

@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import router from "@/app/router";
 import store from "@/app/store";
 import { statistics } from "@/app/util/skills";
 import { decode } from "@/app/util/template";
-import { onBeforeMount, Ref, ref } from "vue";
+import { onBeforeMount, onUnmounted, Ref, ref } from "vue";
 import PieChart from "./stats/pie-chart.vue";
 
 const pvp = ref(false);
@@ -52,18 +53,20 @@ const error = async (text: string) => {
 };
 
 const load = async () => {
-	if (!location.hash.match(/\/stats\b/)) {
+	if (router.currentRoute.value.name != "stats") {
+		return;
+	}
+
+	const codeFromHash = location.hash
+		.replace(/(?:\/(?:pvp|stats))+/g, "")
+		.slice(2);
+
+	if (codeFromHash == code.value) {
 		return;
 	}
 
 	clear();
-
-	code.value = location.hash.replace(/(?:\/(?:pvp|stats))+/g, "").slice(2);
-
-	if (!code) {
-		return;
-	}
-
+	code.value = codeFromHash;
 	pvp.value = !!location.hash.match(/\/pvp/);
 
 	try {
@@ -87,8 +90,9 @@ const load = async () => {
 	}
 };
 
-addEventListener("hashchange", async () => await load());
-onBeforeMount(async () => await load());
+addEventListener("hashchange", load);
+onBeforeMount(load);
+onUnmounted(() => removeEventListener("hashchange", load));
 </script>
 
 <template>
