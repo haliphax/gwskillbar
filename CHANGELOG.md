@@ -1,3 +1,8 @@
+# [v0.6.0](https://github.com/haliphax/gwskillbar/compare/v0.5.0...v0.6.0) (2026-02-05)
+
+## ✨ New Features
+- [`e89648f`](https://github.com/haliphax/gwskillbar/commit/e89648f)  show skill icon in details view
+
 # [v0.5.0](https://github.com/haliphax/gwskillbar/compare/v0.4.0...v0.5.0) (2026-02-05)
 
 ## ✨ New Features
