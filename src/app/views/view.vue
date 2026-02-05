@@ -1,80 +1,49 @@
 <script lang="ts" setup>
 import ProfessionIcon from "@/app/components/profession-icon.vue";
 import SkillIcon from "@/app/components/skill-icon.vue";
+import Toggle from "@/app/components/toggle.vue";
 import WikiLink from "@/app/components/wiki-link.vue";
 import store from "@/app/store";
-import allegiance from "@/data/allegiance.json";
+import { allegianceSkills, pveSkills, pvpSkills } from "@/app/util/skills";
 import attributeData from "@/data/attribute-data.json";
-import attributes from "@/data/attributes.json";
-import professions from "@/data/professions.json";
-import pveOnly from "@/data/pve-only.json";
 import skillsData from "@/data/skills-data.json";
-import skills from "@/data/skills.json";
 import { onBeforeMount, ref, Ref } from "vue";
-import Toggle from "../components/toggle.vue";
-
-type AttributeData = {
-	[p: string]: {
-		desc: string;
-		vars: {
-			[p: string]: number[];
-		};
-	};
-};
-
-type LookupArray = { [p: string]: boolean };
-
-const CHAR_MAP =
-	"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-const allegianceSkills: LookupArray = {};
-const pveSkills: LookupArray = {};
-const pvpSkills: LookupArray = {};
+import { decode } from "../util/template";
 
 const pvp = ref(false);
 const hasInvalidPvpSkills = ref(false);
+const build: Ref<BuildTemplate> = ref({
+	primary: "",
+	secondary: "",
+	attributes: {},
+	skills: [],
+});
 const primary = ref("");
 const secondary = ref("");
 const attribs: Ref<{ [p: string]: number }> = ref({});
 const attribDesc: Ref<{ [p: string]: string }> = ref({});
 const skillBar: Ref<string[]> = ref([]);
 
-for (const skill of allegiance) {
-	allegianceSkills[skill] = true;
-}
-
-for (const skill of pveOnly) {
-	pveSkills[skill] = true;
-}
-
-for (const skill of Object.values(skills)) {
-	if (!skill.endsWith(" (PvP)")) {
-		continue;
-	}
-
-	pvpSkills[skill.replace(/ \(PvP\)$/, "")] = true;
-}
-
 const invalidSkillClass = (skill: string) =>
 	pvp.value && pveSkills.hasOwnProperty(skill.replace(/"/g, "%22"))
 		? "invalid"
 		: "";
 
-const extract = (bits: string[], count: number): number =>
-	parseInt(bits.splice(0, count).reverse().join(""), 2);
-
 const clear = () => {
-	attribs.value = {};
+	build.value = {
+		primary: "",
+		secondary: "",
+		attributes: {},
+		skills: [],
+	};
 	attribDesc.value = {};
-	skillBar.value = [];
 	hasInvalidPvpSkills.value = false;
-	primary.value = "";
-	secondary.value = "";
 	pvp.value = location.hash.endsWith("/pvp");
 };
 
 const error = async (text: string) => {
 	clear();
-	await store.dispatch("alert", { text });
+	await store.dispatch("alert", { text, title: "Error" });
 	throw text;
 };
 
@@ -86,99 +55,35 @@ const load = async () => {
 		return;
 	}
 
-	const decoded = Array.from(code).map((v) => CHAR_MAP.indexOf(v));
-	const bits = decoded.flatMap((v) =>
-		Array.from((v >>> 0).toString(2).padStart(6, "0")).reverse(),
-	);
-	const templateType = extract(bits, 4);
-
-	if (templateType !== 14) {
-		await error("Invalid template type");
-	}
-
-	const templateVersion = extract(bits, 4);
-
-	if (templateVersion !== 0) {
-		await error("Invalid template version");
-	}
-
-	const professionBits = extract(bits, 2) * 2 + 4;
-
 	try {
-		primary.value = professions[extract(bits, professionBits)];
-		secondary.value = professions[extract(bits, professionBits)];
+		build.value = decode(code);
 
-		if (
-			primary.value == secondary.value ||
-			!primary.value ||
-			!secondary.value
-		) {
-			throw "Invalid profession";
-		}
-	} catch (ex) {
-		await error("Invalid profession");
-	}
+		for (let i = 0; i < build.value.skills.length; i++) {
+			const skill = build.value.skills[i];
 
-	const attributesCount = extract(bits, 4);
-	const attributeBits = extract(bits, 4) + 4;
-
-	try {
-		for (let i = 0; i < attributesCount; i++) {
-			const attribute = (attributes as { [p: string]: string })[
-				extract(bits, attributeBits).toString()
-			];
-
-			if (!attribute) {
-				throw "Invalid attribute";
-			}
-
-			const score = extract(bits, 4);
-
-			if (score < 0 || score > 12) {
-				throw "Invalid attribute";
-			}
-
-			attribs.value[attribute] = score;
-
-			const attribData = (attributeData as AttributeData)[attribute];
-
-			if (attribData) {
-				const repl = (_: string, group: string) =>
-					`<strong>${attribData.vars[group][score].toString()}</strong>`;
-				const desc = attribData.desc.replace(/\{([^}]+)\}/g, repl);
-				attribDesc.value[attribute] = desc;
-			}
-		}
-	} catch (ex) {
-		await error("Invalid attribute");
-	}
-
-	const skillBits = extract(bits, 4) + 8;
-
-	try {
-		for (let i = 0; i < 8; i++) {
-			const skillsList = skills as { [p: string]: string };
-			const skillID = extract(bits, skillBits).toString();
-			let skillName = skillsList[skillID];
-
-			if (skillName === undefined) {
-				throw "Invalid skill";
-			}
-
-			if (pvp.value && pvpSkills.hasOwnProperty(skillName)) {
-				skillName += " (PvP)";
-			} else if (
+			if (
 				pvp.value &&
 				!hasInvalidPvpSkills.value &&
-				pveSkills.hasOwnProperty(skillName)
+				pveSkills.hasOwnProperty(skill)
 			) {
 				hasInvalidPvpSkills.value = true;
+			} else if (pvp.value && pvpSkills.hasOwnProperty(skill)) {
+				build.value.skills[i] += " (PvP)";
 			}
-
-			skillBar.value.push(decodeURIComponent(skillName));
 		}
 	} catch (ex) {
-		await error("Invalid skill");
+		await error((ex as any).toString());
+	}
+
+	for (const [attribute, score] of Object.entries(build.value.attributes)) {
+		const attribData = (attributeData as AttributeData)[attribute];
+
+		if (attribData) {
+			const repl = (_: string, group: string) =>
+				`<strong>${attribData.vars[group][score].toString()}</strong>`;
+			const desc = attribData.desc.replace(/\{([^}]+)\}/g, repl);
+			attribDesc.value[attribute] = desc;
+		}
 	}
 };
 
@@ -239,15 +144,29 @@ const skillDescription = async (skill: string, event: Event) => {
 	await store.dispatch("alert", {
 		html: true,
 		text: /* html */ `
-			<span class="sr">Skill stats:</span>
-			<ul class="x" style="margin-top: var(--space-m)">
-				${data.adrenaline ? statDisplay("adrenaline", data.adrenaline) : ""}
-				${data.energy ? statDisplay("energy", data.energy) : ""}
-				${data.health ? statDisplay("health", data.health) : ""}
-				${data.overcast ? statDisplay("overcast", data.overcast) : ""}
-				${data.activate ? statDisplay("activate", data.activate) : ""}
-				${data.recharge ? statDisplay("recharge", data.recharge) : ""}
-			</ul>
+			<div style="margin-top: var(--space-m)">
+				<div class="fl ib" style="width: 50%;">
+					<img
+						alt=""
+						class="vam"
+						src="/images/professions/${data.profession ?? "None"}.png"
+						style="height: 1.4em; width: 1.4em;"
+						title="${data.profession ?? "Any profession"}"
+					/>
+					${data.attribute ?? "No Attribute"}
+				</div>
+				<div class="fr ib" style="text-align: right; width: 50%;">
+					<span class="sr">Skill stats:</span>
+					<ul class="x">
+						${data.adrenaline ? statDisplay("adrenaline", data.adrenaline) : ""}
+						${data.energy ? statDisplay("energy", data.energy) : ""}
+						${data.health ? statDisplay("health", data.health) : ""}
+						${data.overcast ? statDisplay("overcast", data.overcast) : ""}
+						${data.activate ? statDisplay("activate", data.activate) : ""}
+						${data.recharge ? statDisplay("recharge", data.recharge) : ""}
+					</ul>
+				</div>
+			</div>
 			<p>${desc}</p>
 			<small>
 				<a
@@ -272,12 +191,12 @@ onBeforeMount(async () => await load());
 </script>
 
 <template>
-	<h2 v-show="primary && secondary">
-		<ProfessionIcon :name="primary"></ProfessionIcon>
-		<ProfessionIcon :name="secondary"></ProfessionIcon>
-		{{ primary == "None" ? "Any" : primary }}
+	<h2 v-show="build.primary && build.secondary">
+		<ProfessionIcon :name="build.primary"></ProfessionIcon>
+		<ProfessionIcon :name="build.secondary"></ProfessionIcon>
+		{{ build.primary == "None" ? "Any" : build.primary }}
 		<span class="slash">/</span>
-		{{ secondary == "None" ? "Any" : secondary }}
+		{{ build.secondary == "None" ? "Any" : build.secondary }}
 	</h2>
 	<p>
 		<label for="pvp-toggle">
@@ -292,7 +211,7 @@ onBeforeMount(async () => await load());
 	<fieldset>
 		<legend>Attributes</legend>
 		<ul class="attributes">
-			<li v-for="(score, attribute) of attribs" :key="attribute">
+			<li v-for="(score, attribute) of build.attributes" :key="attribute">
 				<span class="attr">
 					<WikiLink :path="attribute" :title="attribute">
 						{{ attribute }}
@@ -313,7 +232,7 @@ onBeforeMount(async () => await load());
 	<fieldset>
 		<legend>Skills</legend>
 		<ul class="skillbar x g">
-			<li v-for="(skill, idx) in skillBar" :key="idx">
+			<li v-for="(skill, idx) in build.skills" :key="idx">
 				<a
 					href="#"
 					class="ib"
@@ -332,7 +251,7 @@ onBeforeMount(async () => await load());
 			</li>
 		</ul>
 		<ol class="skills">
-			<li v-for="(skill, idx) in skillBar" :key="idx">
+			<li v-for="(skill, idx) in build.skills" :key="idx">
 				<SkillIcon
 					:class="invalidSkillClass(skill)"
 					:name="skill"

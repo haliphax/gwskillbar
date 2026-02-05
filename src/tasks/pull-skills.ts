@@ -34,7 +34,33 @@ for (let skill of Object.values(skills).slice(1)) {
 				.filter((v) => v.innerText.trim() == "Concise description")[0]
 				.parentNode!.parentNode!.innerText.replace("Concise description", "")
 				.trim();
-			const data: SkillData = { desc };
+
+			let attribute: string | undefined;
+			let sibling = d.querySelector(".skill-box a[title='Attribute']")
+				?.parentNode.nextElementSibling;
+
+			if (sibling !== null && sibling !== undefined) {
+				while (sibling!.tagName != "DD") {
+					sibling = d.nextElementSibling;
+				}
+
+				attribute = sibling!.innerText.trim();
+			}
+
+			sibling = d.querySelector(".skill-box a[title='Profession']")?.parentNode
+				.nextElementSibling;
+
+			let profession: string | undefined;
+
+			if (sibling !== null && sibling !== undefined) {
+				while (sibling!.tagName != "DD") {
+					sibling = d.nextElementSibling;
+				}
+
+				profession = sibling!.innerText.trim();
+			}
+
+			const data: SkillData = { attribute, desc, profession };
 
 			Array.from(
 				d.querySelectorAll(".skill-box .skill-stats > ul > li"),

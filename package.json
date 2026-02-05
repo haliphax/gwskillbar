@@ -69,7 +69,7 @@
 		"coverage": "npm test -- --coverage",
 		"images": "tsx src/tasks/pull-images.ts",
 		"prepare": "husky || true",
-		"skills": "tsx src/tasks/pull-skill-data.ts",
+		"skills": "tsx src/tasks/pull-skills.ts",
 		"test": "vitest run src"
 	},
 	"type": "module",

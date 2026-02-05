@@ -61,7 +61,7 @@ for (const profession of professions.slice(1)) {
 		)
 	) {
 		// don't be a jerk with other people's bandwidth
-		await setTimeout(250);
+		await setTimeout(100);
 	}
 }
 
@@ -76,6 +76,6 @@ for (let skill of Object.values(skills).slice(1)) {
 	}
 
 	if (await getFile("src/images/skills", skill)) {
-		await setTimeout(250);
+		await setTimeout(100);
 	}
 }
