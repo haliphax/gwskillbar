@@ -1,3 +1,8 @@
+# [v0.7.0](https://github.com/haliphax/gwskillbar/compare/v0.6.2...v0.7.0) (2026-02-05)
+
+## ✨ New Features
+- [`835c88f`](https://github.com/haliphax/gwskillbar/commit/835c88f)  include skill profession and attribute in details view
+
 # [v0.6.2](https://github.com/haliphax/gwskillbar/compare/v0.6.1...v0.6.2) (2026-02-05)
 
 ## 🐛 Bug Fixes
