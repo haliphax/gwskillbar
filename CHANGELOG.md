@@ -1,3 +1,8 @@
+# [v0.6.2](https://github.com/haliphax/gwskillbar/compare/v0.6.1...v0.6.2) (2026-02-05)
+
+## 🐛 Bug Fixes
+- [`022d556`](https://github.com/haliphax/gwskillbar/commit/022d556)  fix pvp skill icons in details dialog title
+
 # [v0.6.1](https://github.com/haliphax/gwskillbar/compare/v0.6.0...v0.6.1) (2026-02-05)
 
 ## 🐛 Bug Fixes
