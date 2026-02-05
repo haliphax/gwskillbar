@@ -55,6 +55,10 @@ body {
 	width: 100%;
 }
 
+html {
+	overflow-y: scroll !important;
+}
+
 body {
 	align-content: center;
 	background-color: var(--color-bg-global);
@@ -193,6 +197,33 @@ legend {
 	}
 }
 
+/* tables */
+
+table {
+	border: solid var(--color-outline);
+	border-spacing: 0;
+	border-width: 1px 1px 0 0;
+	width: 100%;
+}
+
+thead {
+	background-color: var(--color-fg);
+	color: var(--color-fg-secondary);
+}
+
+tbody > tr:nth-child(2n) {
+	background-color: var(--color-bg);
+}
+
+th,
+td {
+	border: solid var(--color-fg);
+	border-width: 0 0 1px 1px;
+	border-collapse: collapse;
+	margin: 0;
+	padding: var(--space-s) var(--space-m);
+}
+
 /* misc elements */
 
 code {
@@ -215,6 +246,21 @@ hr {
 /* application wrapper */
 #🖥️ {
 	width: 100%;
+}
+
+/* controls */
+ul.control {
+	height: 1em;
+	margin-block: var(--space-xl);
+
+	li {
+		display: inline-block;
+		margin-right: var(--space-xl);
+	}
+
+	span + a {
+		margin-left: var(--space-s);
+	}
 }
 
 /* utility classes */

@@ -3,17 +3,19 @@ import ProfessionIcon from "@/app/components/profession-icon.vue";
 import SkillIcon from "@/app/components/skill-icon.vue";
 import Toggle from "@/app/components/toggle.vue";
 import WikiLink from "@/app/components/wiki-link.vue";
+import router from "@/app/router";
 import store from "@/app/store";
 import {
 	invalidSkillClass,
 	isAllegianceSkill,
+	pveSkills,
 	skillDescription,
 } from "@/app/util/skills";
 import { decode } from "@/app/util/template";
 import attributesData from "@/data/attributes-data.json";
 import { onBeforeMount, ref, Ref } from "vue";
-import { pveSkills } from "../util/skills";
 
+const code = ref("");
 const pvp = ref(false);
 const hasInvalidPvpSkills = ref(false);
 const build: Ref<BuildTemplate> = ref({
@@ -43,15 +45,19 @@ const error = async (text: string) => {
 };
 
 const load = async () => {
+	if (location.hash.match(/\/(?:stats)\b/)) {
+		return;
+	}
+
 	clear();
-	const code = location.hash.slice(2).replace(/\/pvp$/, "");
+	code.value = location.hash.replace(/(?:\/(?:pvp|stats))+/g, "").slice(2);
 
 	if (!code) {
 		return;
 	}
 
 	try {
-		build.value = decode(code, pvp.value);
+		build.value = decode(code.value, pvp.value);
 	} catch (ex) {
 		await error((ex as any).toString());
 	}
@@ -87,11 +93,31 @@ const updatePvp = async () => {
 	await load();
 };
 
-addEventListener("hashchange", async () => await load());
-onBeforeMount(async () => await load());
+addEventListener("hashchange", load);
+onBeforeMount(load);
 </script>
 
 <template>
+	<ul class="x control">
+		<li>
+			<span aria-hidden="true">📊</span>
+			<router-link
+				:to="{
+					name: 'stats',
+					params: { template: router.currentRoute.value.params.template },
+				}"
+				>Statistics</router-link
+			>
+		</li>
+		<li>
+			<label for="pvp-toggle">
+				<Toggle id="pvp-toggle" :checked="pvp" @click="updatePvp"></Toggle>
+				<span aria-hidden="true" v-show="pvp" class="pvp-icon">⚔️ PvP</span>
+				<span aria-hidden="true" v-show="!pvp" class="pvp-icon">️🧸 PvE</span>
+				mode
+			</label>
+		</li>
+	</ul>
 	<h2 v-show="build.primary && build.secondary">
 		<ProfessionIcon :name="build.primary"></ProfessionIcon>
 		<ProfessionIcon :name="build.secondary"></ProfessionIcon>
@@ -99,16 +125,6 @@ onBeforeMount(async () => await load());
 		<span class="slash">/</span>
 		{{ build.secondary == "None" ? "Any" : build.secondary }}
 	</h2>
-	<p>
-		<label for="pvp-toggle">
-			<Toggle id="pvp-toggle" :checked="pvp" @click="updatePvp"></Toggle>
-			<small>
-				<span aria-hidden="true" v-show="pvp">⚔️ PvP</span>
-				<span aria-hidden="true" v-show="!pvp">️🧸 PvE</span>
-				mode
-			</small>
-		</label>
-	</p>
 	<fieldset>
 		<legend>Attributes</legend>
 		<ul class="attributes">
@@ -182,6 +198,10 @@ onBeforeMount(async () => await load());
 <style lang="less" scoped>
 @import "@/styles/breakpoints.less";
 
+.pvp-icon {
+	margin-left: var(--space-s);
+}
+
 .prof-icon {
 	width: 1.5em;
 }
@@ -201,10 +221,6 @@ fieldset {
 
 .score {
 	color: var(--color-fg-subtle);
-}
-
-label[for="pvp-toggle"] small {
-	margin-left: var(--space-m);
 }
 
 .skillbar {

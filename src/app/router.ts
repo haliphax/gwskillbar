@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import { ROOT_URI } from "./constants";
 import Home from "./views/home.vue";
+import Stats from "./views/stats.vue";
 import View from "./views/view.vue";
 
 const router = createRouter({
@@ -10,6 +11,16 @@ const router = createRouter({
 			path: `${ROOT_URI}`,
 			component: Home,
 			name: "home",
+		},
+		{
+			path: `${ROOT_URI}stats/:template+/:mode(pvp)`,
+			component: Stats,
+			name: "stats",
+		},
+		{
+			path: `${ROOT_URI}stats/:template+`,
+			component: Stats,
+			name: "stats",
 		},
 		{
 			path: `${ROOT_URI}:template+/:mode(pvp)`,
