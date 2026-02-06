@@ -250,6 +250,12 @@ fieldset {
 	width: 1em;
 	top: 0.45em;
 	margin-top: -0.215em;
+
+	&.ally {
+		height: 1em;
+		top: 0.215em;
+		margin-top: 0;
+	}
 }
 
 a.invalid {
