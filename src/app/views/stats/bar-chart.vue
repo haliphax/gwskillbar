@@ -40,6 +40,12 @@ const totalAct = (s: SkillData) => (s.activate ?? 0) + (s.recharge ?? 0);
 				:title="`Adrenaline: ${data.adrenaline}`"
 			></div>
 			<div
+				v-if="data?.overcast"
+				class="oc"
+				:style="barStyles(data.overcast, 65)"
+				:title="`Overcast: ${data.overcast}`"
+			></div>
+			<div
 				v-if="data && (data.recharge || data.activate)"
 				:style="`height: 100%;--com:${barHeight(
 					compensate(data.activate, data.recharge),
@@ -149,6 +155,10 @@ const totalAct = (s: SkillData) => (s.activate ?? 0) + (s.recharge ?? 0);
 
 .hp {
 	background-color: #f55;
+}
+
+.oc {
+	background-color: #aaa;
 }
 
 .act {
