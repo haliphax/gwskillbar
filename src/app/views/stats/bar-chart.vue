@@ -83,7 +83,7 @@ const totalAct = (s: SkillData) => (s.activate ?? 0) + (s.recharge ?? 0);
 
 .📊 {
 	--lines: 13;
-	--column: 2.75em;
+	--column: 2.6em;
 	display: inline-block;
 	height: calc(var(--lines) * var(--column) * 0.25);
 	margin-bottom: var(--space-l);
@@ -121,7 +121,7 @@ const totalAct = (s: SkillData) => (s.activate ?? 0) + (s.recharge ?? 0);
 	height: 100%;
 
 	&:not(:last-child) {
-		margin-right: calc(var(--column) / 8);
+		margin-right: 0.1em;
 	}
 
 	> div {
