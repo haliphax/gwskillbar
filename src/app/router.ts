@@ -13,12 +13,12 @@ const router = createRouter({
 			name: "home",
 		},
 		{
-			path: `${ROOT_URI}stats/:template+/:mode(pvp)`,
+			path: `${ROOT_URI}:template+/:mode(pvp)/stats`,
 			component: Stats,
 			name: "stats",
 		},
 		{
-			path: `${ROOT_URI}stats/:template+`,
+			path: `${ROOT_URI}:template+/stats`,
 			component: Stats,
 			name: "stats",
 		},
