@@ -1,3 +1,8 @@
+# [v0.11.0](https://github.com/haliphax/gwskillbar/compare/v0.10.2...v0.11.0) (2026-02-06)
+
+## ✨ New Features
+- [`9c2317d`](https://github.com/haliphax/gwskillbar/commit/9c2317d)  more fluid navigation between view/stats
+
 # [v0.10.2](https://github.com/haliphax/gwskillbar/compare/v0.10.1...v0.10.2) (2026-02-06)
 
 ## 🐛 Bug Fixes
