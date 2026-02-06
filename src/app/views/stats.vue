@@ -150,7 +150,7 @@ onUnmounted(() => removeEventListener("hashchange", load));
 				<tr v-if="stats.average.health > 0">
 					<th scope="row">Average health sacrifice</th>
 					<td>
-						{{ stats.average.health }}
+						{{ stats.average.health }}%
 						<img :src="'/images/ui/health.png'" alt="" />
 					</td>
 				</tr>
