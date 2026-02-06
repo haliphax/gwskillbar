@@ -167,10 +167,12 @@ export const statistics = (build: BuildTemplate): Stats => {
 
 	totals.attribute["Optional"] = optionals;
 	totals.profession["Optional"] = optionals;
+	const skillCount = 8 - optionals;
 
-	const calcAverage = (total: number) => parseFloat((total / 8).toFixed(2));
+	const calcAverage = (total: number) =>
+		parseFloat((total / skillCount).toFixed(2));
 	const calcPercentage = (total: number) =>
-		parseFloat(((total / 8) * 100).toFixed(2));
+		parseFloat(((total / skillCount) * 100).toFixed(2));
 
 	const stats: Stats = {
 		average: {
