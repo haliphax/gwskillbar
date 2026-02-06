@@ -1,3 +1,8 @@
+# [v0.11.3](https://github.com/haliphax/gwskillbar/compare/v0.11.2...v0.11.3) (2026-02-06)
+
+## 🐛 Bug Fixes
+- [`7a3439e`](https://github.com/haliphax/gwskillbar/commit/7a3439e)  do not count optional slots in average/percentage stats
+
 # [v0.11.2](https://github.com/haliphax/gwskillbar/compare/v0.11.1...v0.11.2) (2026-02-06)
 
 ## 🐛 Bug Fixes
