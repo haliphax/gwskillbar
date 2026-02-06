@@ -1,33 +1,19 @@
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
 import DarkMode from "./components/dark-mode.vue";
 import Dialogs from "./components/dialogs.vue";
 import { ROOT_URI } from "./constants";
+import store from "./store";
 
-const App = defineComponent({
-	components: {
-		DarkMode,
-		Dialogs,
-	},
-	async beforeCreate() {
-		document.cookie = [
-			`skillbarClient=${this.$store.state.session.id}`,
-			`path=${ROOT_URI}`,
-			"samesite=strict",
-			"secure",
-		].join(";");
-	},
-});
-
-export default App;
+document.cookie = [
+	`skillbarClient=${store.state.session.id}`,
+	`path=${ROOT_URI}`,
+	"samesite=strict",
+	"secure",
+].join(";");
 </script>
 
 <template>
 	<Dialogs></Dialogs>
-	<a class="btn ⏩" href="#main">
-		<span aria-hidden="true">⏩</span>
-		Skip to main
-	</a>
 	<div class="📦">
 		<header class="g">
 			<div>
@@ -56,18 +42,6 @@ export default App;
 	max-width: 960px;
 	padding: var(--space-m);
 	width: 100%;
-}
-
-.⏩ {
-	left: 0;
-	margin: var(--space-l);
-	position: absolute;
-	top: -100%;
-	transition: top 0.25s ease-in-out;
-}
-
-.⏩:focus {
-	top: 0;
 }
 
 header {
