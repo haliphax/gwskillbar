@@ -1,3 +1,8 @@
+# [v0.11.2](https://github.com/haliphax/gwskillbar/compare/v0.11.1...v0.11.2) (2026-02-06)
+
+## 🐛 Bug Fixes
+- [`84f48fc`](https://github.com/haliphax/gwskillbar/commit/84f48fc)  fix ally skill display in list
+
 # [v0.11.1](https://github.com/haliphax/gwskillbar/compare/v0.11.0...v0.11.1) (2026-02-06)
 
 ## 🐛 Bug Fixes
