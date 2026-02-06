@@ -1,3 +1,8 @@
+# [v0.10.2](https://github.com/haliphax/gwskillbar/compare/v0.10.1...v0.10.2) (2026-02-06)
+
+## 🐛 Bug Fixes
+- [`e2c36f8`](https://github.com/haliphax/gwskillbar/commit/e2c36f8)  fix pvp mode loss on history navigation
+
 # [v0.10.1](https://github.com/haliphax/gwskillbar/compare/v0.10.0...v0.10.1) (2026-02-06)
 
 ## 🐛 Bug Fixes
