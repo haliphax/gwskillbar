@@ -3,7 +3,9 @@ import router from "@/app/router";
 import store from "@/app/store";
 import { statistics } from "@/app/util/skills";
 import { decode } from "@/app/util/template";
+import skillsData from "@/data/skills-data.json";
 import { onBeforeMount, onUnmounted, Ref, ref } from "vue";
+import BarChart from "./stats/bar-chart.vue";
 import PieChart from "./stats/pie-chart.vue";
 
 const pvp = ref(false);
@@ -40,10 +42,12 @@ const stats: Ref<Stats> = ref({
 });
 const skillsByAttribute = ref(new Map<string, number>());
 const skillsByProfession = ref(new Map<string, number>());
+const skills: Ref<SkillsData> = ref({});
 
 const clear = () => {
 	skillsByAttribute.value.clear();
 	skillsByProfession.value.clear();
+	skills.value = {};
 };
 
 const error = async (text: string) => {
@@ -75,17 +79,33 @@ const load = async () => {
 		await error((ex as any).toString());
 	}
 
+	for (const skill of build.value.skills) {
+		if (!skill || skill == "No Skill") {
+			continue;
+		}
+
+		skills.value[skill] = (skillsData as SkillsData)[skill];
+	}
+
 	stats.value = statistics(build.value);
 
 	for (const [attribute, percentage] of Object.entries(
 		stats.value.total.attribute,
 	)) {
+		if (percentage === 0) {
+			continue;
+		}
+
 		skillsByAttribute.value.set(attribute, percentage);
 	}
 
 	for (const [profession, percentage] of Object.entries(
 		stats.value.total.profession,
 	)) {
+		if (percentage === 0) {
+			continue;
+		}
+
 		skillsByProfession.value.set(profession, percentage);
 	}
 };
@@ -108,8 +128,9 @@ onUnmounted(() => removeEventListener("hashchange", load));
 			>
 		</li>
 	</ul>
-	<fieldset>
+	<fieldset class="stats">
 		<legend>Skill statistics</legend>
+		<BarChart :skills="skills"></BarChart>
 		<table>
 			<tbody>
 				<tr v-if="stats.average.energy > 0">
@@ -216,6 +237,18 @@ td img {
 fieldset {
 	overflow: hidden;
 	max-width: 100%;
+}
+
+.stats {
+	text-align: center;
+
+	legend {
+		text-align: left;
+	}
+
+	table {
+		margin-top: var(--space-l);
+	}
 }
 
 .stats-chart > .🥧 > div:first-child {
