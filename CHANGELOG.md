@@ -1,3 +1,8 @@
+# [v0.10.1](https://github.com/haliphax/gwskillbar/compare/v0.10.0...v0.10.1) (2026-02-06)
+
+## 🐛 Bug Fixes
+- [`02c14da`](https://github.com/haliphax/gwskillbar/commit/02c14da)  include overcast in bar graph
+
 # [v0.10.0](https://github.com/haliphax/gwskillbar/compare/v0.9.2...v0.10.0) (2026-02-06)
 
 ## ✨ New Features
