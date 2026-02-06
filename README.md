@@ -15,9 +15,9 @@ npm ci
 npm run dev
 ```
 
-Skill and profession icons are not included in this repository. To download
-them from the [Guild Wars Wiki][], use the `images` script (but please be
-considerate of bandwidth usage):
+Skill icons are not included in this repository. To download them from the
+[Guild Wars Wiki][], use the `images` script (but please be considerate of
+bandwidth usage):
 
 ```sh
 npm run images
