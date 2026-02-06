@@ -1,3 +1,8 @@
+# [v0.10.0](https://github.com/haliphax/gwskillbar/compare/v0.9.2...v0.10.0) (2026-02-06)
+
+## ✨ New Features
+- [`5ab7dbe`](https://github.com/haliphax/gwskillbar/commit/5ab7dbe)  skill stats stacked bar graph
+
 # [v0.9.2](https://github.com/haliphax/gwskillbar/compare/v0.9.1...v0.9.2) (2026-02-05)
 
 ## 🐛 Bug Fixes
