@@ -103,13 +103,13 @@ onUnmounted(() => removeEventListener("hashchange", load));
 <template>
 	<ul class="x control">
 		<li>
-			<span aria-hidden="true">📊</span>
 			<router-link
+				class="btn"
 				:to="{
 					name: 'stats',
 					params: { template: router.currentRoute.value.params.template },
 				}"
-				>Statistics</router-link
+				><span aria-hidden="true">📊</span> Statistics</router-link
 			>
 		</li>
 		<li>

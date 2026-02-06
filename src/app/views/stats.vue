@@ -118,13 +118,13 @@ onUnmounted(() => removeEventListener("hashchange", load));
 <template>
 	<ul class="x control">
 		<li>
-			<span aria-hidden="true">⏪</span>
 			<router-link
+				class="btn"
 				:to="{
 					name: 'view',
-					params: { template: code, mode: pvp ? 'pvp' : undefined },
+					params: { template: router.currentRoute.value.params.template },
 				}"
-				>Back to build</router-link
+				><span aria-hidden="true">⏪</span> Back to build</router-link
 			>
 		</li>
 	</ul>
