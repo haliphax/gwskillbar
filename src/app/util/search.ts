@@ -18,7 +18,7 @@ export const buildTree = (data: string[]): StringTree => {
 					}
 				}
 
-				(pos as StringTreeLeaf) = pos[letter] as Set<string>;
+				(pos as StringTreeLeaf) = pos[letter];
 			}
 
 			(pos as StringTreeLeaf as Set<string>).add(value);
@@ -37,8 +37,8 @@ export const searchTree = (tree: StringTree, search: string): string[] => {
 
 	let pos = tree;
 
-	for (let j = 0; j < 3; j++) {
-		const letter = sub[j];
+	for (let i = 0; i < 3; i++) {
+		const letter = sub[i];
 		(pos as StringTreeLeaf) = pos[letter];
 
 		if (pos === undefined) {
