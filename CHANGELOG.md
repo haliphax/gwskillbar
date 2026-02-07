@@ -1,3 +1,8 @@
+# [v0.11.6](https://github.com/haliphax/gwskillbar/compare/v0.11.5...v0.11.6) (2026-02-07)
+
+## 🐛 Bug Fixes
+- [`55cff73`](https://github.com/haliphax/gwskillbar/commit/55cff73)  remove optionals from skill stats page
+
 # [v0.11.5](https://github.com/haliphax/gwskillbar/compare/v0.11.4...v0.11.5) (2026-02-07)
 
 ## 🐛 Bug Fixes
