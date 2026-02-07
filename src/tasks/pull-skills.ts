@@ -92,6 +92,9 @@ for (let skill of Object.values(skills).slice(1)) {
 					case "Sacrifice":
 						data.health = amount;
 						break;
+					case "Upkeep":
+						data.upkeep = amount;
+						break;
 				}
 			});
 

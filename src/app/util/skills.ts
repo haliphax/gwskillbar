@@ -93,6 +93,7 @@ export const skillDescription = async (skill: string) => {
 						${data.overcast ? statDisplay("overcast", data.overcast) : ""}
 						${data.activate ? statDisplay("activate", data.activate) : ""}
 						${data.recharge ? statDisplay("recharge", data.recharge) : ""}
+						${data.upkeep ? statDisplay("upkeep", data.upkeep) : ""}
 					</ul>
 				</div>
 			</div>

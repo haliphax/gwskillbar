@@ -26,6 +26,7 @@ type SkillData = {
 	overcast?: number;
 	profession?: string;
 	recharge?: number | null;
+	upkeep?: number;
 };
 
 type SkillsData = {
