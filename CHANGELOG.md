@@ -1,3 +1,8 @@
+# [v0.11.4](https://github.com/haliphax/gwskillbar/compare/v0.11.3...v0.11.4) (2026-02-07)
+
+## 🐛 Bug Fixes
+- [`676143a`](https://github.com/haliphax/gwskillbar/commit/676143a)  fix skill swap on pvp toggle
+
 # [v0.11.3](https://github.com/haliphax/gwskillbar/compare/v0.11.2...v0.11.3) (2026-02-06)
 
 ## 🐛 Bug Fixes
