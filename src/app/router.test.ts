@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import Home from "./views/home.vue";
+import Stats from "./views/stats.vue";
 import View from "./views/view.vue";
 
 const { mockCreateRouter, mockCreateHistory, mockDefineComponent } = vi.hoisted(
@@ -19,6 +20,7 @@ vi.mock("vue-router", () => ({
 	createWebHashHistory: mockCreateHistory,
 }));
 vi.mock("./views/home.vue", () => ({ default: "Home" }));
+vi.mock("./views/stats.vue", () => ({ default: "Stats" }));
 vi.mock("./views/view.vue", () => ({ default: "View" }));
 
 await import("./router");
@@ -42,5 +44,6 @@ describe("router", () => {
 
 		expect(components).toContain(Home);
 		expect(components).toContain(View);
+		expect(components).toContain(Stats);
 	});
 });
