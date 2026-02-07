@@ -166,8 +166,6 @@ export const statistics = (build: BuildTemplate): Stats => {
 		}
 	}
 
-	totals.attribute["Optional"] = optionals;
-	totals.profession["Optional"] = optionals;
 	const skillCount = 8 - optionals;
 
 	const calcAverage = (total: number) =>
@@ -200,10 +198,6 @@ export const statistics = (build: BuildTemplate): Stats => {
 		const pct = calcPercentage(total);
 		stats.percentage.profession[profession] = pct;
 	}
-
-	const pctOptional = calcPercentage(optionals);
-	stats.percentage.attribute["Optional"] = pctOptional;
-	stats.percentage.profession["Optional"] = pctOptional;
 
 	return stats;
 };
