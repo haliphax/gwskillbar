@@ -35,7 +35,6 @@ const clear = () => {
 	};
 	attribDesc.value = {};
 	hasInvalidPvpSkills.value = false;
-	pvp.value = location.hash.endsWith("/pvp");
 };
 
 const error = async (text: string) => {
@@ -44,19 +43,21 @@ const error = async (text: string) => {
 	throw text;
 };
 
-const load = async () => {
+const load = async (_?: Event, force = false) => {
 	if (router.currentRoute.value.name != "view") {
 		return;
 	}
 
 	const codeFromHash = location.hash.replace(/(?:\/(?:pvp))+/g, "").slice(2);
+	const pvpFromHash = location.hash.endsWith("/pvp");
 
-	if (codeFromHash == code.value) {
+	if (!force && codeFromHash == code.value && pvpFromHash == pvp.value) {
 		return;
 	}
 
 	clear();
 	code.value = codeFromHash;
+	pvp.value = pvpFromHash;
 
 	try {
 		build.value = decode(code.value, pvp.value);
@@ -92,7 +93,7 @@ const updatePvp = async () => {
 		location.href = location.href.replace(/\/pvp$/, "");
 	}
 
-	await load();
+	await load(undefined, true);
 };
 
 addEventListener("hashchange", load);
