@@ -49,7 +49,7 @@ export const statDisplay = (stat: string, amount: number | null) => {
 	}
 
 	return /* html */ `
-		<li class="ib" style="margin-left: var(--space-l);">
+		<li class="ib" style="margin-left: var(--space-m);">
 			${amountDisplay}
 			<img
 				alt="${stat}"
@@ -72,7 +72,7 @@ export const skillDescription = async (skill: string) => {
 		html: true,
 		text: /* html */ `
 			<div style="margin-top: var(--space-m)">
-				<div class="fl ib" style="width: 50%;">
+				<div class="fl ib" style="width: auto;">
 					<img
 						alt=""
 						class="vam"
@@ -84,7 +84,7 @@ export const skillDescription = async (skill: string) => {
 						${data.attribute ?? "No Attribute"}
 					</span>
 				</div>
-				<div class="fr ib" style="text-align: right; width: 50%;">
+				<div class="fr ib" style="text-align: right; width: auto;">
 					<span class="sr">Skill stats:</span>
 					<ul class="x">
 						${data.adrenaline ? statDisplay("adrenaline", data.adrenaline) : ""}
