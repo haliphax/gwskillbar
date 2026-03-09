@@ -124,7 +124,7 @@ onUnmounted(() => removeEventListener("hashchange", load));
 					name: 'view',
 					params: { template: router.currentRoute.value.params.template },
 				}"
-				><span aria-hidden="true">⏪</span> Back to build</router-link
+				><span aria-hidden="true">⏪</span> View build</router-link
 			>
 		</li>
 	</ul>
