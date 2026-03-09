@@ -1,3 +1,8 @@
+# [v0.13.0](https://github.com/haliphax/gwskillbar/compare/v0.12.1...v0.13.0) (2026-03-09)
+
+## ✨ New Features
+- [`7389cba`](https://github.com/haliphax/gwskillbar/commit/7389cba)  link search results to wiki
+
 # [v0.12.1](https://github.com/haliphax/gwskillbar/compare/v0.12.0...v0.12.1) (2026-03-09)
 
 ## 🐛 Bug Fixes
