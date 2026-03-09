@@ -1,3 +1,8 @@
+# [v0.12.1](https://github.com/haliphax/gwskillbar/compare/v0.12.0...v0.12.1) (2026-03-09)
+
+## 🐛 Bug Fixes
+- [`94ef2e5`](https://github.com/haliphax/gwskillbar/commit/94ef2e5)  ally skill icon fixes in skill bar editor
+
 # [v0.12.0](https://github.com/haliphax/gwskillbar/compare/v0.11.6...v0.12.0) (2026-03-09)
 
 ## ✨ New Features
