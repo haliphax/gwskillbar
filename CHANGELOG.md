@@ -1,3 +1,8 @@
+# [v0.12.0](https://github.com/haliphax/gwskillbar/compare/v0.11.6...v0.12.0) (2026-03-09)
+
+## ✨ New Features
+- [`b04f64c`](https://github.com/haliphax/gwskillbar/commit/b04f64c)  edit mode (#4) (Issues: [`#4`](https://github.com/haliphax/gwskillbar/issues/4))
+
 # [v0.11.6](https://github.com/haliphax/gwskillbar/compare/v0.11.5...v0.11.6) (2026-02-07)
 
 ## 🐛 Bug Fixes
