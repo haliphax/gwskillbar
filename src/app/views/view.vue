@@ -210,11 +210,6 @@ onUnmounted(() => removeEventListener("hashchange", load));
 	width: 1.5em;
 }
 
-fieldset {
-	--icon-size: 40px;
-	--gap: 2px;
-}
-
 .slash {
 	color: var(--color-fg-subtle);
 }
@@ -225,24 +220,6 @@ fieldset {
 
 .score {
 	color: var(--color-fg-subtle);
-}
-
-.skillbar {
-	column-gap: var(--gap);
-	grid-template-columns: repeat(8, minmax(var(--icon-size), 1fr));
-	margin: 0 auto;
-	max-width: 100%;
-	width: calc((var(--icon-size) * 8) + (var(--gap) * 7));
-
-	li {
-		&,
-		a,
-		span,
-		img {
-			height: var(--icon-size);
-			width: var(--icon-size);
-		}
-	}
 }
 
 .skills .icon {
@@ -268,16 +245,7 @@ a.invalid {
 	text-align: center;
 }
 
-@media @breakpoint_s {
-	fieldset {
-		--icon-size: 52px;
-	}
-}
-
 @media @breakpoint_m {
-	fieldset {
-		--icon-size: 64px;
-	}
 	.attributes,
 	.skills {
 		column-count: 2;

@@ -1,3 +1,5 @@
+@import "breakpoints.less";
+
 :root {
 	/* colors */
 	--color-bg-global: #eee;
@@ -311,4 +313,37 @@ ul.control {
 
 img.invalid {
 	opacity: 0.1;
+}
+
+/* skill bar (8 slots) */
+.skillbar {
+	--icon-size: 40px;
+	--gap: 2px;
+	column-gap: var(--gap);
+	grid-template-columns: repeat(8, minmax(var(--icon-size), 1fr));
+	margin: 0 auto;
+	max-width: 100%;
+	width: calc((var(--icon-size) * 8) + (var(--gap) * 7));
+
+	li {
+		&,
+		a,
+		span,
+		img {
+			height: var(--icon-size);
+			width: var(--icon-size);
+		}
+	}
+}
+
+@media @breakpoint_s {
+	.skillbar {
+		--icon-size: 52px;
+	}
+}
+
+@media @breakpoint_m {
+	.skillbar {
+		--icon-size: 64px;
+	}
 }
