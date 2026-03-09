@@ -237,6 +237,10 @@ onUnmounted(() => removeEventListener("hashchange", load));
 	color: var(--color-fg-subtle);
 }
 
+.skills li {
+	margin-right: 1em;
+}
+
 .skills .icon {
 	margin-right: var(--space-m);
 	position: relative;
