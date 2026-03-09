@@ -1,8 +1,8 @@
+import store from "@/app/store";
 import allegiance from "@/data/allegiance.json";
 import pveOnly from "@/data/pve-only.json";
 import skillsData from "@/data/skills-data.json";
 import skills from "@/data/skills.json";
-import store from "../store";
 
 const allegianceSkills: LookupArray = {};
 const pveSkills: LookupArray = {};

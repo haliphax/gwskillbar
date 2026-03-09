@@ -1,8 +1,8 @@
 <script lang="ts" setup>
+import { DEFAULT_BUILD } from "@/app/constants";
 import router from "@/app/router";
 import { ref } from "vue";
 
-const DEFAULT_BUILD = "OAVTEYDfG6GYCwmsOIm0GEAoqC";
 const code = ref("");
 
 const submit = () => {

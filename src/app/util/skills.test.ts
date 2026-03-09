@@ -1,5 +1,5 @@
+import store from "@/app/store";
 import { describe, expect, it, vi } from "vitest";
-import store from "../store";
 import {
 	allegianceSkills,
 	invalidSkillClass,
@@ -129,7 +129,8 @@ describe("skills util", () => {
 			await skillDescription("Power Block");
 
 			expect(dispatchSpy).toHaveBeenCalledWith("alert", expect.any(Object));
-			const payload = dispatchSpy.mock.calls[0][1];
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			const payload: any = dispatchSpy.mock.calls[0][1]!;
 
 			expect(payload.html).toBe(true);
 			expect(payload.text).toContain("Guild Wars Wiki");
