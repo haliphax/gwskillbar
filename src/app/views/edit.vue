@@ -286,10 +286,12 @@ watch(
 const currentBuild = computed((): BuildTemplate => {
 	const attrs = availableAttributes.value;
 	const attributes: Record<string, number> = {};
+
 	for (const attr of attrs) {
 		const rank = attributeRanks.value[attr] ?? 0;
 		if (rank > 0) attributes[attr] = rank;
 	}
+
 	return {
 		primary: primaryProfession.value,
 		secondary: secondaryProfession.value,
@@ -335,12 +337,15 @@ watch(
 	() => {
 		const route = router.currentRoute.value;
 		if (route.name !== "edit" && route.name !== "edit-pvp") return;
+
 		const code = encode(currentBuild.value);
 		const templateParam = route.params.template;
 		const currentTemplate = Array.isArray(templateParam)
 			? templateParam.join("/")
 			: String(templateParam ?? "");
+
 		if (currentTemplate === code) return;
+
 		const params: { template: string } = { template: code };
 		router.push({ name: route.name ?? "edit", params });
 	},
@@ -357,12 +362,12 @@ watch(
 					name: pvp ? 'view-pvp' : 'view',
 					params: { template: router.currentRoute.value.params.template },
 				}"
-				><span aria-hidden="true">⏪</span> View build</router-link
+				><span aria-hidden="true">⏪</span> View</router-link
 			>
 		</li>
 		<li>
 			<a href="#" class="btn" @click.prevent="generateTemplate">
-				<span aria-hidden="true">📋</span> Template code
+				<span aria-hidden="true">📋</span> Copy
 			</a>
 		</li>
 		<li>
@@ -371,8 +376,8 @@ watch(
 	</ul>
 	<details class="g section" open>
 		<summary>Professions</summary>
-		<div>
-			<span class="b">
+		<div class="attr-list">
+			<span class="attr-row">
 				<label for="primary-profession">Primary:</label>
 				<select
 					id="primary-profession"
@@ -384,7 +389,7 @@ watch(
 					</option>
 				</select>
 			</span>
-			<span>
+			<span class="attr-row">
 				<label for="secondary-profession">Secondary:</label>
 				<select id="secondary-profession" v-model="secondaryProfession">
 					<option v-for="p in secondaryProfessionOptions" :key="p" :value="p">
@@ -464,6 +469,12 @@ watch(
 			</li>
 		</ul>
 	</fieldset>
+	<p class="instructions">
+		<small>
+			<span aria-hidden="true">ℹ️</span>
+			Click or drag/drop skill icons in the skill bar and search results.
+		</small>
+	</p>
 	<form @submit.prevent="submit">
 		<fieldset class="g">
 			<legend>Skill search</legend>
@@ -678,5 +689,9 @@ fieldset {
 a.drag-pending {
 	outline: 2px solid var(--color-em);
 	outline-offset: 2px;
+}
+
+.instructions {
+	color: var(--color-fg-subtle);
 }
 </style>

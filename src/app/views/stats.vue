@@ -138,7 +138,7 @@ watch(
 					name: pvp ? 'view-pvp' : 'view',
 					params: { template: router.currentRoute.value.params.template },
 				}"
-				><span aria-hidden="true">⏪</span> View build</router-link
+				><span aria-hidden="true">⏪</span> View</router-link
 			>
 		</li>
 		<li>

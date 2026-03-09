@@ -126,7 +126,7 @@ watch(
 					name: pvp ? 'stats-pvp' : 'stats',
 					params: { template: router.currentRoute.value.params.template },
 				}"
-				><span aria-hidden="true">📊</span> Statistics</router-link
+				><span aria-hidden="true">📊</span> Stats</router-link
 			>
 		</li>
 		<li>
