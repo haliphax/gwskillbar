@@ -320,7 +320,7 @@ const generateTemplate = async () => {
 		await navigator.clipboard.writeText(code);
 		store.dispatch("alert", {
 			text: "Template code has been copied to the clipboard.",
-			title: "Template code",
+			title: "Copied",
 		});
 	} catch {
 		store.dispatch("alert", { text: code, title: "Template code" });
