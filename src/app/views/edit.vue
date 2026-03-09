@@ -63,8 +63,8 @@ const remainingPoints = computed(
 
 const onAttributeRankInput = (attr: string, e: Event) => {
 	const raw = parseInt((e.target as HTMLInputElement).value, 10);
-	const v = Number.isNaN(raw) ? 0 : Math.min(12, Math.max(0, raw));
-	attributeRanks.value[attr] = v;
+	const v = Number.isNaN(raw) ? 0 : raw;
+	attributeRanks.value[attr] = v < 0 ? 0 : v > 12 ? 12 : v;
 };
 
 const search = ref("");
