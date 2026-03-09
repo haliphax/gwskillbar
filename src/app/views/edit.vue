@@ -104,6 +104,22 @@ const onDragStart = (skill: string, e: DragEvent) => {
 };
 
 const placeSkillInSlot = (skill: string, slotIndex: number) => {
+	const existingIndex = slots.value.indexOf(skill);
+	const targetSkill = slots.value[slotIndex];
+
+	// If moving a skill that is already on the bar onto another
+	// occupied slot, just swap the two. This preserves elites and
+	// PvE counts since we're only changing positions.
+	if (
+		existingIndex !== -1 &&
+		existingIndex !== slotIndex &&
+		targetSkill !== "No Skill"
+	) {
+		slots.value[existingIndex] = targetSkill;
+		slots.value[slotIndex] = skill;
+		return;
+	}
+
 	if (skill !== "No Skill") {
 		for (let i = 0; i < slots.value.length; i++) {
 			if (i !== slotIndex && slots.value[i] === skill) {
