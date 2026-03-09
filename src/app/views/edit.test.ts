@@ -19,7 +19,6 @@ const {
 	const route = {
 		name: "edit",
 		params: { template: "CODE" },
-		query: { q: "1" },
 	};
 
 	return {
@@ -322,7 +321,6 @@ describe("Edit view", () => {
 			mockRouter.currentRoute.value = {
 				name: "edit",
 				params: { template: "OLD" },
-				query: { q: "1" },
 			} as any;
 
 			mockEncode.mockReset();

@@ -339,7 +339,6 @@ describe("View view", () => {
 			mockRouter.currentRoute.value = {
 				name: "home",
 				params: { template: "CODE" },
-				query: { q: "1" },
 			} as any;
 			mockRouter.push.mockClear();
 
@@ -352,12 +351,10 @@ describe("View view", () => {
 			const vm = view.vm as any;
 
 			const params = { template: "CODE123" };
-			const query = { q: "1" };
 
 			mockRouter.currentRoute.value = {
 				name: "view",
 				params,
-				query,
 			} as any;
 
 			mockRouter.push.mockClear();
@@ -366,13 +363,11 @@ describe("View view", () => {
 			expect(mockRouter.push).toHaveBeenCalledWith({
 				name: "view-pvp",
 				params,
-				query,
 			});
 
 			mockRouter.currentRoute.value = {
 				name: "view-pvp",
 				params,
-				query,
 			} as any;
 
 			mockRouter.push.mockClear();
@@ -381,7 +376,6 @@ describe("View view", () => {
 			expect(mockRouter.push).toHaveBeenCalledWith({
 				name: "view",
 				params,
-				query,
 			});
 		});
 	});
