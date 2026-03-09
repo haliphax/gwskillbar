@@ -184,25 +184,71 @@ const loadFromRoute = () => {
 
 onBeforeMount(loadFromRoute);
 
-const generateTemplate = () => {
+const currentBuild = computed((): BuildTemplate => {
 	const attrs = availableAttributes.value;
 	const attributes: Record<string, number> = {};
 	for (const attr of attrs) {
 		const rank = attributeRanks.value[attr] ?? 0;
 		if (rank > 0) attributes[attr] = rank;
 	}
-	const build: BuildTemplate = {
+	return {
 		primary: primaryProfession.value,
 		secondary: secondaryProfession.value,
 		attributes,
 		skills: [...slots.value],
 	};
-	const code = encode(build);
-	store.dispatch("alert", { text: code, title: "Template code" });
+});
+
+const generateTemplate = async () => {
+	const code = encode(currentBuild.value);
+	try {
+		await navigator.clipboard.writeText(code);
+		store.dispatch("alert", {
+			text: "Template code has been copied to the clipboard.",
+			title: "Template code",
+		});
+	} catch {
+		store.dispatch("alert", { text: code, title: "Template code" });
+	}
 };
+
+watch(
+	() => [
+		primaryProfession.value,
+		secondaryProfession.value,
+		attributeRanks.value,
+		slots.value,
+	],
+	() => {
+		const route = router.currentRoute.value;
+		if (route.name !== "edit") return;
+		const code = encode(currentBuild.value);
+		const params: { template: string; mode?: string } = { template: code };
+		if (route.params.mode === "pvp") params.mode = "pvp";
+		router.replace({ name: "edit", params });
+	},
+	{ deep: true },
+);
 </script>
 
 <template>
+	<ul class="x control">
+		<li>
+			<router-link
+				class="btn"
+				:to="{
+					name: 'view',
+					params: { template: router.currentRoute.value.params.template },
+				}"
+				><span aria-hidden="true">⏪</span> Back to build</router-link
+			>
+		</li>
+		<li>
+			<a href="#" class="btn" @click.prevent="generateTemplate">
+				<span aria-hidden="true">📋</span> Template code
+			</a>
+		</li>
+	</ul>
 	<details class="g section" open>
 		<summary>Professions</summary>
 		<div>
@@ -248,7 +294,7 @@ const generateTemplate = () => {
 			</div>
 		</div>
 	</details>
-	<fieldset>
+	<fieldset class="skillbar-fieldset">
 		<legend>Skill bar</legend>
 		<ul class="skillbar x g">
 			<li
@@ -275,9 +321,6 @@ const generateTemplate = () => {
 				<SkillIcon v-else name="No Skill"></SkillIcon>
 			</li>
 		</ul>
-		<button type="button" class="btn" @click="generateTemplate">
-			Generate template code
-		</button>
 	</fieldset>
 	<form @submit.prevent="submit">
 		<fieldset class="g">
@@ -358,6 +401,12 @@ fieldset,
 
 fieldset {
 	padding: var(--space-xl);
+}
+
+.skillbar-fieldset {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
 }
 
 .section summary {

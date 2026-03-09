@@ -107,6 +107,19 @@ onUnmounted(() => removeEventListener("hashchange", load));
 			<router-link
 				class="btn"
 				:to="{
+					name: 'edit',
+					params: {
+						template: code,
+						...(pvp && { mode: 'pvp' }),
+					},
+				}"
+				><span aria-hidden="true">✏️</span> Edit</router-link
+			>
+		</li>
+		<li>
+			<router-link
+				class="btn"
+				:to="{
 					name: 'stats',
 					params: { template: router.currentRoute.value.params.template },
 				}"
@@ -150,7 +163,7 @@ onUnmounted(() => removeEventListener("hashchange", load));
 			</ul>
 		</div>
 	</fieldset>
-	<fieldset>
+	<fieldset class="skillbar-fieldset">
 		<legend>Skills</legend>
 		<ul class="skillbar x g">
 			<li v-for="(skill, idx) in build.skills" :key="idx">
@@ -202,8 +215,10 @@ onUnmounted(() => removeEventListener("hashchange", load));
 <style lang="less" scoped>
 @import "@/styles/breakpoints.less";
 
-.pvp-icon {
-	margin-left: var(--space-s);
+.skillbar-fieldset {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
 }
 
 .prof-icon {
