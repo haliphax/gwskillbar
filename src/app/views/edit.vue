@@ -65,14 +65,18 @@ const availableAttributes = computed(() =>
 );
 
 const attributeRanks: Ref<Record<string, number>> = ref({});
+const attributeRunes: Ref<Record<string, number>> = ref({});
 watch(
 	availableAttributes,
 	(attrs) => {
 		const next: Record<string, number> = {};
+		const nextRunes: Record<string, number> = {};
 		for (const attr of attrs) {
 			next[attr] = attributeRanks.value[attr] ?? 0;
+			nextRunes[attr] = attributeRunes.value[attr] ?? 0;
 		}
 		attributeRanks.value = next;
+		attributeRunes.value = nextRunes;
 	},
 	{ immediate: true },
 );
@@ -83,14 +87,22 @@ const remainingPoints = computed(
 
 const getDisplayRank = (attr: string): number => {
 	const base = attributeRanks.value[attr] ?? 0;
-	return base + (headpieceAttribute.value === attr ? 1 : 0);
+	const headpieceBonus = headpieceAttribute.value === attr ? 1 : 0;
+	const runeBonus = attributeRunes.value[attr] ?? 0;
+	return base + headpieceBonus + runeBonus;
 };
 
-const getDisplayMin = (attr: string): number =>
-	headpieceAttribute.value === attr ? 1 : 0;
+const getDisplayMin = (attr: string): number => {
+	const headpieceBonus = headpieceAttribute.value === attr ? 1 : 0;
+	const runeBonus = attributeRunes.value[attr] ?? 0;
+	return headpieceBonus + runeBonus;
+};
 
-const getDisplayMax = (attr: string): number =>
-	headpieceAttribute.value === attr ? 13 : 12;
+const getDisplayMax = (attr: string): number => {
+	const headpieceBonus = headpieceAttribute.value === attr ? 1 : 0;
+	const runeBonus = attributeRunes.value[attr] ?? 0;
+	return 12 + headpieceBonus + runeBonus;
+};
 
 const onAttributeRankInput = (attr: string, e: Event) => {
 	const raw = parseInt((e.target as HTMLInputElement).value, 10);
@@ -102,7 +114,9 @@ const onAttributeRankInput = (attr: string, e: Event) => {
 	const effective =
 		v < displayMin ? displayMin : v > displayMax ? displayMax : v;
 
-	const base = headpieceAttribute.value === attr ? effective - 1 : effective;
+	const headpieceBonus = headpieceAttribute.value === attr ? 1 : 0;
+	const runeBonus = attributeRunes.value[attr] ?? 0;
+	const base = effective - headpieceBonus - runeBonus;
 
 	attributeRanks.value[attr] = base < 0 ? 0 : base > 12 ? 12 : base;
 };
@@ -252,6 +266,12 @@ const loadFromRoute = () => {
 };
 
 onBeforeMount(loadFromRoute);
+watch(
+	() => router.currentRoute.value,
+	() => {
+		loadFromRoute();
+	},
+);
 
 const currentBuild = computed((): BuildTemplate => {
 	const attrs = availableAttributes.value;
@@ -292,9 +312,15 @@ watch(
 		const route = router.currentRoute.value;
 		if (route.name !== "edit") return;
 		const code = encode(currentBuild.value);
+		const templateParam = route.params.template;
+		const currentTemplate = Array.isArray(templateParam)
+			? templateParam.join("/")
+			: String(templateParam ?? "");
+		const currentMode = route.params.mode === "pvp" ? "pvp" : undefined;
 		const params: { template: string; mode?: string } = { template: code };
-		if (route.params.mode === "pvp") params.mode = "pvp";
-		router.replace({ name: "edit", params });
+		if (currentMode === "pvp") params.mode = "pvp";
+		if (currentTemplate === code && currentMode === params.mode) return;
+		router.push({ name: "edit", params });
 	},
 	{ deep: true },
 );
@@ -364,6 +390,15 @@ watch(
 			<div class="attr-list">
 				<span v-for="attr in availableAttributes" :key="attr" class="attr-row">
 					<label :for="`attr-${attr}`">{{ attr }}</label>
+					<select
+						v-if="primaryHeadpieceAttributes.includes(attr)"
+						:id="`rune-${attr}`"
+						v-model.number="attributeRunes[attr]"
+					>
+						<option v-for="n in [0, 1, 2, 3]" :key="n" :value="n">
+							+{{ n }}
+						</option>
+					</select>
 					<input
 						:id="`attr-${attr}`"
 						type="number"
