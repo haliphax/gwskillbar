@@ -36,6 +36,26 @@ const secondaryProfessionOptions = computed(() =>
 	professionList.filter((p) => p !== primaryProfession.value),
 );
 
+const headpieceAttribute = ref<string | "">("");
+
+const primaryHeadpieceAttributes = computed(() => {
+	const primary = professionsData.find(
+		(p) => p.name === primaryProfession.value,
+	);
+
+	if (!primary) return [];
+
+	const result: string[] = [];
+
+	if (primary.primaryAttribute != null) {
+		result.push(primary.primaryAttribute);
+	}
+
+	result.push(...primary.secondaryAttributes);
+
+	return result;
+});
+
 const availableAttributes = computed(() =>
 	getAvailableAttributes(
 		professionsData,
@@ -61,10 +81,30 @@ const remainingPoints = computed(
 	() => ATTRIBUTE_POINTS_MAX - pointsSpent(attributeRanks.value),
 );
 
+const getDisplayRank = (attr: string): number => {
+	const base = attributeRanks.value[attr] ?? 0;
+	return base + (headpieceAttribute.value === attr ? 1 : 0);
+};
+
+const getDisplayMin = (attr: string): number =>
+	headpieceAttribute.value === attr ? 1 : 0;
+
+const getDisplayMax = (attr: string): number =>
+	headpieceAttribute.value === attr ? 13 : 12;
+
 const onAttributeRankInput = (attr: string, e: Event) => {
 	const raw = parseInt((e.target as HTMLInputElement).value, 10);
 	const v = Number.isNaN(raw) ? 0 : raw;
-	attributeRanks.value[attr] = v < 0 ? 0 : v > 12 ? 12 : v;
+
+	const displayMin = getDisplayMin(attr);
+	const displayMax = getDisplayMax(attr);
+
+	const effective =
+		v < displayMin ? displayMin : v > displayMax ? displayMax : v;
+
+	const base = headpieceAttribute.value === attr ? effective - 1 : effective;
+
+	attributeRanks.value[attr] = base < 0 ? 0 : base > 12 ? 12 : base;
 };
 
 const search = ref("");
@@ -171,6 +211,19 @@ const onPrimaryProfessionChange = () => {
 		secondaryProfession.value = secondaryProfessionOptions.value[0] ?? "";
 	}
 };
+
+watch(
+	primaryProfession,
+	() => {
+		if (
+			headpieceAttribute.value &&
+			!primaryHeadpieceAttributes.value.includes(headpieceAttribute.value)
+		) {
+			headpieceAttribute.value = "";
+		}
+	},
+	{ immediate: true },
+);
 
 const loadFromRoute = () => {
 	const route = router.currentRoute.value;
@@ -294,6 +347,19 @@ watch(
 		<summary>Attributes</summary>
 		<div>
 			<span>Remaining: {{ remainingPoints }} / {{ ATTRIBUTE_POINTS_MAX }}</span>
+			<div class="attr-headpiece">
+				<label for="headpiece-attr">Headpiece rune:</label>
+				<select id="headpiece-attr" v-model="headpieceAttribute">
+					<option value="">None</option>
+					<option
+						v-for="attr in primaryHeadpieceAttributes"
+						:key="attr"
+						:value="attr"
+					>
+						{{ attr }}
+					</option>
+				</select>
+			</div>
 			<hr />
 			<div class="attr-list">
 				<span v-for="attr in availableAttributes" :key="attr" class="attr-row">
@@ -301,9 +367,9 @@ watch(
 					<input
 						:id="`attr-${attr}`"
 						type="number"
-						min="0"
-						max="12"
-						:value="attributeRanks[attr] ?? 0"
+						:min="getDisplayMin(attr)"
+						:max="getDisplayMax(attr)"
+						:value="getDisplayRank(attr)"
 						@input="onAttributeRankInput(attr, $event)"
 					/>
 				</span>
@@ -432,6 +498,13 @@ fieldset {
 
 .section span.b {
 	margin-bottom: var(--space-l);
+}
+
+.attr-headpiece {
+	align-items: center;
+	display: flex;
+	gap: var(--space-m);
+	margin-top: var(--space-m);
 }
 
 .attr-list {
