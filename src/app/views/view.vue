@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import ProfessionIcon from "@/app/components/profession-icon.vue";
+import PvpModeToggle from "@/app/components/pvp-mode-toggle.vue";
 import SkillIcon from "@/app/components/skill-icon.vue";
-import Toggle from "@/app/components/toggle.vue";
 import WikiLink from "@/app/components/wiki-link.vue";
 import router from "@/app/router";
 import store from "@/app/store";
@@ -13,10 +13,10 @@ import {
 } from "@/app/util/skills";
 import { decode } from "@/app/util/template";
 import attributesData from "@/data/attributes-data.json";
-import { onBeforeMount, onUnmounted, ref, Ref } from "vue";
+import { computed, onBeforeMount, ref, Ref, watch } from "vue";
 
 const code = ref("");
-const pvp = ref(false);
+const pvp = computed(() => router.currentRoute.value.name === "view-pvp");
 const hasInvalidPvpSkills = ref(false);
 const build: Ref<BuildTemplate> = ref({
 	primary: "",
@@ -43,24 +43,23 @@ const error = async (text: string) => {
 	throw text;
 };
 
-const load = async (_?: Event, force = false) => {
-	if (router.currentRoute.value.name != "view") {
-		return;
-	}
+const loadFromRoute = async () => {
+	const route = router.currentRoute.value;
+	if (route.name !== "view" && route.name !== "view-pvp") return;
 
-	const codeFromHash = location.hash.replace(/(?:\/(?:pvp))+/g, "").slice(2);
-	const pvpFromHash = location.hash.endsWith("/pvp");
+	const templateParam = route.params.template;
+	const codeFromRoute = Array.isArray(templateParam)
+		? templateParam.join("/")
+		: String(templateParam ?? "");
+	const isPvp = route.name === "view-pvp";
 
-	if (!force && codeFromHash == code.value && pvpFromHash == pvp.value) {
-		return;
-	}
+	if (!codeFromRoute) return;
 
 	clear();
-	code.value = codeFromHash;
-	pvp.value = pvpFromHash;
+	code.value = codeFromRoute;
 
 	try {
-		build.value = decode(code.value, pvp.value);
+		build.value = decode(code.value, isPvp);
 	} catch (ex) {
 		await error((ex as any).toString());
 	}
@@ -84,21 +83,26 @@ const load = async (_?: Event, force = false) => {
 	}
 };
 
-const updatePvp = async () => {
-	pvp.value = !pvp.value;
+const updatePvp = (nextPvp: boolean) => {
+	const route = router.currentRoute.value;
+	if (route.name !== "view" && route.name !== "view-pvp") return;
 
-	if (pvp.value && !location.hash.endsWith("/pvp")) {
-		location.href += "/pvp";
-	} else if (!pvp.value && location.hash.endsWith("/pvp")) {
-		location.href = location.href.replace(/\/pvp$/, "");
-	}
+	const params = { ...route.params } as { [key: string]: string | string[] };
 
-	await load(undefined, true);
+	router.push({
+		name: nextPvp ? "view-pvp" : "view",
+		params,
+		query: route.query,
+	});
 };
 
-addEventListener("hashchange", load);
-onBeforeMount(load);
-onUnmounted(() => removeEventListener("hashchange", load));
+onBeforeMount(loadFromRoute);
+watch(
+	() => router.currentRoute.value,
+	() => {
+		loadFromRoute();
+	},
+);
 </script>
 
 <template>
@@ -107,10 +111,9 @@ onUnmounted(() => removeEventListener("hashchange", load));
 			<router-link
 				class="btn"
 				:to="{
-					name: 'edit',
+					name: pvp ? 'edit-pvp' : 'edit',
 					params: {
 						template: code,
-						...(pvp && { mode: 'pvp' }),
 					},
 				}"
 				><span aria-hidden="true">✏️</span> Edit</router-link
@@ -120,19 +123,14 @@ onUnmounted(() => removeEventListener("hashchange", load));
 			<router-link
 				class="btn"
 				:to="{
-					name: 'stats',
+					name: pvp ? 'stats-pvp' : 'stats',
 					params: { template: router.currentRoute.value.params.template },
 				}"
 				><span aria-hidden="true">📊</span> Statistics</router-link
 			>
 		</li>
 		<li>
-			<label for="pvp-toggle">
-				<Toggle id="pvp-toggle" :checked="pvp" @click="updatePvp"></Toggle>
-				<span aria-hidden="true" v-show="pvp" class="pvp-icon">⚔️ PvP</span>
-				<span aria-hidden="true" v-show="!pvp" class="pvp-icon">️🧸 PvE</span>
-				mode
-			</label>
+			<PvpModeToggle id="pvp-toggle" :pvp="pvp" @change="updatePvp" />
 		</li>
 	</ul>
 	<h2 v-show="build.primary && build.secondary">

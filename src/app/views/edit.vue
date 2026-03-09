@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import PvpModeToggle from "@/app/components/pvp-mode-toggle.vue";
 import SkillIcon from "@/app/components/skill-icon.vue";
 import router from "@/app/router";
 import store from "@/app/store";
@@ -13,6 +14,7 @@ import {
 	isEliteSkill,
 	isPveOnlySkill,
 	isSkillAvailableForProfessions,
+	pvpSkills,
 	skillDescHtml,
 	skillsData,
 	skillStatsFragment,
@@ -29,6 +31,7 @@ type ProfessionEntry = {
 };
 
 const professionsData = professions as ProfessionEntry[];
+const pvp = computed(() => router.currentRoute.value.name === "edit-pvp");
 const professionList = professionsData.map((p) => p.name);
 const primaryProfession = ref("Warrior");
 const secondaryProfession = ref("Ranger");
@@ -141,15 +144,22 @@ const submit = () => {
 	results.value = searchTree(tree, search.value);
 };
 
-const filteredResults = computed(() =>
-	results.value.filter((skill) =>
+const filteredResults = computed(() => {
+	const baseResults = results.value.filter((skill) =>
 		isSkillAvailableForProfessions(
 			skill,
 			primaryProfession.value,
 			secondaryProfession.value,
 		),
-	),
-);
+	);
+
+	if (!pvp.value) return baseResults;
+
+	return baseResults.map((skill) => {
+		const key = skill.replace(/"/g, "%22");
+		return pvpSkills[key] ? `${skill} (PvP)` : skill;
+	});
+});
 
 const onDragStart = (skill: string, e: DragEvent) => {
 	if (!e.dataTransfer) return;
@@ -241,18 +251,18 @@ watch(
 
 const loadFromRoute = () => {
 	const route = router.currentRoute.value;
-	if (route.name !== "edit") return;
+	if (route.name !== "edit" && route.name !== "edit-pvp") return;
 
 	const templateParam = route.params.template;
 	const code = Array.isArray(templateParam)
 		? templateParam.join("/")
 		: String(templateParam ?? "");
-	const pvp = route.params.mode === "pvp";
+	const isPvp = route.name === "edit-pvp";
 
 	if (!code || code === "new") return;
 
 	try {
-		const build = decode(code, pvp);
+		const build = decode(code, isPvp);
 		primaryProfession.value = build.primary;
 		secondaryProfession.value = build.secondary;
 		attributeRanks.value = { ...build.attributes };
@@ -288,6 +298,20 @@ const currentBuild = computed((): BuildTemplate => {
 	};
 });
 
+const togglePvp = (nextPvp: boolean) => {
+	const route = router.currentRoute.value;
+	if (route.name !== "edit" && route.name !== "edit-pvp") return;
+
+	const params = { ...route.params } as { [key: string]: string | string[] };
+
+	// Preserve existing template params, switch between PvE and PvP route names.
+	router.push({
+		name: nextPvp ? "edit-pvp" : "edit",
+		params,
+		query: route.query,
+	});
+};
+
 const generateTemplate = async () => {
 	const code = encode(currentBuild.value);
 	try {
@@ -310,17 +334,15 @@ watch(
 	],
 	() => {
 		const route = router.currentRoute.value;
-		if (route.name !== "edit") return;
+		if (route.name !== "edit" && route.name !== "edit-pvp") return;
 		const code = encode(currentBuild.value);
 		const templateParam = route.params.template;
 		const currentTemplate = Array.isArray(templateParam)
 			? templateParam.join("/")
 			: String(templateParam ?? "");
-		const currentMode = route.params.mode === "pvp" ? "pvp" : undefined;
-		const params: { template: string; mode?: string } = { template: code };
-		if (currentMode === "pvp") params.mode = "pvp";
-		if (currentTemplate === code && currentMode === params.mode) return;
-		router.push({ name: "edit", params });
+		if (currentTemplate === code) return;
+		const params: { template: string } = { template: code };
+		router.push({ name: route.name ?? "edit", params });
 	},
 	{ deep: true },
 );
@@ -332,7 +354,7 @@ watch(
 			<router-link
 				class="btn"
 				:to="{
-					name: 'view',
+					name: pvp ? 'view-pvp' : 'view',
 					params: { template: router.currentRoute.value.params.template },
 				}"
 				><span aria-hidden="true">⏪</span> View build</router-link
@@ -342,6 +364,9 @@ watch(
 			<a href="#" class="btn" @click.prevent="generateTemplate">
 				<span aria-hidden="true">📋</span> Template code
 			</a>
+		</li>
+		<li>
+			<PvpModeToggle :pvp="pvp" @change="togglePvp" />
 		</li>
 	</ul>
 	<details class="g section" open>

@@ -14,9 +14,9 @@ const router = createRouter({
 			name: "home",
 		},
 		{
-			path: `${ROOT_URI}:template+/:mode(pvp)/edit`,
+			path: `${ROOT_URI}:template+/pvp/edit`,
 			component: Edit,
-			name: "edit",
+			name: "edit-pvp",
 		},
 		{
 			path: `${ROOT_URI}:template+/edit`,
@@ -24,9 +24,9 @@ const router = createRouter({
 			name: "edit",
 		},
 		{
-			path: `${ROOT_URI}:template+/:mode(pvp)/stats`,
+			path: `${ROOT_URI}:template+/pvp/stats`,
 			component: Stats,
-			name: "stats",
+			name: "stats-pvp",
 		},
 		{
 			path: `${ROOT_URI}:template+/stats`,
@@ -34,9 +34,9 @@ const router = createRouter({
 			name: "stats",
 		},
 		{
-			path: `${ROOT_URI}:template+/:mode(pvp)`,
+			path: `${ROOT_URI}:template+/pvp`,
 			component: View,
-			name: "view",
+			name: "view-pvp",
 		},
 		{
 			path: `${ROOT_URI}:template+`,

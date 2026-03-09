@@ -32,8 +32,8 @@ const DarkMode = defineComponent({
 		bodyClass(force: boolean) {
 			document.body.classList.toggle("dm", force);
 		},
-		toggle() {
-			this.$store.commit("session.settings", { darkMode: !this.enabled });
+		onCheckedChange(checked: boolean) {
+			this.$store.commit("session.settings", { darkMode: checked });
 		},
 	},
 });
@@ -51,7 +51,7 @@ export default DarkMode;
 			id="dm-toggle"
 			ref="toggle"
 			:checked="enabled"
-			@click="toggle"
+			@update:checked="onCheckedChange"
 		></Toggle>
 	</label>
 </template>

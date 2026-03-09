@@ -12,7 +12,7 @@ const Toggle = defineComponent({
 			default: "",
 		},
 	},
-	emits: ["click"],
+	emits: ["update:checked"],
 	data() {
 		return { defaultChecked: false };
 	},
@@ -22,8 +22,15 @@ const Toggle = defineComponent({
 		},
 	},
 	methods: {
-		defaultToggle() {
-			this.defaultChecked = !this.defaultChecked;
+		onChange(e: Event) {
+			const target = e.target as HTMLInputElement | null;
+			const next = target ? target.checked : !this.isChecked;
+
+			if (this.checked == null) {
+				this.defaultChecked = next;
+			}
+
+			this.$emit("update:checked", next);
 		},
 		proxyClick(e: KeyboardEvent) {
 			if (e.key != "Enter") return;
@@ -40,11 +47,11 @@ export default Toggle;
 		<input
 			:id="id"
 			ref="checkbox"
-			v-model="isChecked"
+			:checked="isChecked"
 			class="sr"
 			tabindex="-1"
 			type="checkbox"
-			@click="$emit('click')"
+			@change="onChange"
 		/>
 		<label :for="id" tabindex="0" @keypress="proxyClick($event)">
 			<span class="sr">Toggle</span>
