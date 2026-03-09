@@ -337,10 +337,18 @@ img.invalid {
 	li {
 		&,
 		a,
-		span,
-		img {
+		span {
 			height: var(--icon-size);
 			width: var(--icon-size);
+		}
+
+		img {
+			height: 100%;
+			width: 100%;
+		}
+
+		.icon.ally img {
+			height: 200%;
 		}
 	}
 }

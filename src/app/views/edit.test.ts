@@ -683,7 +683,7 @@ describe("Edit view", () => {
 		expect(mockClipboardWriteText).toHaveBeenCalledWith("ENCODED-TEMPLATE");
 		expect(mockStoreDispatch).toHaveBeenCalledWith("alert", {
 			text: "Template code has been copied to the clipboard.",
-			title: "Template code",
+			title: "Copied",
 		});
 	});
 
