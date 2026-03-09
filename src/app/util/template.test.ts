@@ -27,6 +27,13 @@ describe("template", () => {
 				"Signet of Lost Souls",
 			]);
 		});
+
+		it("throws for invalid template type", () => {
+			// Corrupt the first character so templateType !== 14.
+			const invalidCode = `A${PLACEHOLDER_TEMPLATE_CODE.slice(1)}`;
+
+			expect(() => decode(invalidCode, false)).toThrow("Invalid template type");
+		});
 	});
 
 	describe("encode/decode round-trip", () => {
@@ -44,6 +51,45 @@ describe("template", () => {
 			const roundTripped = decode(encoded, true);
 
 			expect(roundTripped).toEqual(build);
+		});
+
+		it("throws when encoding a build with an unknown attribute", () => {
+			const build: BuildTemplate = {
+				primary: "Necromancer",
+				secondary: "Mesmer",
+				attributes: {
+					"Nonexistent Attribute": 12,
+				},
+				skills: [],
+			};
+
+			expect(() => encode(build)).toThrow("Invalid attribute");
+		});
+
+		it("round-trips builds with large profession and skill ids", () => {
+			const build: BuildTemplate = {
+				primary: "Dervish",
+				secondary: "Paragon",
+				attributes: {
+					Mysticism: 12,
+					Leadership: 12,
+				},
+				skills: [
+					"Decapitate",
+					"Triple Chop",
+					"Whirling Axe",
+					"Defy Pain",
+					"Primal Rage",
+					"Illusionary Weaponry",
+					"Power Block",
+					"Mantra of Recovery",
+				],
+			};
+
+			const encoded = encode(build);
+			const decoded = decode(encoded, false);
+
+			expect(decoded).toEqual(build);
 		});
 	});
 });
