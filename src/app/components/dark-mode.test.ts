@@ -20,7 +20,7 @@ describe("DarkMode component", () => {
 		const toggle = darkMode.findComponent(Toggle);
 
 		expect(store.state.session.settings.darkMode).toBe(false);
-		toggle.vm.$emit("click");
+		toggle.vm.$emit("update:checked", true);
 		expect(store.state.session.settings.darkMode).toBe(true);
 	});
 
