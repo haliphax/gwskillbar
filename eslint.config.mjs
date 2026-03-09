@@ -48,16 +48,6 @@ export default defineConfig([
 		},
 
 		rules: {
-			indent: [
-				"error",
-				"tab",
-				{
-					ignoredNodes: ["PropertyDefinition"],
-					offsetTernaryExpressions: true,
-					SwitchCase: 1,
-				},
-			],
-
 			"vue/multi-word-component-names": "off",
 		},
 	},

@@ -7,7 +7,10 @@ const CHAR_MAP =
 	"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 const skillsList = skills as StringMap;
 const attributesList = attributes as StringMap;
-const professionsList = professions as string[];
+const professionsData = professions as {
+	name: string;
+	primaryAttribute: string | null;
+}[];
 
 /** Extract bits from template code */
 const extract = (bits: string[], count: number): number =>
@@ -45,8 +48,8 @@ const skillNameToId = ((): StringMap => {
 /** Profession name -> array index */
 const professionNameToIndex = ((): Record<string, number> => {
 	const map: Record<string, number> = {};
-	professionsList.forEach((name, index) => {
-		map[name] = index;
+	professionsData.forEach((p, index) => {
+		map[p.name] = index;
 	});
 	return map;
 })();
@@ -94,8 +97,8 @@ export const decode = (code: string, pvp: boolean): BuildTemplate => {
 	const professionBits = extract(bits, 2) * 2 + 4;
 
 	try {
-		build.primary = professions[extract(bits, professionBits)];
-		build.secondary = professions[extract(bits, professionBits)];
+		build.primary = professionsData[extract(bits, professionBits)].name;
+		build.secondary = professionsData[extract(bits, professionBits)].name;
 
 		if (
 			build.primary == build.secondary ||
@@ -158,7 +161,7 @@ export const decode = (code: string, pvp: boolean): BuildTemplate => {
 };
 
 /** Encode BuildTemplate to template code (inverse of decode) */
-export const encode = (build: BuildTemplate, _pvp: boolean): string => {
+export const encode = (build: BuildTemplate): string => {
 	const bits: number[] = [];
 
 	appendBits(bits, 14, 4);
@@ -177,11 +180,7 @@ export const encode = (build: BuildTemplate, _pvp: boolean): string => {
 		? Math.max(
 				4,
 				Math.ceil(
-					Math.log2(
-						Math.max(
-							...Object.keys(attributesList).map(Number),
-						) + 1,
-					),
+					Math.log2(Math.max(...Object.keys(attributesList).map(Number)) + 1),
 				),
 			)
 		: 4;
