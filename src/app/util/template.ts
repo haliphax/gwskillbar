@@ -35,11 +35,12 @@ const pack = (bits: number[]): string => {
 	return out;
 };
 
-/** Skill name (no PvP suffix) -> skill ID string */
+/** Skill name (no PvP suffix) -> skill ID string. Prefer non-PvP when duplicates exist. */
 const skillNameToId = ((): StringMap => {
 	const map: StringMap = {};
 	for (const [id, name] of Object.entries(skillsList)) {
-		const normalized = decodeURIComponent(name).replace(/ \(PvP\)$/, "");
+		if (name.endsWith(" (PvP)")) continue;
+		const normalized = decodeURIComponent(name);
 		map[normalized] = id;
 	}
 	return map;
@@ -64,11 +65,12 @@ const attributeNameToId = ((): StringMap => {
 })();
 
 const SKILL_BITS_MIN = 8;
-const maxSkillId = Math.max(...Object.keys(skillsList).map(Number));
-const defaultSkillBits = Math.max(
-	SKILL_BITS_MIN,
-	Math.ceil(Math.log2(maxSkillId + 1)),
-);
+
+/** Smallest professionBits (4, 6, 8, or 10) that can represent the given index */
+const professionBitsFor = (maxIndex: number): number => {
+	const minBits = Math.ceil(Math.log2(Math.max(maxIndex, 1) + 1));
+	return Math.min(10, 4 + 2 * Math.max(0, Math.ceil((minBits - 4) / 2)));
+};
 
 /** Parse template code into BuildTemplate object */
 export const decode = (code: string, pvp: boolean): BuildTemplate => {
@@ -160,30 +162,31 @@ export const decode = (code: string, pvp: boolean): BuildTemplate => {
 	return build;
 };
 
-/** Encode BuildTemplate to template code (inverse of decode) */
+/** Encode BuildTemplate to template code (inverse of decode). Bit widths are derived from the build. */
 export const encode = (build: BuildTemplate): string => {
 	const bits: number[] = [];
 
 	appendBits(bits, 14, 4);
 	appendBits(bits, 0, 4);
 
-	const professionBits = 4;
-	appendBits(bits, 0, 2);
 	const primaryIdx = professionNameToIndex[build.primary] ?? 1;
 	const secondaryIdx = professionNameToIndex[build.secondary] ?? 2;
+	const professionBits = professionBitsFor(Math.max(primaryIdx, secondaryIdx));
+	appendBits(bits, (professionBits - 4) / 2, 2);
 	appendBits(bits, primaryIdx, professionBits);
 	appendBits(bits, secondaryIdx, professionBits);
 
 	const attrEntries = Object.entries(build.attributes);
 	appendBits(bits, attrEntries.length, 4);
-	const attributeBits = attrEntries.length
-		? Math.max(
-				4,
-				Math.ceil(
-					Math.log2(Math.max(...Object.keys(attributesList).map(Number)) + 1),
-				),
-			)
-		: 4;
+	const attributeBits = (() => {
+		if (!attrEntries.length) return 4;
+		const ids = attrEntries
+			.map(([name]) => attributeNameToId[name])
+			.filter((id): id is string => id !== undefined)
+			.map((id) => parseInt(id, 10));
+		const maxAttrId = Math.max(...ids);
+		return Math.max(4, Math.ceil(Math.log2(maxAttrId + 1)));
+	})();
 	appendBits(bits, attributeBits - 4, 4);
 	for (const [name, score] of attrEntries) {
 		const id = attributeNameToId[name];
@@ -192,14 +195,20 @@ export const encode = (build: BuildTemplate): string => {
 		appendBits(bits, score, 4);
 	}
 
-	const skillBits = defaultSkillBits;
-	appendBits(bits, skillBits - SKILL_BITS_MIN, 4);
 	const skillsPadded = [...build.skills];
 	while (skillsPadded.length < 8) skillsPadded.push("No Skill");
-	for (const skill of skillsPadded) {
+	const skillIds = skillsPadded.map((skill) => {
 		const normalized = skill.replace(/ \(PvP\)$/, "");
-		const id = skillNameToId[normalized] ?? "0";
-		appendBits(bits, parseInt(id, 10), skillBits);
+		return parseInt(skillNameToId[normalized] ?? "0", 10);
+	});
+	const maxSkillIdInBuild = Math.max(...skillIds);
+	const skillBits = Math.max(
+		SKILL_BITS_MIN,
+		Math.ceil(Math.log2(maxSkillIdInBuild + 1)),
+	);
+	appendBits(bits, skillBits - SKILL_BITS_MIN, 4);
+	for (const id of skillIds) {
+		appendBits(bits, id, skillBits);
 	}
 
 	return pack(bits);

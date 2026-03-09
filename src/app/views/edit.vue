@@ -166,7 +166,7 @@ const loadFromRoute = () => {
 		: String(templateParam ?? "");
 	const pvp = route.params.mode === "pvp";
 
-	if (!code) return;
+	if (!code || code === "new") return;
 
 	try {
 		const build = decode(code, pvp);
