@@ -23,6 +23,7 @@ import { decode, encode } from "@/app/util/template";
 import professions from "@/data/professions.json";
 import skills from "@/data/skills.json";
 import { computed, onBeforeMount, Ref, ref, watch } from "vue";
+import WikiLink from "../components/wiki-link.vue";
 
 type ProfessionEntry = {
 	name: string;
@@ -507,7 +508,7 @@ watch(
 				</a>
 				<div class="result-meta">
 					<div class="result-head">
-						<span class="result-name">{{ result }}</span>
+						<WikiLink class="result-name" :path="result">{{ result }}</WikiLink>
 						<template v-if="(skillsData as SkillsData)[result]">
 							<div class="result-attr-line">
 								<img
