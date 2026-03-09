@@ -61,3 +61,9 @@ type Stats = {
 };
 
 type StringMap = { [p: string]: string };
+
+type StringTreeLeaf = Set<string> | StringTree;
+
+type StringTree = {
+	[p: string]: StringTreeLeaf;
+};

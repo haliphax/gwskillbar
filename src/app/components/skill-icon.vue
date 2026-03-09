@@ -11,6 +11,7 @@ const props = defineProps<{
 		<img
 			:alt="`[${name} skill icon]`"
 			:class="props.class"
+			:draggable="name !== 'No Skill'"
 			:src="`images/skills/${name.replace(/ \(PvP\)$/, '')}.jpg`"
 			:height="allegianceSkill ? '200%' : '100%'"
 			width="100%"

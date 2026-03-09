@@ -1,13 +1,79 @@
 [
-	"None",
-	"Warrior",
-	"Ranger",
-	"Monk",
-	"Necromancer",
-	"Mesmer",
-	"Elementalist",
-	"Assassin",
-	"Ritualist",
-	"Paragon",
-	"Dervish"
+	{ "name": "None", "primaryAttribute": null, "secondaryAttributes": [] },
+	{
+		"name": "Warrior",
+		"primaryAttribute": "Strength",
+		"secondaryAttributes": [
+			"Axe Mastery",
+			"Hammer Mastery",
+			"Swordsmanship",
+			"Tactics"
+		]
+	},
+	{
+		"name": "Ranger",
+		"primaryAttribute": "Expertise",
+		"secondaryAttributes": [
+			"Beast Mastery",
+			"Marksmanship",
+			"Wilderness Survival"
+		]
+	},
+	{
+		"name": "Monk",
+		"primaryAttribute": "Divine Favor",
+		"secondaryAttributes": [
+			"Healing Prayers",
+			"Protection Prayers",
+			"Smiting Prayers"
+		]
+	},
+	{
+		"name": "Necromancer",
+		"primaryAttribute": "Soul Reaping",
+		"secondaryAttributes": ["Blood Magic", "Curses", "Death Magic"]
+	},
+	{
+		"name": "Mesmer",
+		"primaryAttribute": "Fast Casting",
+		"secondaryAttributes": [
+			"Domination Magic",
+			"Illusion Magic",
+			"Inspiration Magic"
+		]
+	},
+	{
+		"name": "Elementalist",
+		"primaryAttribute": "Energy Storage",
+		"secondaryAttributes": [
+			"Air Magic",
+			"Earth Magic",
+			"Fire Magic",
+			"Water Magic"
+		]
+	},
+	{
+		"name": "Assassin",
+		"primaryAttribute": "Critical Strikes",
+		"secondaryAttributes": ["Dagger Mastery", "Deadly Arts", "Shadow Arts"]
+	},
+	{
+		"name": "Ritualist",
+		"primaryAttribute": "Spawning Power",
+		"secondaryAttributes": [
+			"Channeling Magic",
+			"Communing",
+			"Restoration Magic"
+		]
+	},
+	{
+		"name": "Paragon",
+		"primaryAttribute": "Leadership",
+		"secondaryAttributes": ["Command", "Motivation", "Spear Mastery"]
+	},
+	{
+		"name": "Dervish",
+		"primaryAttribute": "Mysticism",
+		"secondaryAttributes": ["Earth Prayers", "Scythe Mastery", "Wind Prayers"]
+	}
 ]

@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
+import Edit from "./views/edit.vue";
 import Home from "./views/home.vue";
 import Stats from "./views/stats.vue";
 import View from "./views/view.vue";
@@ -19,6 +20,7 @@ vi.mock("vue-router", () => ({
 	createRouter: mockCreateRouter,
 	createWebHashHistory: mockCreateHistory,
 }));
+vi.mock("./views/edit.vue", () => ({ default: "Edit" }));
 vi.mock("./views/home.vue", () => ({ default: "Home" }));
 vi.mock("./views/stats.vue", () => ({ default: "Stats" }));
 vi.mock("./views/view.vue", () => ({ default: "View" }));
@@ -42,6 +44,7 @@ describe("router", () => {
 			mockCreateRouter.mock.lastCall![0].routes;
 		const components = routes.map((c) => c.component);
 
+		expect(components).toContain(Edit);
 		expect(components).toContain(Home);
 		expect(components).toContain(View);
 		expect(components).toContain(Stats);

@@ -51,11 +51,11 @@ const getFile = async (
 
 console.log("=== Professions ===");
 
-for (const profession of professions.slice(1)) {
+for (const profession of (professions as { name: string }[]).slice(1)) {
 	if (
 		await getFile(
 			"src/images/professions",
-			profession,
+			profession.name,
 			"png",
 			"-tango-icon-200",
 		)

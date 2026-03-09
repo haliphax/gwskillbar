@@ -24,9 +24,81 @@ for (const skill of Object.values(skills)) {
 	pvpSkills[skill.replace(/ \(PvP\)$/, "")] = true;
 }
 
+/** Attribute name → profession name (Guild Wars Wiki). Used when skill has attribute but no profession. */
+export const attributeToProfession: Record<string, string> = {
+	"Air Magic": "Elementalist",
+	"Axe Mastery": "Warrior",
+	"Beast Mastery": "Ranger",
+	"Blood Magic": "Necromancer",
+	"Channeling Magic": "Ritualist",
+	Command: "Paragon",
+	Communing: "Ritualist",
+	"Critical Strikes": "Assassin",
+	Curses: "Necromancer",
+	"Dagger Mastery": "Assassin",
+	"Deadly Arts": "Assassin",
+	"Death Magic": "Necromancer",
+	"Divine Favor": "Monk",
+	"Domination Magic": "Mesmer",
+	"Earth Magic": "Elementalist",
+	"Earth Prayers": "Dervish",
+	"Energy Storage": "Elementalist",
+	Expertise: "Ranger",
+	"Fast Casting": "Mesmer",
+	"Fire Magic": "Elementalist",
+	"Hammer Mastery": "Warrior",
+	"Healing Prayers": "Monk",
+	"Illusion Magic": "Mesmer",
+	"Inspiration Magic": "Mesmer",
+	Leadership: "Paragon",
+	Marksmanship: "Ranger",
+	Motivation: "Paragon",
+	Mysticism: "Dervish",
+	"Protection Prayers": "Monk",
+	"Restoration Magic": "Ritualist",
+	"Scythe Mastery": "Dervish",
+	"Shadow Arts": "Assassin",
+	"Smiting Prayers": "Monk",
+	"Soul Reaping": "Necromancer",
+	"Spear Mastery": "Paragon",
+	"Spawning Power": "Ritualist",
+	Strength: "Warrior",
+	Swordsmanship: "Warrior",
+	Tactics: "Warrior",
+	"Water Magic": "Elementalist",
+	"Wilderness Survival": "Ranger",
+	"Wind Prayers": "Dervish",
+};
+
+/**
+ * True if a skill is available to the given primary and secondary professions.
+ * Skills with no profession (or "None"/"Any") are rank/universal and available to all.
+ */
+export const isSkillAvailableForProfessions = (
+	skillName: string,
+	primary: string,
+	secondary: string,
+): boolean => {
+	const data = (skillsData as SkillsData)[skillName];
+	if (!data) return true;
+	const prof = data.profession;
+	if (prof == null || prof === "None" || prof === "Any") return true;
+	return prof === primary || prof === secondary;
+};
+
 /** If provided skill is Kurzick/Luxon */
 export const isAllegianceSkill = (skill: string) =>
 	allegianceSkills[skill.replace(/"/g, "%22")] ?? false;
+
+/** True if the skill is an elite (skill bar may only contain one elite). */
+export const isEliteSkill = (skillName: string): boolean => {
+	const data = (skillsData as SkillsData)[skillName];
+	return Boolean(data?.desc?.startsWith("Elite "));
+};
+
+/** True if the skill is PvE-only (skill bar may contain at most 3 PvE-only skills). */
+export const isPveOnlySkill = (skillName: string): boolean =>
+	pveSkills[skillName.replace(/"/g, "%22")] === true;
 
 /** Formatted skill statistic display */
 export const statDisplay = (stat: string, amount: number | null) => {
@@ -61,6 +133,33 @@ export const statDisplay = (stat: string, amount: number | null) => {
 		</li>`;
 };
 
+/** Formatted skill description HTML (variable ranges highlighted) */
+export const skillDescHtml = (skill: string): string => {
+	const data = (skillsData as SkillsData)[skill];
+	if (!data?.desc) return "";
+	return data.desc.replace(
+		/((?:\d+\.\.\.)+\d+)/g,
+		'<span style="color: var(--color-em)">$1</span>',
+	);
+};
+
+/** Stats fragment (adrenaline, energy, etc.) in same order as skillDescription pop-up */
+export const skillStatsFragment = (skill: string): string => {
+	const data = (skillsData as SkillsData)[skill];
+	if (!data) return "";
+	return [
+		data.adrenaline ? statDisplay("adrenaline", data.adrenaline) : "",
+		data.energy ? statDisplay("energy", data.energy) : "",
+		data.health ? statDisplay("health", data.health) : "",
+		data.overcast ? statDisplay("overcast", data.overcast) : "",
+		data.activate ? statDisplay("activate", data.activate) : "",
+		data.recharge ? statDisplay("recharge", data.recharge) : "",
+		data.upkeep ? statDisplay("upkeep", data.upkeep) : "",
+	]
+		.filter(Boolean)
+		.join("");
+};
+
 /** Formatted skill description display */
 export const skillDescription = async (skill: string) => {
 	const data = (skillsData as SkillsData)[skill];
@@ -87,13 +186,7 @@ export const skillDescription = async (skill: string) => {
 				<div class="fr ib" style="text-align: right; width: auto;">
 					<span class="sr">Skill stats:</span>
 					<ul class="x">
-						${data.adrenaline ? statDisplay("adrenaline", data.adrenaline) : ""}
-						${data.energy ? statDisplay("energy", data.energy) : ""}
-						${data.health ? statDisplay("health", data.health) : ""}
-						${data.overcast ? statDisplay("overcast", data.overcast) : ""}
-						${data.activate ? statDisplay("activate", data.activate) : ""}
-						${data.recharge ? statDisplay("recharge", data.recharge) : ""}
-						${data.upkeep ? statDisplay("upkeep", data.upkeep) : ""}
+						${skillStatsFragment(skill)}
 					</ul>
 				</div>
 			</div>
@@ -202,4 +295,4 @@ export const statistics = (build: BuildTemplate): Stats => {
 	return stats;
 };
 
-export { allegianceSkills, pveSkills, pvpSkills };
+export { allegianceSkills, pveSkills, pvpSkills, skillsData };
