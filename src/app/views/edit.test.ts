@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { mount, VueWrapper } from "@vue/test-utils";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { ref } from "vue";
 import Edit from "./edit.vue";
 
 const {
@@ -44,6 +45,8 @@ const {
 		} as Record<string, boolean>,
 	};
 });
+
+mockRouter.currentRoute = ref(mockRouter.currentRoute.value);
 
 vi.mock("@/app/router", () => ({
 	default: mockRouter,
@@ -176,7 +179,6 @@ describe("Edit view", () => {
 			mockRouter.currentRoute.value = {
 				name: "edit",
 				params: {},
-				query: {},
 			} as any;
 			mockDecode.mockClear();
 
@@ -187,7 +189,6 @@ describe("Edit view", () => {
 			mockRouter.currentRoute.value = {
 				name: "edit",
 				params: { template: "new" },
-				query: {},
 			} as any;
 
 			vm.loadFromRoute();
@@ -217,7 +218,6 @@ describe("Edit view", () => {
 			mockRouter.currentRoute.value = {
 				name: "edit",
 				params: { template: "CODE123" },
-				query: {},
 			} as any;
 
 			vm.loadFromRoute();
@@ -239,7 +239,6 @@ describe("Edit view", () => {
 			mockRouter.currentRoute.value = {
 				name: "edit-pvp",
 				params: { template: "BAD" },
-				query: {},
 			} as any;
 
 			await vm.loadFromRoute();
@@ -253,27 +252,39 @@ describe("Edit view", () => {
 
 		it("reloads when the current route object changes", async () => {
 			const vm = edit.vm as any;
-			const decoded: BuildTemplate = {
-				primary: "Monk",
-				secondary: "Necromancer",
-				attributes: { Healing: 8 },
-				skills: Array(8).fill("SkillA"),
-			};
 
-			mockDecode.mockReturnValue(decoded);
+			mockDecode.mockReset();
+			mockDecode.mockImplementation(
+				(code: string): BuildTemplate => ({
+					primary: "Monk",
+					secondary: "Necromancer",
+					attributes: {},
+					skills: Array(8).fill(code),
+				}),
+			);
+
 			mockRouter.currentRoute.value = {
 				name: "edit",
-				params: { template: "ROUTE_CHANGE" },
-				query: {},
+				params: { template: "ROUTE1" },
 			} as any;
 
-			// First load with initial route.
-			vm.loadFromRoute();
+			// First change should trigger loadFromRoute via the route watcher.
 			await vm.$nextTick();
 
-			expect(mockDecode).toHaveBeenCalledWith("ROUTE_CHANGE", false);
-			expect(vm.primaryProfession).toBe("Monk");
-			expect(vm.secondaryProfession).toBe("Necromancer");
+			expect(mockDecode).toHaveBeenCalledWith("ROUTE1", false);
+			expect(vm.slots[0]).toBe("ROUTE1");
+
+			// Changing the route object should trigger the watcher again.
+			mockDecode.mockClear();
+			mockRouter.currentRoute.value = {
+				name: "edit",
+				params: { template: "ROUTE2" },
+			} as any;
+
+			await vm.$nextTick();
+
+			expect(mockDecode).toHaveBeenCalledWith("ROUTE2", false);
+			expect(vm.slots[0]).toBe("ROUTE2");
 		});
 	});
 
@@ -283,7 +294,6 @@ describe("Edit view", () => {
 			mockRouter.currentRoute.value = {
 				name: "home",
 				params: { template: "SAME" },
-				query: {},
 			} as any;
 
 			mockEncode.mockClear();
@@ -301,7 +311,6 @@ describe("Edit view", () => {
 			mockRouter.currentRoute.value = {
 				name: "edit",
 				params: { template: "SAME" },
-				query: {},
 			} as any;
 
 			mockEncode.mockReset();
@@ -357,7 +366,6 @@ describe("Edit view", () => {
 		expect(mockRouter.push).toHaveBeenCalledWith({
 			name: "edit-pvp",
 			params: currentRoute.params,
-			query: currentRoute.query,
 		});
 
 		// Switch to PvP route and toggle back to PvE.
@@ -369,8 +377,24 @@ describe("Edit view", () => {
 		expect(mockRouter.push).toHaveBeenCalledWith({
 			name: "edit",
 			params: currentRoute.params,
-			query: currentRoute.query,
 		});
+	});
+
+	it("computes PvP mode from the current route name", async () => {
+		const vm = edit.vm as any;
+
+		// Non-PvP route should yield false.
+		mockRouter.currentRoute.value = { ...currentRoute, name: "edit" } as any;
+		await vm.$nextTick();
+		expect(vm.pvp).toBe(false);
+
+		// PvP route should yield true.
+		mockRouter.currentRoute.value = {
+			...currentRoute,
+			name: "edit-pvp",
+		} as any;
+		await vm.$nextTick();
+		expect(vm.pvp).toBe(true);
 	});
 
 	describe("attributes and professions", () => {
@@ -514,9 +538,8 @@ describe("Edit view", () => {
 
 			await vm.$nextTick();
 
-			// In this test environment the PvP flags do not alter the labels,
-			// but we still verify that results flow through correctly.
-			expect(vm.filteredResults).toEqual(["SkillA", "SkillB"]);
+			// In PvP mode, skills flagged as PvP-only should have a "(PvP)" suffix.
+			expect(vm.filteredResults).toEqual(["SkillA (PvP)", "SkillB"]);
 		});
 	});
 
@@ -525,11 +548,11 @@ describe("Edit view", () => {
 			const vm = edit.vm as any;
 
 			mockIsEliteSkill.mockImplementation(
-				(skill: string) => skill === "EliteSkill",
+				(skill: string) => skill === "EliteSkill" || skill === "OtherElite",
 			);
 
 			vm.slots = [
-				"EliteSkill",
+				"OtherElite",
 				"EliteSkill",
 				"No Skill",
 				"No Skill",
@@ -545,6 +568,7 @@ describe("Edit view", () => {
 				(s: string) => s === "EliteSkill",
 			).length;
 			expect(eliteCount).toBe(1);
+			expect(vm.slots[0]).toBe("No Skill");
 			expect(vm.slots[2]).toBe("EliteSkill");
 		});
 
@@ -552,30 +576,37 @@ describe("Edit view", () => {
 			const vm = edit.vm as any;
 
 			mockIsPveOnlySkill.mockImplementation(
-				(skill: string) => skill === "PveSkill",
+				(skill: string) =>
+					skill === "PveSkill1" ||
+					skill === "PveSkill2" ||
+					skill === "PveSkill3" ||
+					skill === "PveSkill4",
 			);
 
 			vm.slots = [
-				"PveSkill",
-				"PveSkill",
-				"PveSkill",
+				"PveSkill1",
+				"PveSkill2",
 				"No Skill",
+				"PveSkill3",
 				"No Skill",
 				"No Skill",
 				"No Skill",
 				"No Skill",
 			];
 
-			vm.placeSkillInSlot("PveSkill", 3);
+			vm.placeSkillInSlot("PveSkill4", 4);
 
 			const pveSlots = vm.slots
-				.map((s: string, i: number) => (s === "PveSkill" ? i : -1))
+				.map((s: string, i: number) => (mockIsPveOnlySkill(s) ? i : -1))
 				.filter((i: number) => i >= 0);
 
-			// With identical PvE-only skill names, the component collapses
-			// duplicates and keeps only the newly placed skill.
-			expect(pveSlots).toHaveLength(1);
+			// The earliest existing PvE-only skill should be removed to
+			// make room for the newly placed one, keeping the total at three.
+			expect(pveSlots).toHaveLength(3);
 			expect(vm.slots[0]).toBe("No Skill");
+			expect(vm.slots[1]).toBe("PveSkill2");
+			expect(vm.slots[3]).toBe("PveSkill3");
+			expect(vm.slots[4]).toBe("PveSkill4");
 		});
 
 		it("toggles draggedSkill when clicking a result icon", () => {
@@ -629,6 +660,37 @@ describe("Edit view", () => {
 			expect(vm.slots[5]).toBe("SkillA");
 		});
 
+		it("does nothing when the drop event has no transferable skill data", () => {
+			const vm = edit.vm as any;
+
+			vm.slots = [
+				"SkillA",
+				"No Skill",
+				"No Skill",
+				"No Skill",
+				"No Skill",
+				"No Skill",
+				"No Skill",
+				"No Skill",
+			];
+
+			const preventDefault = vi.fn();
+			const getData = vi.fn().mockReturnValue("");
+
+			const event = {
+				preventDefault,
+				dataTransfer: {
+					getData,
+				},
+			} as unknown as DragEvent;
+
+			vm.onDrop(0, event);
+
+			expect(preventDefault).toHaveBeenCalled();
+			// Slot contents should remain unchanged when no skill is provided.
+			expect(vm.slots[0]).toBe("SkillA");
+		});
+
 		it("writes the skill name to the drag event data on drag start", () => {
 			const vm = edit.vm as any;
 
@@ -649,6 +711,14 @@ describe("Edit view", () => {
 
 			expect(setData).toHaveBeenCalledWith("text/plain", "SkillA");
 			expect(event.dataTransfer.effectAllowed).toBe("copy");
+		});
+
+		it("gracefully handles drag start events without a dataTransfer object", () => {
+			const vm = edit.vm as any;
+
+			const event = {} as DragEvent;
+
+			expect(() => vm.onDragStart("SkillA", event)).not.toThrow();
 		});
 	});
 
@@ -723,5 +793,27 @@ describe("Edit view", () => {
 		const occurrences = vm.slots.filter((s: string) => s === "SkillA").length;
 		expect(occurrences).toBe(1);
 		expect(vm.slots[2]).toBe("SkillA");
+	});
+
+	it('treats "No Skill" as another movable entry when placing it into a slot', () => {
+		const vm = edit.vm as any;
+
+		vm.slots = [
+			"SkillA",
+			"No Skill",
+			"No Skill",
+			"No Skill",
+			"No Skill",
+			"No Skill",
+			"No Skill",
+			"No Skill",
+		];
+
+		// Move the existing "No Skill" placeholder from index 1 onto
+		// the occupied index 0, which should swap the two entries.
+		vm.placeSkillInSlot("No Skill", 0);
+
+		expect(vm.slots[0]).toBe("No Skill");
+		expect(vm.slots[1]).toBe("SkillA");
 	});
 });
